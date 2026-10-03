@@ -1,0 +1,67 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Reports" %}{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-end justify-between gap-4">
+  <div>
+    <h1 class="text-2xl font-semibold">{% trans "Reports" %}</h1>
+    <p class="mt-1 text-sm text-muted">{% trans "Monthly snapshots of your progress. A report never changes once generated." %}</p>
+  </div>
+</div>
+
+<div class="mt-6 grid gap-6 lg:grid-cols-3">
+  <section class="card card-pad h-fit">
+    <h2 class="card-title">{% trans "Generate a monthly report" %}</h2>
+    <form method="post" action="{% url 'reports:generate' %}" class="mt-4 space-y-4">
+      {% csrf_token %}
+      <div>
+        <label class="label" for="month">{% trans "Month" %}</label>
+        <select id="month" name="month" class="select">
+          {% for m in months %}<option value="{{ m|date:'Y-m' }}">{{ m|date:"F Y" }}{% if forloop.first %} ({% trans "in progress" %}){% endif %}</option>{% endfor %}
+        </select>
+      </div>
+      <button class="btn btn-primary w-full">{% icon "file-text" "icon-sm" %} {% trans "Generate report" %}</button>
+      <p class="text-xs text-muted">{% trans "Generating the same month again creates a new version; older versions are kept." %}</p>
+    </form>
+    <div id="export" class="mt-6 border-t border-line pt-5">
+      <h3 class="text-sm font-semibold">{% trans "Export your data" %}</h3>
+      <div class="mt-3 grid gap-2">
+        <a href="{% url 'reports:export' %}?format=xlsx" class="btn btn-secondary justify-start">{% icon "file-down" "icon-sm" %} {% trans "Excel (statistics + entries)" %}</a>
+        <a href="{% url 'reports:export' %}?format=csv&kind=entries" class="btn btn-secondary justify-start">{% icon "download" "icon-sm" %} {% trans "CSV — all entries" %}</a>
+        <a href="{% url 'reports:export' %}?format=csv&kind=statistics" class="btn btn-secondary justify-start">{% icon "download" "icon-sm" %} {% trans "CSV — challenge statistics" %}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="lg:col-span-2">
+    <h2 class="mb-3 text-base font-semibold">{% trans "History" %}</h2>
+    {% if reports %}
+    <div class="card divide-y divide-line">
+      {% for r in reports %}
+      <div class="flex flex-wrap items-center gap-4 px-5 py-4">
+        <div class="flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-xl bg-brand-soft text-brand-strong">
+          <span class="text-[10px] font-semibold uppercase leading-3">{{ r.period_start|date:"M" }}</span><span class="text-sm font-bold leading-4">{{ r.period_start|date:"y" }}</span>
+        </div>
+        <div class="min-w-0 flex-1">
+          <a href="{% url 'reports:detail' r.pk %}" class="font-medium hover:underline">{{ r.period_start|date:"F Y" }}</a>
+          {% if r.version > 1 %}<span class="badge badge-neutral ml-1">v{{ r.version }}</span>{% endif %}
+          {% if r.summary.is_partial %}<span class="badge badge-warning ml-1">{% trans "partial" %}</span>{% endif %}
+          <div class="text-xs text-muted">{% blocktrans with n=r.summary.challenges %}{{ n }} challenges{% endblocktrans %} · {% trans "avg. completion" %} {{ r.summary.average_completion|pct }} · {% trans "generated" %} {{ r.generated_at|date:"SHORT_DATETIME_FORMAT" }}</div>
+        </div>
+        <div class="flex gap-1">
+          <a href="{% url 'reports:detail' r.pk %}" class="btn btn-ghost btn-sm">{% icon "eye" "icon-xs" %} {% trans "View" %}</a>
+          <a href="{% url 'reports:pdf' r.pk %}" class="btn btn-ghost btn-sm">{% icon "download" "icon-xs" %} PDF</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty">
+      <div class="empty-icon">{% icon "file-text" "icon-lg" %}</div>
+      <h3 class="text-sm font-semibold">{% trans "No report yet" %}</h3>
+      <p class="mt-1 max-w-sm text-sm text-muted">{% trans "Generate your first monthly report to keep a permanent record of your progress." %}</p>
+    </div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

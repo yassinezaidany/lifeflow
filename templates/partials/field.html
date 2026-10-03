@@ -1,0 +1,12 @@
+{% if field.is_hidden %}{{ field }}{% elif field.field.widget.input_type == "checkbox" %}
+<label class="flex items-start gap-3 {{ class }}">
+  {{ field }}
+  <span><span class="text-sm font-medium">{{ field.label }}</span>{% if field.help_text %}<span class="block text-xs text-muted">{{ field.help_text }}</span>{% endif %}</span>
+</label>
+{% else %}
+<div class="{{ class }}">
+  <label class="label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+  {{ field }}
+  {% if field.errors %}{% for e in field.errors %}<p class="field-error">{{ e }}</p>{% endfor %}{% elif field.help_text %}<p class="hint">{{ field.help_text }}</p>{% endif %}
+</div>
+{% endif %}

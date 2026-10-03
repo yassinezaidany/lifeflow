@@ -1,0 +1,28 @@
+{% extends "accounts/_settings_layout.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Notifications" %}{% endblock %}
+{% block settings %}
+<form method="post" novalidate>
+  {% csrf_token %}
+  <section class="card">
+    <div class="card-pad border-b border-line">
+      <h2 class="card-title">{% trans "Notifications" %}</h2>
+      <p class="card-subtitle">{% trans "Reminders are optional. LifeFlow works perfectly without them." %}</p>
+    </div>
+    <div class="card-pad space-y-5">
+      {% include "partials/field.html" with field=form.notifications_enabled %}
+      <div class="divider"></div>
+      <div class="grid gap-5 sm:grid-cols-2">
+        {% include "partials/field.html" with field=form.notify_activity_reminders %}
+        {% include "partials/field.html" with field=form.notify_daily_goals %}
+        {% include "partials/field.html" with field=form.notify_end_of_day %}
+        {% include "partials/field.html" with field=form.notify_weekly_review %}
+        {% include "partials/field.html" with field=form.notify_report_ready %}
+        {% include "partials/field.html" with field=form.email_notifications %}
+      </div>
+      <div class="max-w-xs">{% include "partials/field.html" with field=form.end_of_day_time %}</div>
+    </div>
+    <div class="flex justify-end border-t border-line px-6 py-4"><button class="btn btn-primary">{% trans "Save" %}</button></div>
+  </section>
+</form>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "accounts/_settings_layout.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Security" %}{% endblock %}
+{% block settings %}
+<form method="post" novalidate>
+  {% csrf_token %}
+  <section class="card">
+    <div class="card-pad border-b border-line">
+      <h2 class="card-title">{% trans "Change password" %}</h2>
+    </div>
+    <div class="card-pad max-w-md space-y-5">
+      {% include "partials/field.html" with field=form.old_password %}
+      {% include "partials/field.html" with field=form.new_password1 %}
+      {% include "partials/field.html" with field=form.new_password2 %}
+    </div>
+    <div class="flex justify-end border-t border-line px-6 py-4"><button class="btn btn-primary">{% trans "Update password" %}</button></div>
+  </section>
+</form>
+<section class="card border-red-500/30" x-data="{open:false}">
+  <div class="card-pad">
+    <h2 class="card-title text-danger">{% trans "Delete account" %}</h2>
+    <p class="card-subtitle mt-1">{% trans "Permanently delete your account, challenges, planner, journal and reports. This cannot be undone." %}</p>
+    <button type="button" class="btn btn-secondary mt-4 text-danger" @click="open=!open">{% icon "trash-2" "icon-sm" %} {% trans "Delete my account" %}</button>
+    <form x-show="open" x-collapse method="post" action="{% url 'accounts:delete' %}" class="mt-4 flex max-w-md flex-col gap-3 sm:flex-row">
+      {% csrf_token %}
+      <input type="password" name="password" class="input" placeholder="{% trans 'Confirm with your password' %}" required autocomplete="current-password">
+      <button class="btn btn-danger">{% trans "Delete forever" %}</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,21 @@
+{
+  "ui": [
+    "layout-dashboard", "sun", "moon", "monitor", "calendar", "calendar-days", "calendar-check", "calendar-range",
+    "calendar-plus", "calendar-clock", "target", "chart-column", "chart-line", "chart-pie", "file-text", "notebook-pen",
+    "layout-template", "settings", "plus", "x", "check", "check-check", "chevron-left", "chevron-right", "chevron-down",
+    "chevron-up", "flame", "trophy", "clock", "timer", "pencil", "trash-2", "copy", "move", "ellipsis", "ellipsis-vertical",
+    "bell", "log-out", "user", "users", "search", "filter", "archive", "pause", "play", "rotate-ccw", "download", "eye",
+    "list-checks", "list-todo", "sticky-note", "arrow-right", "arrow-left", "arrow-up-right", "info", "triangle-alert",
+    "circle-alert", "circle-check", "circle-x", "menu", "grip-vertical", "repeat", "lock", "mail", "globe", "palette",
+    "shield-check", "sliders-horizontal", "inbox", "lightbulb", "smile", "gauge", "square-check", "undo-2",
+    "external-link", "refresh-cw", "history", "hourglass", "activity", "layers", "square-pen", "circle-plus",
+    "circle-dot", "ban", "clipboard-list", "printer", "file-down", "list", "columns-3", "send", "sparkles"
+  ],
+  "picker": [
+    "target", "heart-pulse", "dumbbell", "footprints", "bike", "activity", "graduation-cap", "book-open", "book-marked",
+    "book", "brain", "code", "languages", "pen-line", "sparkles", "sunrise", "moon", "sun", "alarm-clock", "bed",
+    "droplets", "glass-water", "apple", "utensils", "coffee", "leaf", "smartphone", "cigarette-off", "wallet",
+    "piggy-bank", "briefcase", "zap", "flag", "trophy", "medal", "star", "mountain", "music", "palette", "heart",
+    "hand-heart", "users", "house", "car", "smile", "lightbulb", "clock", "timer", "tag", "circle", "home"
+  ]
+}

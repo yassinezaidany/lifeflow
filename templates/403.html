@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% block title %}{% trans "Access denied" %}{% endblock %}
+{% block body %}
+<div class="flex min-h-full flex-col items-center justify-center px-6 py-24 text-center">
+  <img src="{% static 'img/logo.svg' %}" alt="" class="h-10 w-10">
+  <p class="mt-8 text-sm font-semibold text-brand">403</p>
+  <h1 class="mt-2 text-3xl font-semibold">{% trans "Access denied" %}</h1>
+  <p class="mt-3 text-muted">{% trans "Your session may have expired. Reload the page and try again." %}</p>
+  <a href="/" class="btn btn-primary mt-8">{% trans "Back to LifeFlow" %}</a>
+</div>
+{% endblock %}

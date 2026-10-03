@@ -1,0 +1,7 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{{ detail.date|date:"j F Y" }}{% endblock %}
+{% block content %}
+<a href="{% url 'dashboard:calendar' %}?month={{ detail.date|date:'Y-m' }}&date={{ detail.date|date:'Y-m-d' }}" class="mb-4 inline-flex items-center gap-1 text-sm text-muted hover:text-ink">{% icon "chevron-left" "icon-sm" %} {% trans "Calendar" %}</a>
+<div class="card card-pad max-w-2xl">{% include "dashboard/_day_detail.html" %}</div>
+{% endblock %}

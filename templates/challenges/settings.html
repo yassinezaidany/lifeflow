@@ -1,0 +1,130 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Edit" %} · {{ challenge.name }}{% endblock %}
+{% block main_attrs %}data-no-refresh{% endblock %}
+{% block content %}
+{{ settings_opts|json_script:"settings-opts" }}
+<div class="mx-auto max-w-3xl space-y-6" x-data="challengeSettings({...JSON.parse(document.getElementById('settings-opts').textContent), weekdays: LF.cfg.weekdays})">
+  <div>
+    <a href="{% url 'challenges:detail' challenge.pk %}" class="mb-4 inline-flex items-center gap-1 text-sm text-muted hover:text-ink">{% icon "chevron-left" "icon-sm" %} {{ challenge.name }}</a>
+    <h1 class="text-2xl font-semibold">{% trans "Edit challenge" %}</h1>
+  </div>
+
+  {# ---- General #}
+  <section class="card">
+    <div class="card-pad border-b border-line"><h2 class="card-title">{% trans "General" %}</h2></div>
+    <div class="card-pad space-y-4">
+      <div><label class="label">{% trans "Name" %}</label><input class="input" x-model="general.name" maxlength="100"><p class="field-error" x-show="errors.name" x-text="errors.name"></p></div>
+      <div><label class="label">{% trans "Description" %}</label><textarea class="textarea" rows="2" x-model="general.description"></textarea></div>
+      <div class="grid gap-4 sm:grid-cols-3">
+        <div><label class="label">{% trans "Category" %}</label><select class="select" x-model.number="general.category_id"><option :value="null">—</option><template x-for="c in categories" :key="c.id"><option :value="c.id" x-text="c.name" :selected="c.id===general.category_id"></option></template></select></div>
+        <div><label class="label">{% trans "Start date" %}</label><input type="date" class="input" x-model="general.start_date"><p class="field-error" x-show="errors.start_date" x-text="errors.start_date"></p></div>
+        <div><label class="label">{% trans "End date" %}</label><input type="date" class="input" x-model="general.end_date"><p class="field-error" x-show="errors.end_date" x-text="errors.end_date"></p></div>
+      </div>
+      <div><label class="label">{% trans "Color" %}</label><div class="flex flex-wrap gap-2"><template x-for="c in colors" :key="c"><button type="button" class="h-7 w-7 rounded-full bg-tone" :class="['tone-'+c, general.color===c && 'ring-2 ring-offset-2 ring-tone ring-offset-surface']" @click="general.color=c" :aria-label="c"></button></template></div></div>
+      <div><label class="label">{% trans "Icon" %}</label>
+        <div class="flex flex-wrap gap-1" :class="'tone-' + general.color"><template x-for="ic in icons" :key="ic"><button type="button" class="flex h-8 w-8 items-center justify-center rounded-lg" :class="general.icon===ic ? 'bg-tone/15 text-tone-strong ring-1 ring-tone/40' : 'text-muted hover:bg-subtle'" @click="general.icon=ic" :aria-label="ic"><svg class="icon icon-sm"><use :href="LF.cfg.sprite + '#i-' + ic"></use></svg></button></template></div>
+      </div>
+    </div>
+    <div class="flex justify-end border-t border-line px-6 py-4"><button class="btn btn-primary" @click="saveGeneral()" :disabled="saving==='general'">{% trans "Save" %}</button></div>
+  </section>
+
+  {# ---- Goal #}
+  <section class="card">
+    <div class="card-pad border-b border-line">
+      <h2 class="card-title">{% trans "Goal" %}</h2>
+      <p class="card-subtitle">{% trans "A change applies from the chosen date. Earlier days keep the previous goal: your history is never rewritten." %}</p>
+    </div>
+    <div class="card-pad space-y-4">
+      <div class="grid gap-4 sm:grid-cols-3">
+        <div><label class="label">{% trans "Measured" %}</label><select class="select" x-model="goal.metric"><option value="">{% trans "Entries (sessions)" %}</option><template x-for="f in measurable" :key="f.key"><option :value="f.key" x-text="f.label" :selected="f.key===goal.metric"></option></template></select></div>
+        <div><label class="label">{% trans "Target" %}</label><input type="number" min="0.01" step="any" class="input" x-model="goal.target"><p class="field-error" x-show="errors.target" x-text="errors.target"></p></div>
+        <div><label class="label">{% trans "Period" %}</label><select class="select" x-model="goal.period"><option value="daily">{% trans "per day" %}</option><option value="weekly">{% trans "per week" %}</option><option value="monthly">{% trans "per month" %}</option><option value="total">{% trans "in total" %}</option></select></div>
+      </div>
+      <template x-if="metricField && ['integer','decimal','duration'].includes(metricField.field_type)">
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div><label class="label">{% trans "Counting" %}</label><select class="select" x-model="goal.aggregation"><option value="sum">{% trans "Add up the values" %}</option><option value="count">{% trans "Count sessions" %}</option></select></div>
+          <div><label class="label">{% trans "Minimum per entry" %}</label><input type="number" min="0" step="any" class="input" x-model="goal.min_per_entry" placeholder="—"></div>
+        </div>
+      </template>
+      <div class="max-w-xs"><label class="label">{% trans "Applies from" %}</label><input type="date" class="input" x-model="goal.effective_from"><p class="field-error" x-show="errors.effective_from" x-text="errors.effective_from"></p></div>
+    </div>
+    <div class="flex justify-end border-t border-line px-6 py-4"><button class="btn btn-primary" @click="saveGoal()" :disabled="saving==='goal'">{% trans "Update goal" %}</button></div>
+  </section>
+
+  {# ---- Schedule #}
+  <section class="card">
+    <div class="card-pad border-b border-line"><h2 class="card-title">{% trans "Schedule" %}</h2><p class="card-subtitle">{% trans "Days outside the schedule are rest days." %}</p></div>
+    <div class="card-pad space-y-4">
+      <div class="seg"><button type="button" class="seg-item" :aria-pressed="schedule.frequency==='daily'" @click="schedule.frequency='daily'">{% trans "Every day" %}</button><button type="button" class="seg-item" :aria-pressed="schedule.frequency==='weekdays'" @click="schedule.frequency='weekdays'">{% trans "Specific days" %}</button><button type="button" class="seg-item" :aria-pressed="schedule.frequency==='interval'" @click="schedule.frequency='interval'">{% trans "Every N days" %}</button></div>
+      <div x-show="schedule.frequency==='weekdays'" class="flex flex-wrap gap-1.5"><template x-for="(d, i) in weekdayLabels" :key="i"><button type="button" class="h-9 w-11 rounded-lg border text-xs font-medium" :class="schedule.weekdays.includes(i) ? 'border-brand bg-brand-soft text-brand-strong' : 'border-line text-muted'" @click="toggleWeekday(i)" x-text="d"></button></template></div>
+      <p class="field-error" x-show="errors.weekdays" x-text="errors.weekdays"></p>
+      <div x-show="schedule.frequency==='interval'" class="flex items-center gap-2 text-sm">{% trans "Every" %} <input type="number" min="2" class="input input-sm w-20" x-model="schedule.interval_days"> {% trans "days" %}</div>
+      <div class="max-w-xs"><label class="label">{% trans "Applies from" %}</label><input type="date" class="input" x-model="schedule.effective_from"></div>
+    </div>
+    <div class="flex justify-end border-t border-line px-6 py-4"><button class="btn btn-primary" @click="saveSchedule()" :disabled="saving==='schedule'">{% trans "Update schedule" %}</button></div>
+  </section>
+
+  {# ---- Fields #}
+  <section class="card">
+    <div class="card-pad flex items-center justify-between border-b border-line">
+      <div><h2 class="card-title">{% trans "Recorded fields" %}</h2><p class="card-subtitle">{% trans "Removing a field keeps its recorded values in history." %}</p></div>
+      <button class="btn btn-secondary btn-sm" @click="startField()" x-show="!newField">{% icon "plus" "icon-xs" %} {% trans "Add field" %}</button>
+    </div>
+    <div class="divide-y divide-line">
+      <template x-for="f in activeFields" :key="f.id">
+        <div class="flex flex-wrap items-center gap-3 px-6 py-3">
+          <input class="input input-sm max-w-[14rem] flex-1" :value="f.label" @change="renameField(f, $event.target.value)" :aria-label="f.label">
+          <span class="badge badge-neutral" x-text="f.field_type"></span>
+          <span class="text-xs text-muted" x-text="f.unit"></span>
+          <span class="badge badge-brand" x-show="f.key===c.goal?.metric_key">{% trans "goal" %}</span>
+          <label class="ml-auto flex items-center gap-1.5 text-xs text-muted"><input type="checkbox" class="checkbox" :checked="f.required" @change="toggleRequired(f)"> {% trans "Required" %}</label>
+          <button class="btn btn-ghost btn-icon btn-sm text-danger" @click="removeField(f)" :disabled="f.key===c.goal?.metric_key" aria-label="{% trans 'Remove' %}">{% icon "trash-2" "icon-sm" %}</button>
+        </div>
+      </template>
+      <template x-if="!activeFields.length"><p class="px-6 py-4 text-sm text-muted">{% trans "No field: each entry counts as one session." %}</p></template>
+    </div>
+    <template x-if="newField">
+      <div class="space-y-3 border-t border-line px-6 py-4">
+        <div class="grid gap-2 sm:grid-cols-[1fr_11rem_7rem]">
+          <input class="input input-sm" x-model="newField.label" placeholder="{% trans 'Field name' %}">
+          <select class="select h-8 text-[13px]" x-model="newField.field_type"><option value="boolean">{% trans "Done / not done" %}</option><option value="integer">{% trans "Whole number" %}</option><option value="decimal">{% trans "Decimal number" %}</option><option value="duration">{% trans "Duration" %}</option><option value="time">{% trans "Time of day" %}</option><option value="text">{% trans "Text" %}</option><option value="select">{% trans "Choice list" %}</option></select>
+          <input class="input input-sm" x-model="newField.unit" placeholder="{% trans 'Unit' %}">
+        </div>
+        <input x-show="newField.field_type==='select'" class="input input-sm" x-model="newField.optionsText" placeholder="{% trans 'Options separated by commas' %}">
+        <p class="field-error" x-show="Object.keys(errors).length" x-text="Object.values(errors).join(' ')"></p>
+        <div class="flex justify-end gap-2"><button class="btn btn-secondary btn-sm" @click="newField=null">{% trans "Cancel" %}</button><button class="btn btn-primary btn-sm" @click="addField()">{% trans "Add" %}</button></div>
+      </div>
+    </template>
+  </section>
+
+  {# ---- Milestones #}
+  <section class="card">
+    <div class="card-pad border-b border-line"><h2 class="card-title">{% trans "Milestones" %}</h2><p class="card-subtitle">{% trans "Cumulative totals to celebrate along the way (e.g. 25h, 50h, 100h)." %}</p></div>
+    <ul class="divide-y divide-line">
+      {% for m in milestones %}
+      <li class="flex items-center gap-3 px-6 py-3 text-sm"><span class="text-faint">{% icon "flag" "icon-sm" %}</span><span class="flex-1">{{ m.title }}</span><span class="tabular text-muted">{{ m.target_value|floatformat:"-2" }}</span>
+        <button class="btn btn-ghost btn-icon btn-sm text-danger" @click="removeMilestone({{ m.pk }})" aria-label="{% trans 'Remove' %}">{% icon "x" "icon-sm" %}</button></li>
+      {% endfor %}
+    </ul>
+    <div class="flex flex-wrap gap-2 border-t border-line px-6 py-4">
+      <input class="input input-sm max-w-[14rem]" x-model="milestone.title" placeholder="{% trans 'Title' %}">
+      <input type="number" min="0.01" step="any" class="input input-sm w-28" x-model="milestone.target_value" placeholder="{% trans 'Total' %}">
+      <button class="btn btn-secondary btn-sm" @click="addMilestone()">{% icon "plus" "icon-xs" %} {% trans "Add" %}</button>
+    </div>
+  </section>
+
+  {# ---- Status #}
+  <section class="card">
+    <div class="card-pad border-b border-line"><h2 class="card-title">{% trans "Status" %}</h2><p class="card-subtitle">{% trans "A paused period is neither a success nor a failure. Archived challenges keep their full history." %}</p></div>
+    <div class="card-pad flex flex-wrap gap-2">
+      <template x-if="c.status !== 'active'"><button class="btn btn-secondary" @click="setStatus('active')">{% icon "play" "icon-sm" %} {% trans "Reactivate" %}</button></template>
+      <template x-if="c.status === 'active'"><button class="btn btn-secondary" @click="setStatus('paused')">{% icon "pause" "icon-sm" %} {% trans "Pause" %}</button></template>
+      <template x-if="c.status !== 'completed'"><button class="btn btn-secondary" @click="setStatus('completed')">{% icon "trophy" "icon-sm" %} {% trans "Mark as completed" %}</button></template>
+      <template x-if="c.status !== 'archived'"><button class="btn btn-secondary" @click="setStatus('archived')">{% icon "archive" "icon-sm" %} {% trans "Archive" %}</button></template>
+      <button class="btn btn-secondary" @click="duplicate()">{% icon "copy" "icon-sm" %} {% trans "Duplicate" %}</button>
+      <button class="btn btn-ghost ml-auto text-danger" @click="destroy()">{% icon "trash-2" "icon-sm" %} {% trans "Delete" %}</button>
+    </div>
+  </section>
+</div>
+{% endblock %}

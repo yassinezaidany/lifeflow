@@ -1,0 +1,116 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Today" %}{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-end justify-between gap-4">
+  <div>
+    <p class="text-sm font-medium text-brand">{{ day|date:"l" }}</p>
+    <h1 class="text-2xl font-semibold sm:text-[28px]">{{ day|date:"j F Y" }}</h1>
+  </div>
+  <div class="flex flex-wrap gap-2">
+    <button class="btn btn-secondary" @click="$dispatch('lf:note', {})">{% icon "sticky-note" "icon-sm" %} <span class="hidden sm:inline">{% trans "Note" %}</span></button>
+    <button class="btn btn-secondary" @click="$dispatch('lf:activity', {date: LF.cfg.today})">{% icon "calendar-plus" "icon-sm" %} <span class="hidden sm:inline">{% trans "Activity" %}</span></button>
+    <button class="btn btn-primary" @click="$dispatch('lf:entry', {})">{% icon "circle-check" "icon-sm" %} {% trans "Record progress" %}</button>
+  </div>
+</div>
+
+<div class="mt-5 grid grid-cols-4 gap-2 sm:gap-3">
+  <div class="card px-4 py-3"><div class="stat-label">{% trans "Planned" %}</div><div class="text-xl font-semibold tabular">{{ summary.planned }}</div></div>
+  <div class="card px-4 py-3"><div class="stat-label">{% trans "Done" %}</div><div class="text-xl font-semibold tabular text-success">{{ summary.completed|add:summary.partial }}</div></div>
+  <div class="card px-4 py-3"><div class="stat-label">{% trans "Left" %}</div><div class="text-xl font-semibold tabular">{{ summary.remaining }}</div></div>
+  <div class="card px-4 py-3"><div class="stat-label">{% trans "Missed" %}</div><div class="text-xl font-semibold tabular {% if summary.missed %}text-danger{% endif %}">{{ summary.missed }}</div></div>
+</div>
+
+<div class="mt-6 grid gap-6 lg:grid-cols-5">
+  <section class="lg:col-span-3">
+    <div class="mb-3 flex items-center justify-between">
+      <h2 class="text-base font-semibold">{% trans "Today's plan" %}</h2>
+      <a href="{% url 'planner:week' %}?view=day" class="text-sm font-medium text-brand hover:underline">{% trans "Timeline view" %}</a>
+    </div>
+    {% if rows %}
+    <ol class="card divide-y divide-line overflow-hidden">
+      {% for row in rows %}{% with a=row.activity %}
+      <li x-data="activityRow({{ row.data|json_attr }})" class="group flex items-center gap-3 px-4 py-3 tone-{{ a.effective_color }} {% if a == current %}bg-tone/5{% endif %}">
+        <div class="w-[4.5rem] shrink-0 text-xs tabular text-muted">
+          <div class="font-semibold text-ink">{{ a.start_time|utime:user }}</div>{{ a.end_time|utime:user }}
+        </div>
+        <span class="h-9 w-1 shrink-0 rounded-full bg-tone"></span>
+        <button type="button" class="min-w-0 flex-1 text-left" @click="edit()">
+          <div class="flex items-center gap-2">
+            <span class="truncate text-sm font-medium {% if a.is_done %}text-muted line-through{% endif %}">{{ a.title }}</span>
+            {% if a.recurring_rule_id %}<span class="text-faint" title="{% trans 'Recurring' %}">{% icon "repeat" "icon-xs" %}</span>{% endif %}
+            {% if a == current %}<span class="badge badge-tone">{% trans "Now" %}</span>{% endif %}
+          </div>
+          <div class="mt-0.5 flex flex-wrap items-center gap-x-3 text-xs text-muted">
+            <span>{{ a.duration_minutes|minutes }}</span>
+            {% if a.category %}<span>{{ a.category.name|trans_default }}</span>{% endif %}
+            {% if a.challenge %}<span class="inline-flex items-center gap-1">{% icon "target" "icon-xs" %}{{ a.challenge.name }}</span>{% endif %}
+          </div>
+        </button>
+        {% if a.status == "planned" or a.status == "in_progress" %}
+          {% if row.overdue %}<span class="badge badge-warning hidden sm:inline-flex">{% trans "To confirm" %}</span>{% endif %}
+          <button type="button" class="btn btn-secondary btn-icon btn-sm" @click="quick('missed')" data-tip="{% trans 'Missed' %}" aria-label="{% trans 'Mark as missed' %}">{% icon "x" "icon-sm" %}</button>
+          <button type="button" class="btn btn-primary btn-icon btn-sm" @click="quick('completed')" data-tip="{% trans 'Done' %}" aria-label="{% trans 'Mark as done' %}">{% icon "check" "icon-sm" %}</button>
+        {% else %}
+          {% status_badge a.status %}
+        {% endif %}
+      </li>
+      {% endwith %}{% endfor %}
+    </ol>
+    {% else %}
+    <div class="empty">
+      <div class="empty-icon">{% icon "calendar-days" "icon-lg" %}</div>
+      <h3 class="text-sm font-semibold">{% trans "Nothing planned for today" %}</h3>
+      <p class="mt-1 max-w-sm text-sm text-muted">{% trans "Add a few activities, or apply one of your day templates from the planner." %}</p>
+      <div class="mt-5 flex gap-2">
+        <button class="btn btn-primary" @click="$dispatch('lf:activity', {date: LF.cfg.today})">{% icon "plus" "icon-sm" %} {% trans "Add activity" %}</button>
+        <a href="{% url 'planner:week' %}?view=day" class="btn btn-secondary">{% icon "layout-template" "icon-sm" %} {% trans "Use a template" %}</a>
+      </div>
+    </div>
+    {% endif %}
+    <p class="mt-3 text-xs text-muted">{% icon "info" "icon-xs" %} {% trans "A planned activity never counts as done until you confirm it." %}</p>
+  </section>
+
+  <section class="space-y-4 lg:col-span-2">
+    <h2 class="text-base font-semibold">{% trans "Challenges today" %}</h2>
+    {% if not todo and not done and not rest %}
+      <div class="empty py-8">
+        <div class="empty-icon">{% icon "target" %}</div>
+        <p class="text-sm text-muted">{% trans "No challenge is scheduled today." %}</p>
+        <a href="{% url 'challenges:create' %}" class="btn btn-secondary btn-sm mt-4">{% trans "Create a challenge" %}</a>
+      </div>
+    {% endif %}
+    {% for card in todo %}{% with c=card.challenge p=card.progress %}
+    <div class="card flex items-center gap-3 p-4 tone-{{ c.color }}">
+      <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-tone/10 text-tone-strong">{% icon c.icon %}</span>
+      <div class="min-w-0 flex-1">
+        <a href="{% url 'challenges:detail' c.pk %}" class="block truncate text-sm font-semibold hover:underline">{{ c.name }}</a>
+        <div class="text-xs text-muted tabular">
+          {% if p.period == "daily" %}{{ p.today.display.actual }} / {{ p.today.display.target }} {{ p.unit }}
+          {% elif p.today.display.period_target %}{% trans "This period" %}: {{ p.today.display.period_actual }} / {{ p.today.display.period_target }} {{ p.unit }}
+          {% else %}{{ p.goal_description }}{% endif %}
+        </div>
+      </div>
+      <button class="btn btn-soft btn-sm" @click="$dispatch('lf:entry', {challenge_id: {{ c.pk }}})">{% icon "plus" "icon-xs" %} {% trans "Record" %}</button>
+    </div>
+    {% endwith %}{% endfor %}
+    {% if done %}
+    <div class="section-title pt-2">{% trans "Done" %}</div>
+    {% for card in done %}{% with c=card.challenge p=card.progress %}
+    <div class="card flex items-center gap-3 p-4 tone-{{ c.color }}">
+      <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-success">{% icon "check" %}</span>
+      <div class="min-w-0 flex-1"><a href="{% url 'challenges:detail' c.pk %}" class="block truncate text-sm font-semibold">{{ c.name }}</a>
+        <div class="text-xs text-muted">{% if p.current_streak %}{% icon "flame" "icon-xs" %} {{ p|streak_label }}{% else %}{% trans "Completed" %}{% endif %}</div></div>
+      <button class="btn btn-ghost btn-sm" @click="$dispatch('lf:entry', {challenge_id: {{ c.pk }}})">{% icon "plus" "icon-xs" %}</button>
+    </div>
+    {% endwith %}{% endfor %}
+    {% endif %}
+    {% if rest %}
+    <div class="section-title pt-2">{% trans "Rest day" %}</div>
+    {% for card in rest %}
+    <div class="flex items-center gap-3 rounded-xl border border-dashed border-line px-4 py-3 text-sm text-muted">{% icon "coffee" "icon-sm" %} {{ card.challenge.name }}</div>
+    {% endfor %}
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

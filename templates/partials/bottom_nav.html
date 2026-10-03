@@ -1,0 +1,15 @@
+{% load i18n ui %}
+<nav class="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-surface/95 backdrop-blur-md safe-bottom lg:hidden" aria-label="{% trans 'Mobile navigation' %}">
+  <div class="mx-auto grid h-16 max-w-md grid-cols-5 items-center px-2">
+    <a href="{% url 'dashboard:home' %}" class="flex flex-col items-center gap-0.5 text-[11px] font-medium {% if request.resolver_match.url_name == 'home' %}text-brand{% else %}text-muted{% endif %}">{% icon "layout-dashboard" "icon-lg" %}{% trans "Home" %}</a>
+    <a href="{% url 'dashboard:today' %}" class="flex flex-col items-center gap-0.5 text-[11px] font-medium {% if request.resolver_match.url_name == 'today' %}text-brand{% else %}text-muted{% endif %}">{% icon "sun" "icon-lg" %}{% trans "Today" %}</a>
+    <div x-data="quickAdd" class="relative flex justify-center">
+      <button type="button" @click="open=!open" class="-mt-6 flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-pop ring-4 ring-canvas dark:text-zinc-950" aria-label="{% trans 'Quick add' %}" :aria-expanded="open">
+        <span class="transition-transform" :class="open && 'rotate-45'">{% icon "plus" "icon-xl" %}</span>
+      </button>
+      {% include "partials/quick_add_menu.html" with position="bottom-full mb-3 left-1/2 -translate-x-1/2" %}
+    </div>
+    <a href="{% url 'planner:week' %}" class="flex flex-col items-center gap-0.5 text-[11px] font-medium {% if request.resolver_match.namespace == 'planner' %}text-brand{% else %}text-muted{% endif %}">{% icon "calendar-days" "icon-lg" %}{% trans "Planner" %}</a>
+    <a href="{% url 'challenges:list' %}" class="flex flex-col items-center gap-0.5 text-[11px] font-medium {% if request.resolver_match.namespace == 'challenges' %}text-brand{% else %}text-muted{% endif %}">{% icon "target" "icon-lg" %}{% trans "Challenges" %}</a>
+  </div>
+</nav>

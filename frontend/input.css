@@ -1,0 +1,229 @@
+/* LifeFlow design system — compiled to static/css/app.css by Tailwind. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../fonts/inter-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../fonts/inter-latin-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@layer base {
+  :root {
+    --c-canvas: 247 247 248;
+    --c-surface: 255 255 255;
+    --c-subtle: 243 244 246;
+    --c-line: 228 228 231;
+    --c-ink: 24 24 27;
+    --c-muted: 113 113 122;
+    --c-faint: 161 161 170;
+    --c-brand: 79 70 229;
+    --c-brand-strong: 67 56 202;
+    --c-brand-soft: 238 242 255;
+    --c-success: 5 150 105;
+    --c-warning: 217 119 6;
+    --c-danger: 220 38 38;
+    --tone: 99 102 241;
+    --tone-strong: 79 70 229;
+    color-scheme: light;
+  }
+  .dark {
+    --c-canvas: 11 11 13;
+    --c-surface: 22 22 26;
+    --c-subtle: 31 31 36;
+    --c-line: 44 44 50;
+    --c-ink: 244 244 245;
+    --c-muted: 161 161 170;
+    --c-faint: 113 113 122;
+    --c-brand: 129 140 248;
+    --c-brand-strong: 165 180 252;
+    --c-brand-soft: 30 27 75;
+    --c-success: 52 211 153;
+    --c-warning: 251 191 36;
+    --c-danger: 248 113 113;
+    color-scheme: dark;
+  }
+
+  html { -webkit-text-size-adjust: 100%; }
+  body { @apply bg-canvas text-ink antialiased; font-feature-settings: "cv11", "ss01"; }
+  h1, h2, h3, h4 { @apply tracking-tight; }
+  ::selection { @apply bg-brand/20; }
+  :focus-visible { @apply outline-none ring-2 ring-brand/60 ring-offset-2 ring-offset-canvas; }
+  [x-cloak] { display: none !important; }
+  /* Grid children must be allowed to shrink (charts, long text) — prevents horizontal overflow on mobile. */
+  .grid > * { min-width: 0; }
+  input[type="number"]::-webkit-inner-spin-button { opacity: .4; }
+}
+
+@layer utilities {
+  .scrollbar-thin { scrollbar-width: thin; scrollbar-color: rgb(var(--c-line)) transparent; }
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .tabular { font-variant-numeric: tabular-nums; }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+}
+
+@layer components {
+  /* Icons */
+  .icon { @apply inline-block h-[1.125rem] w-[1.125rem] shrink-0; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .icon-sm { @apply h-4 w-4; }
+  .icon-xs { @apply h-3.5 w-3.5; }
+  .icon-lg { @apply h-5 w-5; }
+  .icon-xl { @apply h-6 w-6; }
+
+  /* Buttons */
+  .btn { @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg px-3.5 h-9 text-sm font-medium transition-colors duration-150 select-none disabled:pointer-events-none disabled:opacity-50; }
+  .btn-sm { @apply h-8 px-2.5 text-[13px] gap-1.5; }
+  .btn-lg { @apply h-11 px-5 text-[15px]; }
+  .btn-primary { @apply bg-brand text-white hover:bg-brand-strong dark:text-zinc-950 shadow-sm; }
+  .btn-secondary { @apply bg-surface text-ink border border-line hover:bg-subtle shadow-sm; }
+  .btn-ghost { @apply text-muted hover:text-ink hover:bg-subtle; }
+  .btn-danger { @apply bg-danger text-white hover:opacity-90 dark:text-zinc-950; }
+  .btn-soft { @apply bg-brand-soft text-brand-strong hover:bg-brand/15; }
+  .btn-icon { @apply h-9 w-9 px-0; }
+  .btn-icon.btn-sm { @apply h-8 w-8; }
+
+  /* Surfaces */
+  .card { @apply rounded-2xl border border-line bg-surface shadow-card; }
+  .card-pad { @apply p-5 sm:p-6; }
+  .card-title { @apply text-[15px] font-semibold text-ink; }
+  .card-subtitle { @apply text-[13px] text-muted; }
+  .divider { @apply border-t border-line; }
+  .section-title { @apply text-xs font-semibold uppercase tracking-wider text-faint; }
+
+  /* Forms */
+  .label { @apply mb-1.5 block text-[13px] font-medium text-ink; }
+  .hint { @apply mt-1.5 text-xs text-muted; }
+  .field-error { @apply mt-1.5 text-xs font-medium text-danger; }
+  .input { @apply form-input block w-full rounded-lg border-line bg-surface px-3 h-10 text-sm text-ink placeholder:text-faint shadow-sm transition focus:border-brand focus:ring-2 focus:ring-brand/20; }
+  .input-sm { @apply h-8 text-[13px] px-2.5; }
+  .select { @apply form-select block w-full rounded-lg border-line bg-surface pl-3 pr-9 h-10 text-sm text-ink shadow-sm focus:border-brand focus:ring-2 focus:ring-brand/20; }
+  .textarea { @apply form-textarea block w-full rounded-lg border-line bg-surface px-3 py-2.5 text-sm text-ink placeholder:text-faint shadow-sm focus:border-brand focus:ring-2 focus:ring-brand/20; }
+  .checkbox { @apply form-checkbox h-4 w-4 rounded border-line bg-surface text-brand focus:ring-brand/30; }
+  .radio { @apply form-radio h-4 w-4 border-line bg-surface text-brand focus:ring-brand/30; }
+  .input.is-invalid, .select.is-invalid, .textarea.is-invalid { @apply border-danger focus:ring-danger/20; }
+
+  /* Segmented control */
+  .seg { @apply inline-flex rounded-lg bg-subtle p-0.5; }
+  .seg-item { @apply rounded-md px-3 h-8 inline-flex items-center gap-1.5 text-[13px] font-medium text-muted transition hover:text-ink; }
+  .seg-item.is-active, .seg-item[aria-pressed="true"], .seg-item[aria-selected="true"] { @apply bg-surface text-ink shadow-sm; }
+
+  /* Choice tiles (wizard) */
+  .tile { @apply relative flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-surface p-4 text-left transition hover:border-brand/50 hover:bg-subtle/50; }
+  .tile.is-active { @apply border-brand ring-2 ring-brand/20 bg-brand-soft/40; }
+
+  /* Badges */
+  .badge { @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold leading-4 whitespace-nowrap; }
+  .badge-neutral { @apply bg-subtle text-muted; }
+  .badge-brand { @apply bg-brand-soft text-brand-strong; }
+  .badge-success { @apply bg-emerald-500/10 text-emerald-700 dark:text-emerald-300; }
+  .badge-warning { @apply bg-amber-500/10 text-amber-700 dark:text-amber-300; }
+  .badge-danger { @apply bg-red-500/10 text-red-700 dark:text-red-300; }
+  .badge-info { @apply bg-sky-500/10 text-sky-700 dark:text-sky-300; }
+  .badge-tone { @apply bg-tone/10 text-tone-strong; }
+
+  /* Status dots */
+  .dot { @apply inline-block h-2 w-2 rounded-full; }
+
+  /* Progress bar */
+  .bar { @apply h-1.5 w-full overflow-hidden rounded-full bg-subtle; }
+  .bar > span { @apply block h-full rounded-full bg-tone transition-[width] duration-500; }
+
+  /* Navigation */
+  .nav-link { @apply flex items-center gap-3 rounded-lg px-3 h-9 text-sm font-medium text-muted transition-colors hover:bg-subtle hover:text-ink; }
+  .nav-link.is-active { @apply bg-subtle text-ink; }
+  .nav-link.is-active .icon { @apply text-brand; }
+
+  /* Menus / popovers */
+  .menu { @apply absolute z-40 mt-1 min-w-[12rem] rounded-xl border border-line bg-surface p-1 shadow-pop animate-fade-in; }
+  .menu-item { @apply flex w-full items-center gap-2.5 rounded-lg px-2.5 h-9 text-sm text-ink hover:bg-subtle text-left; }
+  .menu-item.is-danger { @apply text-danger; }
+
+  /* Modal */
+  .modal-backdrop { @apply fixed inset-0 z-50 bg-zinc-950/40 backdrop-blur-[2px]; }
+  .modal-panel { @apply fixed z-50 inset-x-0 bottom-0 max-h-[92vh] overflow-y-auto rounded-t-2xl border border-line bg-surface shadow-pop sm:inset-auto sm:left-1/2 sm:top-[8vh] sm:-translate-x-1/2 sm:w-full sm:rounded-2xl; }
+
+  /* Tables */
+  .table { @apply w-full text-sm; }
+  .table th { @apply px-4 py-2.5 text-left text-xs font-medium uppercase tracking-wide text-faint border-b border-line; }
+  .table td { @apply px-4 py-3 border-b border-line; }
+  .table tr:last-child td { @apply border-b-0; }
+
+  /* Alerts */
+  .alert { @apply flex items-start gap-3 rounded-xl border px-4 py-3 text-sm; }
+  .alert-success { @apply border-emerald-500/20 bg-emerald-500/5 text-emerald-800 dark:text-emerald-200; }
+  .alert-error { @apply border-red-500/20 bg-red-500/5 text-red-800 dark:text-red-200; }
+  .alert-warning { @apply border-amber-500/20 bg-amber-500/5 text-amber-800 dark:text-amber-200; }
+  .alert-info { @apply border-sky-500/20 bg-sky-500/5 text-sky-800 dark:text-sky-200; }
+
+  /* Skeleton */
+  .skeleton { @apply relative overflow-hidden rounded-md bg-subtle; }
+  .skeleton::after { content: ""; @apply absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent dark:via-white/5; animation: shimmer 1.4s infinite; }
+
+  /* Empty states */
+  .empty { @apply flex flex-col items-center justify-center rounded-2xl border border-dashed border-line px-6 py-12 text-center; }
+  .empty-icon { @apply mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-subtle text-muted; }
+
+  /* Stat */
+  .stat-label { @apply text-xs font-medium text-muted; }
+  .stat-value { @apply mt-1 text-2xl font-semibold tracking-tight text-ink tabular; }
+
+  /* Tooltip (pure CSS) */
+  [data-tip] { position: relative; }
+  [data-tip]:hover::after, [data-tip]:focus-visible::after {
+    content: attr(data-tip);
+    @apply pointer-events-none absolute bottom-full left-1/2 z-50 mb-1.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-zinc-900 px-2 py-1 text-[11px] font-medium text-white shadow-pop dark:bg-zinc-100 dark:text-zinc-900;
+  }
+
+  /* Toasts */
+  .toast { @apply pointer-events-auto flex items-center gap-3 rounded-xl border border-line bg-surface px-4 py-3 text-sm shadow-pop animate-fade-in; }
+
+  /* Planner */
+  .tl-block { @apply absolute overflow-hidden rounded-lg border-l-[3px] border-tone bg-tone/10 px-2 py-1 text-left text-tone-strong transition-shadow hover:shadow-pop hover:z-20 cursor-pointer select-none; }
+  .tl-block.is-done { @apply opacity-60; }
+  .tl-block.is-done .tl-title { @apply line-through; }
+  .tl-block.is-cancelled { @apply opacity-40 border-dashed; }
+  .tl-block.is-dragging { @apply shadow-pop ring-2 ring-tone/40 z-30 opacity-90; }
+
+  /* Heatmap */
+  .hm-cell { @apply h-3 w-3 rounded-[3px] bg-subtle; }
+}
+
+/* Category / challenge tones: class names are built dynamically (tone-<color>),
+   so they live outside @layer to be emitted unconditionally (never purged). */
+.tone-slate   { --tone: 100 116 139; --tone-strong: 71 85 105; }
+.tone-indigo  { --tone: 99 102 241;  --tone-strong: 79 70 229; }
+.tone-blue    { --tone: 59 130 246;  --tone-strong: 37 99 235; }
+.tone-sky     { --tone: 14 165 233;  --tone-strong: 2 132 199; }
+.tone-teal    { --tone: 20 184 166;  --tone-strong: 13 148 136; }
+.tone-emerald { --tone: 16 185 129;  --tone-strong: 5 150 105; }
+.tone-lime    { --tone: 132 204 22;  --tone-strong: 77 124 15; }
+.tone-amber   { --tone: 245 158 11;  --tone-strong: 180 83 9; }
+.tone-orange  { --tone: 249 115 22;  --tone-strong: 194 65 12; }
+.tone-rose    { --tone: 244 63 94;   --tone-strong: 225 29 72; }
+.tone-pink    { --tone: 236 72 153;  --tone-strong: 190 24 93; }
+.tone-violet  { --tone: 139 92 246;  --tone-strong: 109 40 217; }
+.dark .tone-slate   { --tone-strong: 148 163 184; }
+.dark .tone-indigo  { --tone-strong: 165 180 252; }
+.dark .tone-blue    { --tone-strong: 147 197 253; }
+.dark .tone-sky     { --tone-strong: 125 211 252; }
+.dark .tone-teal    { --tone-strong: 94 234 212; }
+.dark .tone-emerald { --tone-strong: 110 231 183; }
+.dark .tone-lime    { --tone-strong: 190 242 100; }
+.dark .tone-amber   { --tone-strong: 252 211 77; }
+.dark .tone-orange  { --tone-strong: 253 186 116; }
+.dark .tone-rose    { --tone-strong: 253 164 175; }
+.dark .tone-pink    { --tone-strong: 249 168 212; }
+.dark .tone-violet  { --tone-strong: 196 181 253; }

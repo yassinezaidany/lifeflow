@@ -1,0 +1,47 @@
+{% load i18n ui %}
+<section class="card" x-data="{
+  items: [], loading: true, draft: {name: '', color: 'indigo', icon: 'tag'}, editing: null,
+  colors: ['slate','indigo','blue','sky','teal','emerald','lime','amber','orange','rose','pink','violet'],
+  async load() { this.items = await LF.api('{{ endpoint }}'); this.loading = false; },
+  async add() {
+    if (!this.draft.name.trim()) return;
+    try { await LF.api('{{ endpoint }}', {method: 'POST', body: this.draft}); this.draft = {name: '', color: 'indigo', icon: 'tag'}; await this.load(); LF.toast('{% trans "Category added" as m %}{{ m|escapejs }}'); }
+    catch (e) { LF.toast(e.message + ' ' + Object.values(LF.fieldErrors(e)).join(' '), 'error'); }
+  },
+  async save(item) {
+    try { await LF.api('{{ endpoint }}' + item.id + '/', {method: 'PATCH', body: {name: item.name, color: item.color}}); this.editing = null; LF.toast('{% trans "Saved" as m %}{{ m|escapejs }}'); }
+    catch (e) { LF.toast(e.message + ' ' + Object.values(LF.fieldErrors(e)).join(' '), 'error'); this.load(); }
+  },
+  async remove(item) {
+    if (!(await LF.confirm('{% trans "Delete this category? Items using it will simply have no category." as m %}{{ m|escapejs }}', {danger: true, confirm: '{% trans "Delete" as m %}{{ m|escapejs }}'}))) return;
+    await LF.api('{{ endpoint }}' + item.id + '/', {method: 'DELETE'}); this.load();
+  }
+}" x-init="load()">
+  <div class="card-pad border-b border-line">
+    <h2 class="card-title">{{ title }}</h2>
+    <p class="card-subtitle">{{ subtitle }}</p>
+  </div>
+  <div class="divide-y divide-line">
+    <template x-if="loading"><div class="space-y-2 p-6"><div class="skeleton h-8"></div><div class="skeleton h-8"></div></div></template>
+    <template x-for="item in items" :key="item.id">
+      <div class="flex items-center gap-3 px-6 py-3" :class="'tone-' + item.color">
+        <span class="h-3 w-3 shrink-0 rounded-full bg-tone"></span>
+        <template x-if="editing !== item.id"><span class="flex-1 text-sm" x-text="item.name"></span></template>
+        <template x-if="editing === item.id">
+          <div class="flex flex-1 flex-wrap items-center gap-2">
+            <input class="input input-sm max-w-[14rem]" x-model="item.name" @keydown.enter.prevent="save(item)">
+            <div class="flex gap-1"><template x-for="c in colors" :key="c"><button type="button" class="h-5 w-5 rounded-full bg-tone" :class="['tone-'+c, item.color===c && 'ring-2 ring-offset-1 ring-tone ring-offset-surface']" @click="item.color=c" :aria-label="c"></button></template></div>
+            <button class="btn btn-primary btn-sm" @click="save(item)">{% trans "Save" %}</button>
+          </div>
+        </template>
+        <button class="btn btn-ghost btn-icon btn-sm" @click="editing = editing === item.id ? null : item.id" aria-label="{% trans 'Edit' %}">{% icon "pencil" "icon-sm" %}</button>
+        <button class="btn btn-ghost btn-icon btn-sm text-danger" @click="remove(item)" aria-label="{% trans 'Delete' %}">{% icon "trash-2" "icon-sm" %}</button>
+      </div>
+    </template>
+  </div>
+  <form class="flex flex-wrap items-center gap-2 border-t border-line px-6 py-4" @submit.prevent="add()">
+    <input class="input input-sm max-w-xs flex-1" x-model="draft.name" placeholder="{% trans 'New category name' %}" maxlength="60">
+    <div class="flex gap-1"><template x-for="c in colors" :key="c"><button type="button" class="h-5 w-5 rounded-full bg-tone" :class="['tone-'+c, draft.color===c && 'ring-2 ring-offset-1 ring-tone ring-offset-surface']" @click="draft.color=c" :aria-label="c"></button></template></div>
+    <button class="btn btn-secondary btn-sm">{% icon "plus" "icon-xs" %} {% trans "Add" %}</button>
+  </form>
+</section>

@@ -1,0 +1,29 @@
+# Local development database for LifeFlow.
+# Django runs natively (python manage.py runserver); only MySQL is containerised.
+# Port 3307 on the host avoids clashing with a local XAMPP/WAMP MySQL on 3306.
+services:
+  db:
+    image: mysql:8.4
+    container_name: lifeflow-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-lifeflow}
+      MYSQL_USER: ${DB_USER:-lifeflow}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-lifeflow}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "${DB_PORT:-3307}:3306"
+    volumes:
+      - lifeflow_mysql:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_ROOT_PASSWORD:-root}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  lifeflow_mysql:

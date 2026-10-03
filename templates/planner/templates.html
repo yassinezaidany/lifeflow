@@ -1,0 +1,99 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Day templates" %}{% endblock %}
+{% block main_attrs %}data-no-refresh{% endblock %}
+{% block content %}
+<div x-data="{
+  list: [], cats: [], loading: true, editing: null, errors: {},
+  colors: ['slate','indigo','blue','sky','teal','emerald','lime','amber','orange','rose','pink','violet'],
+  async load() { const [l, c] = await Promise.all([LF.api('/api/planner/templates/'), LF.api('/api/planner/categories/')]); this.list = l; this.cats = c; this.loading = false; },
+  edit(t) {
+    this.errors = {};
+    this.editing = t ? JSON.parse(JSON.stringify(t)) : {id: null, name: '', description: '', icon: 'layout-template', color: 'indigo', items: [{title: '', start_time: '08:00', end_time: '09:00', category_id: null}]};
+  },
+  addItem() { const last = this.editing.items[this.editing.items.length - 1]; const s = last ? last.end_time : '08:00'; this.editing.items.push({title: '', start_time: s, end_time: LF.fromMin(Math.min(LF.endMin(s) + 60, 1440)), category_id: null}); },
+  sortItems() { this.editing.items.sort((a, b) => a.start_time.localeCompare(b.start_time)); },
+  async save() {
+    const e = this.editing; this.errors = {}; this.sortItems();
+    const body = {name: e.name, description: e.description, icon: e.icon, color: e.color, items: e.items.filter(i => i.title.trim()).map(i => ({title: i.title, start_time: i.start_time, end_time: i.end_time, category_id: i.category_id || null, priority: 'medium', color: '', notes: ''}))};
+    try {
+      if (e.id) await LF.api('/api/planner/templates/' + e.id + '/', {method: 'PUT', body}); else await LF.api('/api/planner/templates/', {method: 'POST', body});
+      this.editing = null; LF.toast('{% trans "Template saved" as s %}{{ s|escapejs }}'); this.load();
+    } catch (err) { this.errors = LF.fieldErrors(err); LF.toast(err.message + ' ' + Object.values(this.errors).join(' '), 'error'); }
+  },
+  async remove(t) {
+    if (!(await LF.confirm('{% trans "Delete this template?" as s %}{{ s|escapejs }}', {danger: true, confirm: '{% trans "Delete" as s %}{{ s|escapejs }}'}))) return;
+    await LF.api('/api/planner/templates/' + t.id + '/', {method: 'DELETE'}); this.load();
+  },
+  totalMinutes(t) { return t.items.reduce((s, i) => s + (LF.endMin(i.end_time) - LF.toMin(i.start_time)), 0); }
+}" x-init="load()">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h1 class="text-2xl font-semibold">{% trans "Day templates" %}</h1>
+      <p class="mt-1 text-sm text-muted">{% trans "Reusable day layouts — University day, Weekend, Ramadan day… Apply them from the planner." %}</p>
+    </div>
+    <button class="btn btn-primary" @click="edit(null)">{% icon "plus" "icon-sm" %} {% trans "New template" %}</button>
+  </div>
+  <div class="mt-4">{% include "planner/_tabs.html" %}</div>
+
+  <div class="mt-6">
+    <template x-if="loading"><div class="grid gap-4 sm:grid-cols-2"><div class="skeleton h-40"></div><div class="skeleton h-40"></div></div></template>
+    <template x-if="!loading && !list.length">
+      <div class="empty">
+        <div class="empty-icon">{% icon "layout-template" "icon-lg" %}</div>
+        <h3 class="text-sm font-semibold">{% trans "No day template yet" %}</h3>
+        <p class="mt-1 max-w-sm text-sm text-muted">{% trans "Create one here, or save any day of your planner as a template." %}</p>
+        <button class="btn btn-primary mt-5" @click="edit(null)">{% trans "Create a template" %}</button>
+      </div>
+    </template>
+    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <template x-for="t in list" :key="t.id">
+        <article class="card flex flex-col p-5" :class="'tone-' + t.color">
+          <div class="flex items-start gap-3">
+            <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-tone/10 text-tone-strong"><svg class="icon"><use :href="LF.cfg.sprite + '#i-' + t.icon"></use></svg></span>
+            <div class="min-w-0 flex-1"><h3 class="truncate font-semibold" x-text="t.name"></h3><p class="truncate text-xs text-muted" x-text="t.description || (t.items.length + ' {% trans "activities" as s %}{{ s|escapejs }} · ' + LF.fmtMinutes(totalMinutes(t)))"></p></div>
+          </div>
+          <ol class="mt-4 flex-1 space-y-1.5">
+            <template x-for="i in t.items.slice(0, 6)" :key="i.id">
+              <li class="flex items-center gap-2 text-xs" :class="'tone-' + i.effective_color"><span class="w-10 shrink-0 text-muted tabular" x-text="LF.fmtTime(i.start_time)"></span><span class="h-3 w-1 rounded-full bg-tone"></span><span class="truncate" x-text="i.title"></span></li>
+            </template>
+            <li x-show="t.items.length > 6" class="text-xs text-faint" x-text="'+' + (t.items.length - 6)"></li>
+          </ol>
+          <div class="mt-4 flex justify-end gap-1 border-t border-line pt-3">
+            <button class="btn btn-ghost btn-sm" @click="edit(t)">{% icon "pencil" "icon-xs" %} {% trans "Edit" %}</button>
+            <button class="btn btn-ghost btn-icon btn-sm text-danger" @click="remove(t)" aria-label="{% trans 'Delete' %}">{% icon "trash-2" "icon-sm" %}</button>
+          </div>
+        </article>
+      </template>
+    </div>
+  </div>
+
+  <div x-show="editing" x-cloak @keydown.escape.window="editing=null">
+    <div class="modal-backdrop" @click="editing=null"></div>
+    <div class="modal-panel sm:max-w-2xl" role="dialog" aria-modal="true">
+      <template x-if="editing">
+        <form class="p-5" @submit.prevent="save()">
+          <h2 class="mb-4 text-base font-semibold">{% trans "Day template" %}</h2>
+          <div class="grid gap-3 sm:grid-cols-2">
+            <div><label class="label">{% trans "Name" %}</label><input class="input" x-model="editing.name" maxlength="80" required placeholder="{% trans 'University day' %}"><p class="field-error" x-show="errors.name" x-text="errors.name"></p></div>
+            <div><label class="label">{% trans "Description" %}</label><input class="input" x-model="editing.description" maxlength="255"></div>
+          </div>
+          <div class="mt-3 flex flex-wrap gap-1.5"><template x-for="c in colors" :key="c"><button type="button" class="h-6 w-6 rounded-full bg-tone" :class="['tone-'+c, editing.color===c && 'ring-2 ring-offset-2 ring-tone ring-offset-surface']" @click="editing.color=c" :aria-label="c"></button></template></div>
+          <div class="mt-5 space-y-2">
+            <template x-for="(i, idx) in editing.items" :key="idx">
+              <div class="flex flex-wrap items-center gap-2 sm:flex-nowrap">
+                <input type="time" class="input input-sm w-28" x-model="i.start_time"><span class="text-faint">→</span><input type="time" class="input input-sm w-28" x-model="i.end_time">
+                <input class="input input-sm flex-1" x-model="i.title" placeholder="{% trans 'Activity' %}" maxlength="120">
+                <select class="select h-8 w-36 text-[13px]" x-model="i.category_id"><option value="">—</option><template x-for="c in cats" :key="c.id"><option :value="c.id" x-text="c.name" :selected="String(c.id)===String(i.category_id)"></option></template></select>
+                <button type="button" class="btn btn-ghost btn-icon btn-sm" @click="editing.items.splice(idx, 1)" aria-label="{% trans 'Remove' %}">{% icon "x" "icon-sm" %}</button>
+              </div>
+            </template>
+            <button type="button" class="btn btn-ghost btn-sm" @click="addItem()">{% icon "plus" "icon-xs" %} {% trans "Add activity" %}</button>
+          </div>
+          <div class="mt-6 flex justify-end gap-2"><button type="button" class="btn btn-secondary" @click="editing=null">{% trans "Cancel" %}</button><button class="btn btn-primary">{% trans "Save" %}</button></div>
+        </form>
+      </template>
+    </div>
+  </div>
+</div>
+{% endblock %}

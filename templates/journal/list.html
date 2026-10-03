@@ -1,0 +1,51 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Journal" %}{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-end justify-between gap-4">
+  <div>
+    <h1 class="text-2xl font-semibold">{% trans "Journal" %}</h1>
+    <p class="mt-1 text-sm text-muted">{% trans "Your private notes and reflections." %}</p>
+  </div>
+  <div class="flex gap-2">
+    <a href="{% url 'journal:review' %}" class="btn btn-secondary">{% icon "list-checks" "icon-sm" %} {% trans "Weekly review" %}</a>
+    <a href="{% url 'journal:new' %}" class="btn btn-primary">{% icon "plus" "icon-sm" %} {% trans "New entry" %}</a>
+  </div>
+</div>
+<form method="get" class="mt-6 flex flex-wrap gap-2">
+  <div class="relative"><span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-faint">{% icon "search" "icon-sm" %}</span><input type="search" name="q" value="{{ q }}" class="input h-9 w-56 pl-9" placeholder="{% trans 'Search your notes' %}"></div>
+  <input type="date" name="date" value="{{ day|date:'Y-m-d' }}" class="input h-9 w-auto" onchange="this.form.submit()" aria-label="{% trans 'Date' %}">
+  {% if challenges %}<select name="challenge" class="select h-9 w-48" onchange="this.form.submit()"><option value="">{% trans "All challenges" %}</option>{% for c in challenges %}<option value="{{ c.pk }}" {% if challenge == c.pk|stringformat:'s' %}selected{% endif %}>{{ c.name }}</option>{% endfor %}</select>{% endif %}
+  {% if q or day or challenge %}<a href="{% url 'journal:list' %}" class="btn btn-ghost btn-sm h-9">{% trans "Clear" %}</a>{% endif %}
+</form>
+<div class="mt-5">
+  {% if page.object_list %}
+  <div class="grid gap-4 md:grid-cols-2">
+    {% for j in page %}
+    <a href="{% url 'journal:detail' j.pk %}" class="card block p-5 transition hover:shadow-pop">
+      <div class="flex items-center justify-between gap-2 text-xs text-muted">
+        <span class="font-medium">{{ j.date|date:"l j F Y" }}</span>
+        <span class="text-base">{% if j.mood %}{{ j.get_mood_display }}{% endif %}</span>
+      </div>
+      <h3 class="mt-2 font-semibold">{{ j.title|default:_("Untitled note") }}</h3>
+      <p class="mt-1 line-clamp-3 text-sm text-muted">{{ j.content|truncatechars:240 }}</p>
+      {% if j.challenge %}<span class="badge badge-tone mt-3 tone-{{ j.challenge.color }}">{% icon "target" "icon-xs" %} {{ j.challenge.name }}</span>{% endif %}
+    </a>
+    {% endfor %}
+  </div>
+  {% if page.has_other_pages %}
+  <div class="mt-6 flex justify-center gap-2">
+    {% if page.has_previous %}<a href="?page={{ page.previous_page_number }}&q={{ q|urlencode }}" class="btn btn-secondary btn-sm">{% trans "Previous" %}</a>{% endif %}
+    {% if page.has_next %}<a href="?page={{ page.next_page_number }}&q={{ q|urlencode }}" class="btn btn-secondary btn-sm">{% trans "Next" %}</a>{% endif %}
+  </div>
+  {% endif %}
+  {% else %}
+  <div class="empty">
+    <div class="empty-icon">{% icon "notebook-pen" "icon-lg" %}</div>
+    <h3 class="text-sm font-semibold">{% trans "Your journal is empty" %}</h3>
+    <p class="mt-1 max-w-sm text-sm text-muted">{% trans "Write about your day, a challenge, or what you learned this week." %}</p>
+    <a href="{% url 'journal:new' %}" class="btn btn-primary mt-5">{% trans "Write your first entry" %}</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

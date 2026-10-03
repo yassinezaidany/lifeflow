@@ -1,0 +1,73 @@
+{% load i18n ui %}
+<div class="flex items-start justify-between gap-3">
+  <div>
+    <div class="text-xs font-medium uppercase tracking-wide text-faint">{{ detail.date|date:"l" }}</div>
+    <h2 class="text-lg font-semibold">{{ detail.date|date:"j F Y" }}</h2>
+  </div>
+  {% if detail.rest %}<span class="badge badge-info">{% icon "coffee" "icon-xs" %} {% trans "Rest day" %}</span>{% endif %}
+</div>
+<div class="mt-3 flex flex-wrap gap-2">
+  <button class="btn btn-secondary btn-sm" @click="$dispatch('lf:activity', {date: '{{ detail.date|date:"Y-m-d" }}'})">{% icon "calendar-plus" "icon-xs" %} {% trans "Activity" %}</button>
+  {% if detail.date <= today %}<button class="btn btn-secondary btn-sm" @click="$dispatch('lf:entry', {date: '{{ detail.date|date:"Y-m-d" }}'})">{% icon "circle-check" "icon-xs" %} {% trans "Progress" %}</button>{% endif %}
+  <button class="btn btn-secondary btn-sm" @click="$dispatch('lf:note', {date: '{{ detail.date|date:"Y-m-d" }}'})">{% icon "sticky-note" "icon-xs" %} {% trans "Note" %}</button>
+  <button class="btn btn-ghost btn-sm" x-data @click="LF.api('/api/rest-days/', {method: 'POST', body: {date: '{{ detail.date|date:"Y-m-d" }}'}}).then(() => window.dispatchEvent(new CustomEvent('lf:changed')))">{% icon "coffee" "icon-xs" %} {% if detail.rest %}{% trans "Remove rest day" %}{% else %}{% trans "Mark as rest day" %}{% endif %}</button>
+</div>
+
+<div class="mt-6">
+  <div class="section-title mb-2">{% trans "Challenges" %}</div>
+  {% if detail.challenges %}
+  <ul class="space-y-1.5">
+    {% for r in detail.challenges %}
+    <li class="flex items-center gap-2.5 text-sm tone-{{ r.challenge.color }}">
+      <span class="h-2 w-2 shrink-0 rounded-full bg-tone"></span>
+      <a href="{% url 'challenges:detail' r.challenge.pk %}" class="min-w-0 flex-1 truncate hover:underline">{{ r.challenge.name }}</a>
+      {% if r.point.actual and r.display %}<span class="text-xs text-muted tabular">{{ r.display }}</span>{% endif %}
+      {% status_badge r.point.status %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}<p class="text-sm text-muted">{% trans "No challenge on this day." %}</p>{% endif %}
+</div>
+
+<div class="mt-6">
+  <div class="section-title mb-2">{% trans "Planner" %} {% if detail.summary.planned %}<span class="normal-case tracking-normal">· {{ detail.summary.completed }}/{{ detail.summary.planned }} {% trans "done" %}</span>{% endif %}</div>
+  {% if detail.activities %}
+  <ul class="space-y-1.5">
+    {% for a in detail.activities %}{% if a.status != "rescheduled" %}
+    <li class="flex items-center gap-2.5 text-sm tone-{{ a.effective_color }}">
+      <span class="w-11 shrink-0 text-xs text-muted tabular">{{ a.start_time|utime:user }}</span>
+      <span class="h-4 w-1 rounded-full bg-tone"></span>
+      <span class="min-w-0 flex-1 truncate {% if a.status == 'cancelled' %}line-through text-faint{% endif %}">{{ a.title }}</span>
+      {% if a.status != "planned" %}{% status_badge a.status %}{% endif %}
+    </li>
+    {% endif %}{% endfor %}
+  </ul>
+  {% else %}<p class="text-sm text-muted">{% trans "Nothing planned." %}</p>{% endif %}
+</div>
+
+{% if detail.entries %}
+<div class="mt-6">
+  <div class="section-title mb-2">{% trans "Recorded" %}</div>
+  <ul class="space-y-2">
+    {% for e in detail.entries %}
+    <li class="rounded-lg bg-subtle px-3 py-2 text-sm tone-{{ e.challenge.color }}">
+      <div class="font-medium">{{ e.challenge.name }}</div>
+      <div class="text-xs text-muted">{% for v in e.values.all %}{{ v.field.label }}: {% if v.value is True %}✓{% elif v.value is False %}✗{% elif v.field.field_type == "duration" %}{{ v.value|minutes }}{% else %}{{ v.value }} {{ v.field.unit }}{% endif %}{% if not forloop.last %} · {% endif %}{% endfor %}</div>
+      {% if e.note %}<div class="mt-1 text-xs italic text-muted">“{{ e.note }}”</div>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+{% if detail.journal %}
+<div class="mt-6">
+  <div class="section-title mb-2">{% trans "Journal" %}</div>
+  {% for j in detail.journal %}
+  <a href="{% url 'journal:list' %}?date={{ j.date|date:'Y-m-d' }}" class="block rounded-lg border border-line px-3 py-2 text-sm hover:bg-subtle">
+    {% if j.mood %}<span class="mr-1">{{ j.get_mood_display }}</span>{% endif %}<span class="font-medium">{{ j.title|default:_("Note") }}</span>
+    <p class="line-clamp-2 text-xs text-muted">{{ j.content|truncatechars:160 }}</p>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}

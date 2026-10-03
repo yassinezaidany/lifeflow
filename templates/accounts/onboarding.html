@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static i18n ui %}
+{% block title %}{% trans "Welcome" %}{% endblock %}
+{% block body %}
+{{ templates|json_script:"tpl-data" }}
+<div class="min-h-full bg-canvas" x-data="{
+  step: '{{ step|escapejs }}',
+  order: ['welcome', 'areas', 'challenge', 'plan'],
+  areas: [],
+  templates: JSON.parse(document.getElementById('tpl-data').textContent),
+  routine: [
+    {title: '{% trans "Morning routine" as s %}{{ s|escapejs }}', start: '06:30', end: '07:00', cat: 7},
+    {title: '{% trans "Breakfast" as s %}{{ s|escapejs }}', start: '07:30', end: '08:00', cat: 6},
+    {title: '{% trans "Work / Study" as s %}{{ s|escapejs }}', start: '09:00', end: '12:00', cat: 3},
+    {title: '{% trans "Lunch" as s %}{{ s|escapejs }}', start: '12:30', end: '13:30', cat: 6},
+    {title: '{% trans "Learning" as s %}{{ s|escapejs }}', start: '19:00', end: '20:00', cat: 2},
+    {title: '{% trans "Sleep" as s %}{{ s|escapejs }}', start: '23:00', end: '00:00', cat: 0},
+  ],
+  weekdays: [0,1,2,3,4],
+  saving: false,
+  get suggested() {
+    const list = this.areas.length ? this.templates.filter(t => this.areas.includes(t.category)) : this.templates;
+    return list.length ? list : this.templates;
+  },
+  index() { return this.order.indexOf(this.step); },
+  go(s) { this.step = s; window.scrollTo({top: 0}); },
+  toggle(list, v) { const i = list.indexOf(v); i >= 0 ? list.splice(i, 1) : list.push(v); },
+  async createRoutine() {
+    this.saving = true;
+    try {
+      const cats = await LF.api('/api/planner/categories/');
+      const findCat = (order) => { const c = cats.find(c => c.order === order); return c ? c.id : null; };
+      for (const r of this.routine.filter(r => r.title.trim())) {
+        await LF.api('/api/planner/rules/', {method: 'POST', body: {title: r.title, start_time: r.start, end_time: r.end, category_id: findCat(r.cat), frequency: 'weekly', weekdays: this.weekdays, start_date: LF.cfg.today}});
+      }
+      LF.toast('{% trans "Your routine is in the planner" as s %}{{ s|escapejs }}');
+      this.$refs.finish.submit();
+    } catch (e) { LF.toast(e.message, 'error'); this.saving = false; }
+  }
+}">
+  <header class="mx-auto flex max-w-3xl items-center justify-between px-4 py-6 sm:px-6">
+    <div class="flex items-center gap-2.5"><img src="{% static 'img/logo.svg' %}" alt="" class="h-7 w-7"><span class="font-semibold">{{ APP_NAME }}</span></div>
+    <form method="post" x-ref="finish">{% csrf_token %}<button class="btn btn-ghost btn-sm">{% trans "Skip setup" %}</button></form>
+  </header>
+  <div class="mx-auto max-w-3xl px-4 pb-16 sm:px-6">
+    <div class="mb-8 flex gap-1.5" aria-hidden="true">
+      <template x-for="(s, i) in order" :key="s"><div class="h-1 flex-1 rounded-full transition-colors" :class="i <= index() ? 'bg-brand' : 'bg-line'"></div></template>
+    </div>
+
+    <section x-show="step==='welcome'" x-transition.opacity class="py-6 text-center sm:py-12">
+      <div class="tone-indigo mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-3xl bg-tone/10 text-tone-strong">{% icon "sparkles" "icon-xl" %}</div>
+      <h1 class="text-3xl font-semibold sm:text-4xl">{% blocktrans with name=user.display_name %}Welcome, {{ name }}{% endblocktrans %}</h1>
+      <p class="mx-auto mt-4 max-w-xl text-muted">{% trans "LifeFlow follows a simple loop: plan your days, do the work, record what you actually did, and see how you progress. Let's set up the basics in two minutes." %}</p>
+      <div class="mx-auto mt-10 grid max-w-2xl grid-cols-2 gap-3 text-left sm:grid-cols-4">
+        <div class="card p-4"><div class="tone-blue text-tone-strong">{% icon "calendar-days" %}</div><div class="mt-3 text-sm font-semibold">{% trans "Plan" %}</div><div class="text-xs text-muted">{% trans "Your day & week" %}</div></div>
+        <div class="card p-4"><div class="tone-amber text-tone-strong">{% icon "zap" %}</div><div class="mt-3 text-sm font-semibold">{% trans "Execute" %}</div><div class="text-xs text-muted">{% trans "Do the work" %}</div></div>
+        <div class="card p-4"><div class="tone-emerald text-tone-strong">{% icon "circle-check" %}</div><div class="mt-3 text-sm font-semibold">{% trans "Track" %}</div><div class="text-xs text-muted">{% trans "Record results" %}</div></div>
+        <div class="card p-4"><div class="tone-violet text-tone-strong">{% icon "chart-line" %}</div><div class="mt-3 text-sm font-semibold">{% trans "Analyze" %}</div><div class="text-xs text-muted">{% trans "See progress" %}</div></div>
+      </div>
+      <button class="btn btn-primary btn-lg mt-10" @click="go('areas')">{% trans "Let's go" %} {% icon "arrow-right" "icon-sm" %}</button>
+    </section>
+
+    <section x-show="step==='areas'" x-cloak x-transition.opacity>
+      <h1 class="text-2xl font-semibold">{% trans "What do you want to improve?" %}</h1>
+      <p class="mt-2 text-muted">{% trans "Pick as many as you like — we'll suggest challenges to start with." %}</p>
+      <div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <template x-for="a in [['Health & Fitness','heart-pulse','rose','{% trans "Health & Fitness" as s %}{{ s|escapejs }}'],['Learning','graduation-cap','indigo','{% trans "Learning" as s %}{{ s|escapejs }}'],['Spiritual','sparkles','emerald','{% trans "Spiritual" as s %}{{ s|escapejs }}'],['Productivity','zap','amber','{% trans "Productivity" as s %}{{ s|escapejs }}'],['Wellness','leaf','teal','{% trans "Wellness" as s %}{{ s|escapejs }}'],['Digital Wellbeing','smartphone','sky','{% trans "Digital Wellbeing" as s %}{{ s|escapejs }}']]" :key="a[0]">
+          <button type="button" class="tile items-center" :class="[areas.includes(a[0]) && 'is-active', 'tone-' + a[2]]" @click="toggle(areas, a[0])">
+            <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-tone/10 text-tone-strong"><svg class="icon"><use :href="LF.cfg.sprite + '#i-' + a[1]"></use></svg></span>
+            <span class="text-sm font-medium" x-text="a[3]"></span>
+          </button>
+        </template>
+      </div>
+      <div class="mt-10 flex justify-between"><button class="btn btn-ghost" @click="go('welcome')">{% trans "Back" %}</button><button class="btn btn-primary" @click="go('challenge')">{% trans "Continue" %} {% icon "arrow-right" "icon-sm" %}</button></div>
+    </section>
+
+    <section x-show="step==='challenge'" x-cloak x-transition.opacity>
+      <h1 class="text-2xl font-semibold">{% trans "Create your first challenge" %}</h1>
+      <p class="mt-2 text-muted">{% trans "Start from a template and adjust it, or build your own from scratch." %}</p>
+      <div class="mt-8 grid gap-3 sm:grid-cols-2">
+        <template x-for="t in suggested.slice(0, 6)" :key="t.slug">
+          <a :href="'{% url 'challenges:create' %}?template=' + t.slug + '&next=' + encodeURIComponent('{% url 'accounts:onboarding' %}?step=plan')" class="tile" :class="'tone-' + t.color">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-tone/10 text-tone-strong"><svg class="icon"><use :href="LF.cfg.sprite + '#i-' + t.icon"></use></svg></span>
+            <span><span class="block text-sm font-semibold" x-text="t.name"></span><span class="mt-0.5 block text-xs text-muted" x-text="t.description"></span></span>
+          </a>
+        </template>
+        <a href="{% url 'challenges:create' %}?next={{ request.path|urlencode }}%3Fstep%3Dplan" class="tile border-dashed">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-subtle text-muted">{% icon "plus" %}</span>
+          <span><span class="block text-sm font-semibold">{% trans "Custom challenge" %}</span><span class="mt-0.5 block text-xs text-muted">{% trans "Anything you want to measure" %}</span></span>
+        </a>
+      </div>
+      <div class="mt-10 flex justify-between"><button class="btn btn-ghost" @click="go('areas')">{% trans "Back" %}</button><button class="btn btn-secondary" @click="go('plan')">{% trans "Skip this step" %}</button></div>
+    </section>
+
+    <section x-show="step==='plan'" x-cloak x-transition.opacity>
+      <h1 class="text-2xl font-semibold">{% trans "Sketch your typical day" %}</h1>
+      <p class="mt-2 text-muted">{% trans "These activities will repeat in your planner. You can change everything later." %}</p>
+      <div class="card mt-8 divide-y divide-line">
+        <template x-for="(r, i) in routine" :key="i">
+          <div class="flex flex-wrap items-center gap-2 px-4 py-3 sm:flex-nowrap">
+            <input type="time" class="input input-sm w-28" x-model="r.start" aria-label="{% trans 'Start' %}">
+            <span class="text-faint">→</span>
+            <input type="time" class="input input-sm w-28" x-model="r.end" aria-label="{% trans 'End' %}">
+            <input type="text" class="input input-sm flex-1" x-model="r.title" aria-label="{% trans 'Title' %}">
+            <button class="btn btn-ghost btn-icon btn-sm" @click="routine.splice(i, 1)" aria-label="{% trans 'Remove' %}">{% icon "x" "icon-sm" %}</button>
+          </div>
+        </template>
+        <div class="px-4 py-3"><button class="btn btn-ghost btn-sm" @click="routine.push({title: '', start: '18:00', end: '19:00', cat: 11})">{% icon "plus" "icon-xs" %} {% trans "Add a block" %}</button></div>
+      </div>
+      <div class="mt-5">
+        <div class="label">{% trans "Repeat on" %}</div>
+        <div class="flex flex-wrap gap-1.5">
+          <template x-for="(d, i) in LF.cfg.weekdays" :key="i">
+            <button type="button" class="h-9 w-12 rounded-lg border text-xs font-medium transition" :class="weekdays.includes(i) ? 'border-brand bg-brand-soft text-brand-strong' : 'border-line text-muted hover:bg-subtle'" @click="toggle(weekdays, i)" x-text="d"></button>
+          </template>
+        </div>
+      </div>
+      <div class="mt-10 flex flex-wrap justify-between gap-2">
+        <button class="btn btn-ghost" @click="go('challenge')">{% trans "Back" %}</button>
+        <div class="flex gap-2">
+          <button class="btn btn-secondary" @click="$refs.finish.submit()">{% trans "Skip" %}</button>
+          <button class="btn btn-primary" @click="createRoutine()" :disabled="saving || !weekdays.length">{% icon "check" "icon-sm" %} {% trans "Create my routine & finish" %}</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}

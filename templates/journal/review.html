@@ -1,0 +1,51 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Weekly review" %}{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-center justify-between gap-4">
+  <div>
+    <p class="text-sm font-medium text-brand">{% trans "Weekly review" %}{% if is_current %} · {% trans "this week" %}{% endif %}</p>
+    <h1 class="text-2xl font-semibold">{{ start|date:"j M" }} – {{ end|date:"j M Y" }}</h1>
+  </div>
+  <div class="flex gap-2">
+    <a href="?week={{ prev|date:'Y-m-d' }}" class="btn btn-secondary btn-icon" aria-label="{% trans 'Previous week' %}">{% icon "chevron-left" "icon-sm" %}</a>
+    {% if next %}<a href="?week={{ next|date:'Y-m-d' }}" class="btn btn-secondary btn-icon" aria-label="{% trans 'Next week' %}">{% icon "chevron-right" "icon-sm" %}</a>{% endif %}
+  </div>
+</div>
+
+<div class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+  <div class="card p-5"><div class="stat-label">{% trans "Goals achieved" %}</div><div class="stat-value">{{ achieved }}<span class="text-base text-faint"> / {{ total }}</span></div></div>
+  <div class="card p-5"><div class="stat-label">{% trans "Planner" %}</div><div class="stat-value">{{ planner.completion_rate|pct }}</div><div class="text-xs text-muted">{{ planner.completed }} / {{ planner.planned }}</div></div>
+  <div class="card p-5"><div class="stat-label">{% trans "Time completed" %}</div><div class="stat-value">{{ planner.done_minutes|minutes }}</div></div>
+  <div class="card p-5"><div class="stat-label">{% trans "Best streak" %}</div><div class="stat-value flex items-center gap-1">{% if best_streak %}<span class="text-orange-500">{% icon "flame" "icon-sm" %}</span>{% endif %}{{ best_streak }}</div></div>
+</div>
+
+<div class="mt-6 grid gap-6 lg:grid-cols-2">
+  <section class="card">
+    <div class="card-pad border-b border-line"><h2 class="card-title">{% trans "Challenges this week" %}</h2></div>
+    <ul class="divide-y divide-line">
+      {% for r in rows %}{% with c=r.challenge p=r.progress %}
+      <li class="flex items-center gap-3 px-6 py-3 tone-{{ c.color }}">
+        <span class="h-2.5 w-2.5 rounded-full bg-tone"></span>
+        <span class="min-w-0 flex-1 truncate text-sm font-medium">{{ c.name }}</span>
+        <span class="text-sm tabular">{{ p.display.actual }}<span class="text-muted"> / {{ p.display.goal }} {{ p.unit }}</span></span>
+        {% if p.goal > 0 and p.actual >= p.goal %}<span class="text-success">{% icon "circle-check" "icon-sm" %}</span>{% else %}<span class="text-faint">{% icon "circle-dot" "icon-sm" %}</span>{% endif %}
+      </li>
+      {% endwith %}{% empty %}
+      <li class="px-6 py-6 text-sm text-muted">{% trans "No challenge was running this week." %}</li>
+      {% endfor %}
+    </ul>
+  </section>
+  <section class="card">
+    <div class="card-pad border-b border-line"><h2 class="card-title">{% trans "Reflection" %}</h2><p class="card-subtitle">{% trans "Two minutes to learn from your week." %}</p></div>
+    <form method="post" class="card-pad space-y-4" novalidate>
+      {% csrf_token %}
+      {% include "partials/field.html" with field=form.went_well %}
+      {% include "partials/field.html" with field=form.difficult %}
+      {% include "partials/field.html" with field=form.improve %}
+      <div class="max-w-[10rem]">{% include "partials/field.html" with field=form.rating %}</div>
+      <div class="flex justify-end"><button class="btn btn-primary">{% trans "Save review" %}</button></div>
+    </form>
+  </section>
+</div>
+{% endblock %}

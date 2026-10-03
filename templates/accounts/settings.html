@@ -1,0 +1,55 @@
+{% extends "accounts/_settings_layout.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Settings" %}{% endblock %}
+{% block settings %}
+<form method="post" enctype="multipart/form-data" novalidate class="space-y-6">
+  {% csrf_token %}
+  <section class="card">
+    <div class="card-pad border-b border-line">
+      <h2 class="card-title">{% trans "Profile" %}</h2>
+      <p class="card-subtitle">{% trans "How you appear in LifeFlow." %}</p>
+    </div>
+    <div class="card-pad space-y-5">
+      <div class="flex items-center gap-4">
+        {% include "partials/avatar.html" with size="h-16 w-16 text-lg" %}
+        <div class="flex-1">{% include "partials/field.html" with field=profile_form.avatar %}</div>
+      </div>
+      <div class="grid gap-5 sm:grid-cols-2">
+        {% include "partials/field.html" with field=account_form.first_name %}
+        {% include "partials/field.html" with field=account_form.last_name %}
+        {% include "partials/field.html" with field=account_form.username %}
+        {% include "partials/field.html" with field=account_form.email %}
+      </div>
+      {% include "partials/field.html" with field=profile_form.bio %}
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-pad border-b border-line">
+      <h2 class="card-title">{% trans "Regional preferences" %}</h2>
+      <p class="card-subtitle">{% trans "Your timezone defines when a day starts and ends — it drives streaks, the calendar and reports." %}</p>
+    </div>
+    <div class="card-pad grid gap-5 sm:grid-cols-2">
+      {% include "partials/field.html" with field=profile_form.timezone %}
+      {% include "partials/field.html" with field=profile_form.language %}
+      {% include "partials/field.html" with field=profile_form.date_format %}
+      {% include "partials/field.html" with field=profile_form.time_format %}
+      {% include "partials/field.html" with field=profile_form.week_start %}
+      {% include "partials/field.html" with field=profile_form.theme %}
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-pad border-b border-line">
+      <h2 class="card-title">{% trans "Planner" %}</h2>
+      <p class="card-subtitle">{% trans "Visible hours and default time slot of your planner." %}</p>
+    </div>
+    <div class="card-pad grid gap-5 sm:grid-cols-3">
+      {% include "partials/field.html" with field=profile_form.planner_slot_minutes %}
+      {% include "partials/field.html" with field=profile_form.planner_day_start %}
+      {% include "partials/field.html" with field=profile_form.planner_day_end %}
+    </div>
+  </section>
+  <div class="flex justify-end"><button class="btn btn-primary">{% trans "Save changes" %}</button></div>
+</form>
+{% endblock %}

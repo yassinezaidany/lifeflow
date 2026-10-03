@@ -1,0 +1,297 @@
+{% load i18n ui %}
+{# ------------------------------------------------------------------ Toasts #}
+<div x-data="toaster" class="pointer-events-none fixed inset-x-0 bottom-20 z-[70] flex flex-col items-center gap-2 px-4 sm:bottom-6 sm:right-6 sm:items-end" aria-live="polite">
+  <template x-for="t in items" :key="t.id">
+    <div class="toast max-w-sm">
+      <span :class="{'text-success': t.type==='success', 'text-danger': t.type==='error', 'text-warning': t.type==='warning'}">
+        <template x-if="t.type==='error'">{% icon "circle-alert" "icon-sm" %}</template>
+        <template x-if="t.type==='warning'">{% icon "triangle-alert" "icon-sm" %}</template>
+        <template x-if="t.type!=='error' && t.type!=='warning'">{% icon "circle-check" "icon-sm" %}</template>
+      </span>
+      <span class="flex-1" x-text="t.message"></span>
+      <button class="text-faint hover:text-ink" @click="dismiss(t.id)" aria-label="{% trans 'Dismiss' %}">{% icon "x" "icon-xs" %}</button>
+    </div>
+  </template>
+</div>
+
+{# ------------------------------------------------------------------ Confirm #}
+<div x-data="confirmer" x-cloak @keydown.escape.window="open && answer(false)">
+  <div x-show="open" x-transition.opacity class="modal-backdrop z-[60]" @click="answer(false)"></div>
+  <div x-show="open" x-transition class="modal-panel z-[60] p-6 sm:max-w-sm" role="alertdialog" aria-modal="true" x-trap.noscroll="open">
+    <h2 class="text-base font-semibold" x-text="title"></h2>
+    <p class="mt-2 text-sm text-muted" x-text="message"></p>
+    <div class="mt-6 flex justify-end gap-2">
+      <button class="btn btn-secondary" @click="answer(false)">{% trans "Cancel" %}</button>
+      <button class="btn" :class="danger ? 'btn-danger' : 'btn-primary'" @click="answer(true)" x-text="confirmLabel"></button>
+    </div>
+  </div>
+</div>
+
+{# ------------------------------------------------------------------ Record progress #}
+<div x-data="entryModal" x-cloak @keydown.escape.window="open=false">
+  <div x-show="open" x-transition.opacity class="modal-backdrop" @click="open=false"></div>
+  <div x-show="open" x-transition class="modal-panel sm:max-w-lg" role="dialog" aria-modal="true" aria-labelledby="entry-title" x-trap.noscroll="open">
+    <form @submit.prevent="submit()" novalidate>
+      <div class="flex items-center justify-between border-b border-line px-5 py-4">
+        <div>
+          <h2 id="entry-title" class="text-base font-semibold">{% trans "Record progress" %}</h2>
+          <p class="text-xs text-muted" x-show="fromPlanner">{% trans "Pre-filled from your completed activity — check and confirm." %}</p>
+        </div>
+        <button type="button" class="btn btn-ghost btn-icon btn-sm" @click="open=false" aria-label="{% trans 'Close' %}">{% icon "x" "icon-sm" %}</button>
+      </div>
+      <div class="space-y-5 px-5 py-5">
+        <template x-if="loading"><div class="space-y-3"><div class="skeleton h-10"></div><div class="skeleton h-10"></div></div></template>
+        <template x-if="!loading && !challenges.length">
+          <div class="empty py-8">
+            <div class="empty-icon">{% icon "target" %}</div>
+            <p class="text-sm font-medium">{% trans "No active challenge yet" %}</p>
+            <a href="{% url 'challenges:create' %}" class="btn btn-primary btn-sm mt-4">{% icon "plus" "icon-xs" %} {% trans "Create a challenge" %}</a>
+          </div>
+        </template>
+        <template x-if="!loading && challenges.length">
+          <div class="space-y-5">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_auto]">
+              <div>
+                <label class="label" for="entry-challenge">{% trans "Challenge" %}</label>
+                <select id="entry-challenge" class="select" x-model="challengeId" @change="resetValues()" :disabled="locked">
+                  <template x-for="c in challenges" :key="c.id"><option :value="String(c.id)" x-text="c.name" :selected="String(c.id)===challengeId"></option></template>
+                </select>
+              </div>
+              <div>
+                <label class="label" for="entry-date">{% trans "Date" %}</label>
+                <input id="entry-date" type="date" class="input" x-model="date" :max="LF.cfg.today" :class="errors.date && 'is-invalid'">
+              </div>
+            </div>
+            <p class="field-error -mt-3" x-show="errors.date" x-text="errors.date"></p>
+            <template x-if="challenge && challenge.progress">
+              <div class="flex items-center gap-2 rounded-lg bg-subtle px-3 py-2 text-xs text-muted">
+                {% icon "target" "icon-xs" %}<span x-text="challenge.progress.goal_description"></span>
+              </div>
+            </template>
+            <template x-for="f in fields" :key="f.id">
+              <div>
+                <label class="label" :for="'f-'+f.id"><span x-text="f.label"></span> <span x-show="f.required" class="text-danger">*</span></label>
+                <template x-if="f.field_type==='boolean'">
+                  <div class="seg w-full">
+                    <button type="button" class="seg-item flex-1 justify-center" :aria-pressed="values[f.key]===true" @click="values[f.key]=true">{% icon "check" "icon-sm" %} {% trans "Done" %}</button>
+                    <button type="button" class="seg-item flex-1 justify-center" :aria-pressed="values[f.key]===false" @click="values[f.key]=false">{% icon "x" "icon-sm" %} {% trans "Not done" %}</button>
+                  </div>
+                </template>
+                <template x-if="f.field_type==='integer' || f.field_type==='decimal'">
+                  <div class="relative">
+                    <input :id="'f-'+f.id" type="number" inputmode="decimal" min="0" :step="f.field_type==='integer' ? 1 : 0.01" class="input pr-16 tabular" x-model="values[f.key]" :class="errors[f.key] && 'is-invalid'">
+                    <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-muted" x-text="f.unit"></span>
+                  </div>
+                </template>
+                <template x-if="f.field_type==='duration'">
+                  <div class="flex items-center gap-2">
+                    <div class="relative flex-1"><input :id="'f-'+f.id" type="number" min="0" max="24" class="input pr-8 tabular" :value="durationParts(f.key).h || ''" @input="setDuration(f.key, $event.target.value, durationParts(f.key).m)" placeholder="0"><span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-muted">h</span></div>
+                    <div class="relative flex-1"><input type="number" min="0" max="59" class="input pr-12 tabular" :value="durationParts(f.key).m || ''" @input="setDuration(f.key, durationParts(f.key).h, $event.target.value)" placeholder="0" aria-label="{% trans 'minutes' %}"><span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-muted">min</span></div>
+                  </div>
+                </template>
+                <template x-if="f.field_type==='time'"><input :id="'f-'+f.id" type="time" class="input" x-model="values[f.key]"></template>
+                <template x-if="f.field_type==='text'"><input :id="'f-'+f.id" type="text" maxlength="500" class="input" x-model="values[f.key]"></template>
+                <template x-if="f.field_type==='select'">
+                  <div class="flex flex-wrap gap-2">
+                    <template x-for="o in f.options" :key="o">
+                      <button type="button" class="badge h-8 px-3 text-xs" :class="values[f.key]===o ? 'badge-brand ring-1 ring-brand/30' : 'badge-neutral'" @click="values[f.key] = values[f.key]===o ? '' : o" x-text="o"></button>
+                    </template>
+                  </div>
+                </template>
+                <p class="field-error" x-show="errors[f.key]" x-text="errors[f.key]"></p>
+              </div>
+            </template>
+            <div>
+              <label class="label" for="entry-note">{% trans "Note" %} <span class="font-normal text-faint">({% trans "optional" %})</span></label>
+              <textarea id="entry-note" rows="2" class="textarea" x-model="note" maxlength="2000" placeholder="{% trans 'How did it go?' %}"></textarea>
+            </div>
+            <p class="field-error" x-show="errors.values || errors.planned_activity" x-text="errors.values || errors.planned_activity"></p>
+          </div>
+        </template>
+      </div>
+      <div class="flex justify-end gap-2 border-t border-line px-5 py-4">
+        <button type="button" class="btn btn-secondary" @click="open=false">{% trans "Cancel" %}</button>
+        <button type="submit" class="btn btn-primary" :disabled="saving || !challenge">
+          <span x-show="saving" class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>{% trans "Save" %}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{# ------------------------------------------------------------------ Note #}
+<div x-data="noteModal" x-cloak @keydown.escape.window="open=false">
+  <div x-show="open" x-transition.opacity class="modal-backdrop" @click="open=false"></div>
+  <div x-show="open" x-transition class="modal-panel sm:max-w-lg" role="dialog" aria-modal="true" x-trap.noscroll="open">
+    <form @submit.prevent="submit()" class="p-5">
+      <div class="mb-4 flex items-center justify-between">
+        <h2 class="text-base font-semibold">{% trans "New note" %}</h2>
+        <input type="date" class="input input-sm w-auto" x-model="date" aria-label="{% trans 'Date' %}">
+      </div>
+      <input type="text" class="input mb-3" x-model="title" maxlength="140" placeholder="{% trans 'Title (optional)' %}">
+      <textarea rows="6" class="textarea" x-model="content" placeholder="{% trans 'Write your thoughts…' %}" :class="errors.content && 'is-invalid'"></textarea>
+      <p class="field-error" x-show="errors.content" x-text="errors.content"></p>
+      <div class="mt-4 flex items-center justify-between">
+        <div class="flex gap-1" role="radiogroup" aria-label="{% trans 'Mood' %}">
+          <template x-for="(m, i) in ['😞','😕','😐','🙂','😄']" :key="i">
+            <button type="button" class="h-9 w-9 rounded-lg text-lg transition" :class="mood===i+1 ? 'bg-brand-soft ring-1 ring-brand/30' : 'opacity-60 hover:opacity-100'" @click="mood = mood===i+1 ? null : i+1" x-text="m" :aria-checked="mood===i+1" role="radio"></button>
+          </template>
+        </div>
+        <div class="flex gap-2">
+          <button type="button" class="btn btn-secondary" @click="open=false">{% trans "Cancel" %}</button>
+          <button class="btn btn-primary" :disabled="saving">{% trans "Save" %}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{# ------------------------------------------------------------------ Activity #}
+<div x-data="activityModal" x-cloak @keydown.escape.window="open=false">
+  <div x-show="open" x-transition.opacity class="modal-backdrop" @click="open=false"></div>
+  <div x-show="open" x-transition class="modal-panel sm:max-w-xl" role="dialog" aria-modal="true" aria-labelledby="act-title" x-trap.noscroll="open">
+    <div class="flex items-center justify-between border-b border-line px-5 py-4">
+      <h2 id="act-title" class="text-base font-semibold"><span x-show="mode==='create'">{% trans "New activity" %}</span><span x-show="mode!=='create'">{% trans "Activity" %}</span></h2>
+      <div class="flex items-center gap-1">
+        <template x-if="mode==='edit'">
+          <span class="badge" :class="{'badge-success': activity.status==='completed', 'badge-warning': activity.status==='partial', 'badge-danger': activity.status==='missed', 'badge-neutral': !['completed','partial','missed'].includes(activity.status)}" x-text="activity.status.replace('_',' ')"></span>
+        </template>
+        <button type="button" class="btn btn-ghost btn-icon btn-sm" @click="open=false" aria-label="{% trans 'Close' %}">{% icon "x" "icon-sm" %}</button>
+      </div>
+    </div>
+
+    <template x-if="mode==='edit'">
+      <div class="border-b border-line bg-subtle/50 px-5 py-3">
+        <div class="flex flex-wrap items-center gap-2">
+          <button class="btn btn-primary btn-sm" @click="setStatus('completed')" :disabled="saving">{% icon "check" "icon-xs" %} {% trans "Complete" %}</button>
+          <button class="btn btn-secondary btn-sm" @click="setStatus('partial')" :disabled="saving">{% trans "Partly done" %}</button>
+          <button class="btn btn-secondary btn-sm" @click="setStatus('missed')" :disabled="saving">{% trans "Missed" %}</button>
+          <button class="btn btn-ghost btn-sm" @click="panel = panel==='reschedule' ? 'edit' : 'reschedule'">{% icon "calendar-clock" "icon-xs" %} {% trans "Reschedule" %}</button>
+          <template x-if="['completed','partial','missed','cancelled'].includes(activity.status)">
+            <button class="btn btn-ghost btn-sm" @click="setStatus('planned')">{% icon "undo-2" "icon-xs" %} {% trans "Reset" %}</button>
+          </template>
+        </div>
+        <div class="mt-3 flex items-center gap-2 text-xs text-muted">
+          <label for="act-minutes">{% trans "Actual time" %}</label>
+          <input id="act-minutes" type="number" min="0" max="1440" class="input input-sm w-20 tabular" x-model="completeMinutes"><span>min</span>
+          <template x-if="activity.challenge && ['completed','partial'].includes(activity.status) && !activity.has_entry">
+            <button class="btn btn-soft btn-sm ml-auto" @click="recordEntry()">{% icon "circle-check" "icon-xs" %} {% trans "Record in challenge" %}</button>
+          </template>
+          <template x-if="activity.has_entry"><span class="ml-auto badge badge-success">{% icon "check" "icon-xs" %} {% trans "Recorded" %}</span></template>
+        </div>
+      </div>
+    </template>
+
+    <template x-if="panel==='reschedule'">
+      <div class="space-y-4 px-5 py-5">
+        <p class="text-sm text-muted">{% trans "The current activity is kept as “rescheduled” and a new one is created." %}</p>
+        <div class="grid grid-cols-3 gap-3">
+          <div><label class="label">{% trans "New date" %}</label><input type="date" class="input" x-model="rescheduleDate"></div>
+          <div><label class="label">{% trans "Start" %}</label><input type="time" step="300" class="input" x-model="rescheduleStart"></div>
+          <div><label class="label">{% trans "End" %}</label><input type="time" step="300" class="input" x-model="rescheduleEnd"></div>
+        </div>
+        <p class="field-error" x-show="errors.end_time" x-text="errors.end_time"></p>
+        <div class="flex justify-end gap-2"><button class="btn btn-secondary" @click="panel='edit'">{% trans "Back" %}</button><button class="btn btn-primary" @click="reschedule()" :disabled="saving">{% trans "Reschedule" %}</button></div>
+      </div>
+    </template>
+
+    <form x-show="panel==='edit'" @submit.prevent="submit()" novalidate>
+      <div class="space-y-4 px-5 py-5">
+        <template x-if="mode==='edit' && activity.is_recurring">
+          <div class="seg">
+            <button type="button" class="seg-item" :aria-pressed="scope==='occurrence'" @click="scope='occurrence'">{% trans "This occurrence" %}</button>
+            <button type="button" class="seg-item" :aria-pressed="scope==='series'" @click="scope='series'">{% icon "repeat" "icon-xs" %} {% trans "Whole series" %}</button>
+          </div>
+        </template>
+        <div>
+          <label class="label" for="act-name">{% trans "Title" %}</label>
+          <input id="act-name" x-ref="title" type="text" class="input" x-model="form.title" maxlength="120" required placeholder="{% trans 'e.g. Gym, Deep work, Fajr + Qur’an' %}" :class="errors.title && 'is-invalid'">
+          <p class="field-error" x-show="errors.title" x-text="errors.title"></p>
+        </div>
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <div class="col-span-2 sm:col-span-1" x-show="!(mode==='edit' && scope==='series')">
+            <label class="label" for="act-date">{% trans "Date" %}</label>
+            <input id="act-date" type="date" class="input" x-model="form.date">
+          </div>
+          <div><label class="label" for="act-start">{% trans "Start" %}</label><input id="act-start" type="time" step="300" class="input" x-model="form.start_time"></div>
+          <div><label class="label" for="act-end">{% trans "End" %}</label><input id="act-end" type="time" step="300" class="input" x-model="form.end_time" :class="errors.end_time && 'is-invalid'"></div>
+        </div>
+        <div class="-mt-1 flex flex-wrap items-center gap-1.5">
+          <span class="text-xs text-muted" x-text="duration > 0 ? LF.fmtMinutes(duration) : ''"></span>
+          <template x-for="m in [15,30,60,90,120]" :key="m"><button type="button" class="badge badge-neutral hover:bg-line" @click="setDuration(m)" x-text="LF.fmtMinutes(m)"></button></template>
+        </div>
+        <p class="field-error" x-show="errors.end_time" x-text="errors.end_time"></p>
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div>
+            <label class="label" for="act-cat">{% trans "Category" %}</label>
+            <select id="act-cat" class="select" x-model="form.category_id">
+              <option value="">{% trans "No category" %}</option>
+              <template x-for="c in (meta ? meta.categories : [])" :key="c.id"><option :value="c.id" x-text="c.name" :selected="String(c.id)===String(form.category_id)"></option></template>
+            </select>
+          </div>
+          <div>
+            <label class="label" for="act-ch">{% trans "Linked challenge" %}</label>
+            <select id="act-ch" class="select" x-model="form.challenge_id">
+              <option value="">{% trans "None" %}</option>
+              <template x-for="c in (meta ? meta.challenges : [])" :key="c.id"><option :value="c.id" x-text="c.name" :selected="String(c.id)===String(form.challenge_id)"></option></template>
+            </select>
+          </div>
+        </div>
+        <template x-if="mode==='create'">
+          <div>
+            <label class="label">{% trans "Repeat" %}</label>
+            <div class="seg flex-wrap">
+              <button type="button" class="seg-item" :aria-pressed="repeat==='none'" @click="repeat='none'">{% trans "Once" %}</button>
+              <button type="button" class="seg-item" :aria-pressed="repeat==='daily'" @click="repeat='daily'">{% trans "Every day" %}</button>
+              <button type="button" class="seg-item" :aria-pressed="repeat==='weekly'" @click="repeat='weekly'">{% trans "Some days" %}</button>
+              <button type="button" class="seg-item" :aria-pressed="repeat==='interval'" @click="repeat='interval'">{% trans "Every N days" %}</button>
+            </div>
+            <div x-show="repeat==='weekly'" class="mt-3 flex flex-wrap gap-1.5">
+              <template x-for="(d, i) in weekdayLabels" :key="i">
+                <button type="button" class="h-9 w-11 rounded-lg border text-xs font-medium transition" :class="rule.weekdays.includes(i) ? 'border-brand bg-brand-soft text-brand-strong' : 'border-line text-muted hover:bg-subtle'" @click="toggleWeekday(i)" x-text="d"></button>
+              </template>
+            </div>
+            <div x-show="repeat==='interval'" class="mt-3 flex items-center gap-2 text-sm">{% trans "Every" %} <input type="number" min="2" max="365" class="input input-sm w-20" x-model="rule.interval_days"> {% trans "days" %}</div>
+            <div x-show="repeat!=='none'" class="mt-3 flex items-center gap-2 text-sm text-muted">{% trans "Until" %} <input type="date" class="input input-sm w-auto" x-model="rule.end_date"> <span class="text-xs">({% trans "optional" %})</span></div>
+            <p class="field-error" x-show="errors.weekdays" x-text="errors.weekdays"></p>
+          </div>
+        </template>
+        <div x-data="{more: false}">
+          <button type="button" class="text-xs font-medium text-muted hover:text-ink" @click="more=!more">{% icon "sliders-horizontal" "icon-xs" %} {% trans "More options" %}</button>
+          <div x-show="more" x-collapse class="mt-3 space-y-4">
+            <div>
+              <label class="label">{% trans "Priority" %}</label>
+              <div class="seg">
+                <button type="button" class="seg-item" :aria-pressed="form.priority==='low'" @click="form.priority='low'">{% trans "Low" %}</button>
+                <button type="button" class="seg-item" :aria-pressed="form.priority==='medium'" @click="form.priority='medium'">{% trans "Medium" %}</button>
+                <button type="button" class="seg-item" :aria-pressed="form.priority==='high'" @click="form.priority='high'">{% trans "High" %}</button>
+              </div>
+            </div>
+            <div>
+              <label class="label">{% trans "Color" %}</label>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" class="h-7 rounded-full border border-line px-2 text-[11px] text-muted" :class="!form.color && 'ring-2 ring-brand/40'" @click="form.color=''">{% trans "Category" %}</button>
+                <template x-for="c in ['slate','indigo','blue','sky','teal','emerald','lime','amber','orange','rose','pink','violet']" :key="c">
+                  <button type="button" class="h-7 w-7 rounded-full bg-tone" :class="['tone-'+c, form.color===c && 'ring-2 ring-offset-2 ring-tone ring-offset-surface']" @click="form.color=c" :aria-label="c"></button>
+                </template>
+              </div>
+            </div>
+            <div><label class="label" for="act-notes">{% trans "Notes" %}</label><textarea id="act-notes" rows="2" class="textarea" x-model="form.notes" maxlength="2000"></textarea></div>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 border-t border-line px-5 py-4">
+        <template x-if="mode==='edit'">
+          <div class="flex gap-1">
+            <button type="button" class="btn btn-ghost btn-icon btn-sm text-danger" @click="remove()" data-tip="{% trans 'Delete' %}" aria-label="{% trans 'Delete' %}">{% icon "trash-2" "icon-sm" %}</button>
+            <button type="button" class="btn btn-ghost btn-icon btn-sm" @click="duplicate()" data-tip="{% trans 'Duplicate' %}" aria-label="{% trans 'Duplicate' %}">{% icon "copy" "icon-sm" %}</button>
+          </div>
+        </template>
+        <div class="ml-auto flex gap-2">
+          <button type="button" class="btn btn-secondary" @click="open=false">{% trans "Cancel" %}</button>
+          <button type="submit" class="btn btn-primary" :disabled="saving">{% trans "Save" %}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

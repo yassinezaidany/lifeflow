@@ -1,0 +1,90 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Analytics" %}{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-end justify-between gap-4">
+  <div>
+    <h1 class="text-2xl font-semibold">{% trans "Analytics" %}</h1>
+    <p class="mt-1 text-sm text-muted">{{ start|udate:user }} → {{ end|udate:user }}</p>
+  </div>
+  <div class="seg">
+    <a href="?period=30d" class="seg-item {% if key == '30d' %}is-active{% endif %}">{% trans "30 days" %}</a>
+    <a href="?period=month" class="seg-item {% if key == 'month' %}is-active{% endif %}">{% trans "This month" %}</a>
+    <a href="?period=90d" class="seg-item {% if key == '90d' %}is-active{% endif %}">{% trans "90 days" %}</a>
+    <a href="?period=year" class="seg-item {% if key == 'year' %}is-active{% endif %}">{% trans "1 year" %}</a>
+  </div>
+</div>
+
+<div class="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
+  <div class="card p-5"><div class="stat-label">{% trans "Avg. challenge completion" %}</div><div class="stat-value">{{ avg_completion|pct }}</div></div>
+  <div class="card p-5"><div class="stat-label">{% trans "Entries recorded" %}</div><div class="stat-value">{{ entries }}</div></div>
+  <div class="card p-5"><div class="stat-label">{% trans "Planner completion" %}</div><div class="stat-value">{{ planner.completion_rate|pct }}</div><div class="mt-1 text-xs text-muted">{{ planner.completed }} / {{ planner.planned }}</div></div>
+  <div class="card p-5"><div class="stat-label">{% trans "Time completed" %}</div><div class="stat-value">{{ planner.done_minutes|minutes }}</div><div class="mt-1 text-xs text-muted">{% trans "of" %} {{ planner.planned_minutes|minutes }} {% trans "planned" %}</div></div>
+</div>
+
+{% if rows %}
+<div class="mt-6 grid gap-4 lg:grid-cols-2">
+  <section class="card p-5"><h2 class="card-title">{% trans "Completion by challenge" %}</h2><div class="mt-4" style="height: {{ rows|length|add:2 }}0px; min-height: 12rem"><canvas id="a-ch" role="img" aria-label="{% trans 'Completion by challenge' %}"></canvas></div></section>
+  <section class="card p-5"><h2 class="card-title">{% trans "Planner completion per week" %}</h2><div class="mt-4 h-56"><canvas id="a-pl" role="img" aria-label="{% trans 'Planner completion per week' %}"></canvas></div></section>
+  <section class="card p-5"><h2 class="card-title">{% trans "Time by category" %}</h2><div class="mt-4 h-56"><canvas id="a-cat" role="img" aria-label="{% trans 'Time by category' %}"></canvas></div></section>
+  <section class="card p-5"><h2 class="card-title">{% trans "Your most active days" %}</h2><div class="mt-4 h-56"><canvas id="a-wd" role="img" aria-label="{% trans 'Entries per weekday' %}"></canvas></div></section>
+</div>
+
+<section class="card mt-6 overflow-hidden">
+  <div class="px-5 py-4"><h2 class="card-title">{% trans "Challenges in this period" %}</h2></div>
+  <div class="overflow-x-auto">
+    <table class="table">
+      <thead><tr><th>{% trans "Challenge" %}</th><th>{% trans "Goal" %}</th><th class="text-right">{% trans "Actual" %}</th><th class="text-right">{% trans "Target" %}</th><th class="text-right">{% trans "Progress" %}</th><th class="text-right">{% trans "Completion" %}</th><th class="text-right">{% trans "Best streak" %}</th><th>{% trans "Status" %}</th></tr></thead>
+      <tbody>
+        {% for r in rows %}{% with c=r.challenge p=r.progress %}
+        <tr class="tone-{{ c.color }}">
+          <td><a href="{% url 'challenges:detail' c.pk %}" class="flex items-center gap-2 font-medium hover:underline"><span class="h-2 w-2 rounded-full bg-tone"></span>{{ c.name }}</a></td>
+          <td class="text-muted">{{ p.goal_description }}</td>
+          <td class="text-right tabular">{{ p.display.actual }}</td>
+          <td class="text-right tabular text-muted">{{ p.display.goal }}</td>
+          <td class="text-right tabular">{{ p.progress|pct }}</td>
+          <td class="text-right tabular">{{ p.completion_rate|pct }}</td>
+          <td class="text-right tabular">{% streak_text p.best_streak p.streak_unit %}</td>
+          <td>{% status_badge p.status %}</td>
+        </tr>
+        {% endwith %}{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% else %}
+<div class="empty mt-6"><div class="empty-icon">{% icon "chart-column" "icon-lg" %}</div><h3 class="text-sm font-semibold">{% trans "Not enough data yet" %}</h3><p class="mt-1 text-sm text-muted">{% trans "Create a challenge and record a few entries to see your analytics." %}</p></div>
+{% endif %}
+{{ chart|json_script:"analytics-data" }}
+{% endblock %}
+{% block page_scripts %}
+<script>
+lfReady(function () {
+  const el = document.getElementById("analytics-data");
+  if (!el || !document.getElementById("a-ch")) return;
+  const d = JSON.parse(el.textContent);
+  LF.chart(document.getElementById("a-ch"), () => ({
+    type: "bar",
+    data: { labels: d.challenges.map((c) => c.name), datasets: [{ data: d.challenges.map((c) => c.rate), backgroundColor: d.challenges.map((c) => LF.tone(c.color, 0.85)), borderRadius: 6, maxBarThickness: 18 }] },
+    options: { indexAxis: "y", maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { ...LF.tooltip, callbacks: { label: (c) => c.parsed.x.toFixed(0) + "%" } } },
+      scales: { x: { min: 0, max: 100, grid: { color: LF.cssVarA("--c-line", 0.6) }, ticks: { callback: (v) => v + "%" } }, y: { grid: { display: false } } } },
+  }));
+  LF.chart(document.getElementById("a-pl"), () => ({
+    type: "line",
+    data: { labels: d.planner_weeks.map((w) => LF.parseISO(w.start).toLocaleDateString(LF.cfg.locale, { day: "numeric", month: "short" })),
+      datasets: [{ data: d.planner_weeks.map((w) => w.completion_rate ?? 0), borderColor: LF.tone("indigo"), backgroundColor: LF.tone("indigo", 0.1), fill: true, tension: 0.35, pointRadius: 3 }] },
+    options: { maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: LF.tooltip }, scales: LF.baseScales({ y: { max: 100, ticks: { callback: (v) => v + "%" } } }) },
+  }));
+  LF.chart(document.getElementById("a-cat"), () => ({
+    type: "doughnut",
+    data: { labels: d.categories.map((c) => c.name), datasets: [{ data: d.categories.map((c) => c.minutes), backgroundColor: d.categories.map((c) => LF.tone(c.color, 0.85)), borderWidth: 0 }] },
+    options: { maintainAspectRatio: false, cutout: "65%", plugins: { legend: { position: "right", labels: { boxWidth: 10, usePointStyle: true } }, tooltip: { ...LF.tooltip, callbacks: { label: (c) => `${c.label}: ${LF.fmtMinutes(c.parsed)}` } } } },
+  }));
+  LF.chart(document.getElementById("a-wd"), () => ({
+    type: "bar",
+    data: { labels: LF.cfg.weekdays, datasets: [{ data: d.weekdays, backgroundColor: LF.tone("emerald", 0.8), borderRadius: 6, maxBarThickness: 28 }] },
+    options: { maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: LF.tooltip }, scales: LF.baseScales() },
+  }));
+});
+</script>
+{% endblock %}

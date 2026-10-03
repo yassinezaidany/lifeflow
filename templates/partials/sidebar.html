@@ -1,0 +1,41 @@
+{% load static i18n ui %}
+<aside class="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-line bg-surface lg:flex" aria-label="{% trans 'Main navigation' %}">
+  <div class="flex h-16 items-center gap-2.5 px-5">
+    <img src="{% static 'img/logo.svg' %}" alt="" class="h-7 w-7">
+    <span class="text-[17px] font-semibold tracking-tight">{{ APP_NAME }}</span>
+  </div>
+  <div class="px-3 pb-3">
+    <div x-data="quickAdd" class="relative" @keydown.escape="open=false">
+      <button type="button" class="btn btn-primary w-full" @click="open=!open" :aria-expanded="open">
+        {% icon "plus" "icon-sm" %} {% trans "Quick add" %}
+      </button>
+      {% include "partials/quick_add_menu.html" with position="left-0 right-0" %}
+    </div>
+  </div>
+  <nav class="flex-1 space-y-0.5 overflow-y-auto px-3 py-2 scrollbar-thin">
+    <a href="{% url 'dashboard:home' %}" class="nav-link {% active 'dashboard:home' %}">{% icon "layout-dashboard" %} {% trans "Dashboard" %}</a>
+    <a href="{% url 'dashboard:today' %}" class="nav-link {% active 'dashboard:today' %}">{% icon "sun" %} {% trans "Today" %}</a>
+    <a href="{% url 'planner:week' %}" class="nav-link {% active 'planner:*' %}">{% icon "calendar-days" %} {% trans "Planner" %}</a>
+    <a href="{% url 'challenges:list' %}" class="nav-link {% active 'challenges:list' 'challenges:detail' 'challenges:create' 'challenges:settings' %}">{% icon "target" %} {% trans "Challenges" %}</a>
+    <a href="{% url 'dashboard:calendar' %}" class="nav-link {% active 'dashboard:calendar' 'dashboard:day' %}">{% icon "calendar" %} {% trans "Calendar" %}</a>
+    <a href="{% url 'analytics:overview' %}" class="nav-link {% active 'analytics:*' %}">{% icon "chart-column" %} {% trans "Analytics" %}</a>
+    <div class="px-3 pb-1 pt-5 section-title">{% trans "Reflect" %}</div>
+    <a href="{% url 'reports:list' %}" class="nav-link {% active 'reports:*' %}">{% icon "file-text" %} {% trans "Reports" %}</a>
+    <a href="{% url 'journal:list' %}" class="nav-link {% active 'journal:list' 'journal:detail' %}">{% icon "notebook-pen" %} {% trans "Journal" %}</a>
+    <a href="{% url 'journal:review' %}" class="nav-link {% active 'journal:review' %}">{% icon "list-checks" %} {% trans "Weekly review" %}</a>
+    <a href="{% url 'challenges:templates' %}" class="nav-link {% active 'challenges:templates' %}">{% icon "layout-template" %} {% trans "Templates" %}</a>
+  </nav>
+  <div class="border-t border-line p-3">
+    <a href="{% url 'accounts:settings' %}" class="nav-link {% active 'accounts:settings' 'accounts:security' 'accounts:notifications' 'accounts:categories' %}">{% icon "settings" %} {% trans "Settings" %}</a>
+    <div class="mt-2 flex items-center gap-3 rounded-xl px-2 py-2">
+      {% include "partials/avatar.html" with size="h-8 w-8 text-xs" %}
+      <div class="min-w-0 flex-1">
+        <div class="truncate text-sm font-medium">{{ user.get_full_name|default:user.username }}</div>
+        <div class="truncate text-xs text-muted">{{ user.email }}</div>
+      </div>
+      <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}
+        <button class="btn btn-ghost btn-icon btn-sm" data-tip="{% trans 'Sign out' %}" aria-label="{% trans 'Sign out' %}">{% icon "log-out" "icon-sm" %}</button>
+      </form>
+    </div>
+  </div>
+</aside>

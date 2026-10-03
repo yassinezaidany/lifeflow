@@ -1,0 +1,10 @@
+{% load ui %}{% if messages %}
+<div class="mb-6 space-y-2">
+  {% for message in messages %}
+  <div class="alert {% if message.tags == 'error' %}alert-error{% elif message.tags == 'warning' %}alert-warning{% elif message.tags == 'info' %}alert-info{% else %}alert-success{% endif %}" role="status">
+    {% if message.tags == 'error' %}{% icon "circle-alert" "icon-sm mt-0.5" %}{% else %}{% icon "circle-check" "icon-sm mt-0.5" %}{% endif %}
+    <div>{{ message }}</div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

@@ -1,0 +1,224 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "New challenge" %}{% endblock %}
+{% block main_attrs %}data-no-refresh{% endblock %}
+{% block content %}
+{{ wizard_opts|json_script:"wizard-opts" }}
+<div class="mx-auto max-w-3xl" x-data="challengeWizard({...JSON.parse(document.getElementById('wizard-opts').textContent), weekdays: LF.cfg.weekdays,
+  steps: ['{% trans "Basics" as s %}{{ s|escapejs }}', '{% trans "Measure" as s %}{{ s|escapejs }}', '{% trans "Goal" as s %}{{ s|escapejs }}', '{% trans "Frequency" as s %}{{ s|escapejs }}', '{% trans "Period" as s %}{{ s|escapejs }}', '{% trans "Review" as s %}{{ s|escapejs }}']})">
+  <a href="{% url 'challenges:list' %}" class="mb-4 inline-flex items-center gap-1 text-sm text-muted hover:text-ink">{% icon "chevron-left" "icon-sm" %} {% trans "Challenges" %}</a>
+  <h1 class="text-2xl font-semibold">{% trans "Create a challenge" %}</h1>
+
+  {# stepper #}
+  <ol class="mt-6 flex items-center gap-2" aria-label="{% trans 'Progress' %}">
+    <template x-for="(label, i) in steps" :key="i">
+      <li class="flex flex-1 items-center gap-2">
+        <button type="button" class="flex items-center gap-2 text-xs font-medium" :class="i+1 <= step ? 'text-ink' : 'text-faint'" @click="goTo(i+1)" :aria-current="i+1===step ? 'step' : null">
+          <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold transition"
+                :class="i+1 < step ? 'bg-brand text-white dark:text-zinc-950' : (i+1===step ? 'border-2 border-brand text-brand' : 'border border-line')">
+            <template x-if="i+1 < step"><svg class="icon icon-xs"><use :href="LF.cfg.sprite + '#i-check'"></use></svg></template>
+            <template x-if="i+1 >= step"><span x-text="i+1"></span></template>
+          </span>
+          <span class="hidden md:inline" x-text="label"></span>
+        </button>
+        <span class="h-px flex-1 bg-line" x-show="i < steps.length-1"></span>
+      </li>
+    </template>
+  </ol>
+
+  <div class="card mt-6">
+    {# ---------- Step 1: basics #}
+    <section x-show="step===1" class="card-pad space-y-5">
+      <div><h2 class="card-title">{% trans "What is your challenge?" %}</h2><p class="card-subtitle">{% trans "Give it a clear, motivating name." %}</p></div>
+      <div>
+        <label class="label" for="w-name">{% trans "Name" %}</label>
+        <input id="w-name" class="input" x-model="form.name" maxlength="100" placeholder="{% trans 'e.g. Read 20 pages, Learn English, 10,000 steps' %}" :class="errors.name && 'is-invalid'" autofocus>
+        <p class="field-error" x-show="errors.name" x-text="errors.name"></p>
+      </div>
+      <div><label class="label" for="w-desc">{% trans "Description" %} <span class="font-normal text-faint">({% trans "optional" %})</span></label><textarea id="w-desc" rows="2" class="textarea" x-model="form.description" maxlength="2000" placeholder="{% trans 'Why does it matter to you?' %}"></textarea></div>
+      <div>
+        <label class="label">{% trans "Category" %}</label>
+        <div class="flex flex-wrap gap-2">
+          <template x-for="c in categories" :key="c.id">
+            <button type="button" class="badge h-8 gap-1.5 px-3 text-xs" :class="[form.category===c.id ? 'badge-tone ring-1 ring-tone/40' : 'badge-neutral', 'tone-' + c.color]" @click="form.category=c.id"><span class="h-2 w-2 rounded-full bg-tone"></span><span x-text="c.name"></span></button>
+          </template>
+        </div>
+      </div>
+      <div class="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label class="label">{% trans "Icon" %}</label>
+          <div class="grid max-h-36 grid-cols-8 gap-1 overflow-y-auto rounded-xl border border-line p-2 scrollbar-thin" :class="'tone-' + form.color">
+            <template x-for="ic in icons" :key="ic">
+              <button type="button" class="flex h-8 w-8 items-center justify-center rounded-lg" :class="form.icon===ic ? 'bg-tone/15 text-tone-strong ring-1 ring-tone/40' : 'text-muted hover:bg-subtle'" @click="form.icon=ic" :aria-label="ic"><svg class="icon icon-sm"><use :href="LF.cfg.sprite + '#i-' + ic"></use></svg></button>
+            </template>
+          </div>
+        </div>
+        <div>
+          <label class="label">{% trans "Color" %}</label>
+          <div class="flex flex-wrap gap-2">
+            <template x-for="c in colors" :key="c"><button type="button" class="h-8 w-8 rounded-full bg-tone" :class="['tone-'+c, form.color===c && 'ring-2 ring-offset-2 ring-tone ring-offset-surface']" @click="form.color=c" :aria-label="c"></button></template>
+          </div>
+          <div class="mt-4 flex items-center gap-3 rounded-xl bg-subtle p-3" :class="'tone-' + form.color">
+            <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-tone/15 text-tone-strong"><svg class="icon"><use :href="LF.cfg.sprite + '#i-' + form.icon"></use></svg></span>
+            <span class="truncate text-sm font-semibold" x-text="form.name || '{% trans "Your challenge" as s %}{{ s|escapejs }}'"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {# ---------- Step 2: measure #}
+    <section x-show="step===2" x-cloak class="card-pad space-y-5">
+      <div><h2 class="card-title">{% trans "What do you want to measure?" %}</h2><p class="card-subtitle">{% trans "Choose how you'll record your progress. You can add extra details below." %}</p></div>
+      <div class="grid gap-3 sm:grid-cols-2">
+        <button type="button" class="tile" :class="measure==='check' && 'is-active'" @click="chooseMeasure('check')"><span class="text-brand">{% icon "circle-check" "icon-lg" %}</span><span><span class="block text-sm font-semibold">{% trans "Done / not done" %}</span><span class="block text-xs text-muted">{% trans "e.g. Fajr on time, no social media" %}</span></span></button>
+        <button type="button" class="tile" :class="measure==='number' && 'is-active'" @click="chooseMeasure('number')"><span class="text-brand">{% icon "list" "icon-lg" %}</span><span><span class="block text-sm font-semibold">{% trans "A number" %}</span><span class="block text-xs text-muted">{% trans "e.g. pages, steps, glasses of water" %}</span></span></button>
+        <button type="button" class="tile" :class="measure==='duration' && 'is-active'" @click="chooseMeasure('duration')"><span class="text-brand">{% icon "timer" "icon-lg" %}</span><span><span class="block text-sm font-semibold">{% trans "Time spent" %}</span><span class="block text-xs text-muted">{% trans "e.g. 2 hours of coding per day" %}</span></span></button>
+        <button type="button" class="tile" :class="measure==='sessions' && 'is-active'" @click="chooseMeasure('sessions')"><span class="text-brand">{% icon "dumbbell" "icon-lg" %}</span><span><span class="block text-sm font-semibold">{% trans "Sessions" %}</span><span class="block text-xs text-muted">{% trans "e.g. gym 3 times a week" %}</span></span></button>
+        <button type="button" class="tile" :class="measure==='decimal' && 'is-active'" @click="chooseMeasure('decimal')"><span class="text-brand">{% icon "gauge" "icon-lg" %}</span><span><span class="block text-sm font-semibold">{% trans "Distance, weight, money…" %}</span><span class="block text-xs text-muted">{% trans "Decimal values with a unit" %}</span></span></button>
+        <button type="button" class="tile" :class="measure==='custom' && 'is-active'" @click="chooseMeasure('custom')"><span class="text-brand">{% icon "sliders-horizontal" "icon-lg" %}</span><span><span class="block text-sm font-semibold">{% trans "Custom" %}</span><span class="block text-xs text-muted">{% trans "Design your own fields" %}</span></span></button>
+      </div>
+      <p class="field-error" x-show="errors.measure" x-text="errors.measure"></p>
+
+      <div x-show="measure" class="space-y-3 border-t border-line pt-5">
+        <div class="flex items-center justify-between">
+          <div><div class="text-sm font-semibold">{% trans "Recorded fields" %}</div><div class="text-xs text-muted">{% trans "What you fill in each time you record progress." %}</div></div>
+          <button type="button" class="btn btn-secondary btn-sm" @click="addField()">{% icon "plus" "icon-xs" %} {% trans "Add field" %}</button>
+        </div>
+        <template x-if="!form.fields.length"><p class="rounded-lg bg-subtle px-3 py-2 text-xs text-muted">{% trans "No field needed: each recorded entry counts as one session. Add a field to note details (type, duration…)." %}</p></template>
+        <template x-for="(f, i) in form.fields" :key="f.ref">
+          <div class="rounded-xl border border-line p-3" :class="form.metric===f.ref && 'border-brand/50 bg-brand-soft/30'">
+            <div class="grid gap-2 sm:grid-cols-[1fr_11rem_7rem_auto]">
+              <input class="input input-sm" x-model="f.label" maxlength="60" placeholder="{% trans 'Field name (e.g. Pages, Surah, Type)' %}" :class="errors['field_'+i] && 'is-invalid'">
+              <select class="select h-8 text-[13px]" x-model="f.field_type">
+                <option value="boolean">{% trans "Done / not done" %}</option>
+                <option value="integer">{% trans "Whole number" %}</option>
+                <option value="decimal">{% trans "Decimal number" %}</option>
+                <option value="duration">{% trans "Duration" %}</option>
+                <option value="time">{% trans "Time of day" %}</option>
+                <option value="text">{% trans "Text" %}</option>
+                <option value="select">{% trans "Choice list" %}</option>
+              </select>
+              <input class="input input-sm" x-model="f.unit" maxlength="20" placeholder="{% trans 'Unit' %}" x-show="['integer','decimal'].includes(f.field_type)">
+              <span x-show="!['integer','decimal'].includes(f.field_type)"></span>
+              <button type="button" class="btn btn-ghost btn-icon btn-sm" @click="removeField(i)" aria-label="{% trans 'Remove field' %}">{% icon "trash-2" "icon-sm" %}</button>
+            </div>
+            <input x-show="f.field_type==='select'" class="input input-sm mt-2" x-model="f.optionsText" placeholder="{% trans 'Options separated by commas — e.g. Gym, Football, Running' %}">
+            <div class="mt-2 flex flex-wrap items-center gap-4 text-xs text-muted">
+              <label class="flex items-center gap-1.5"><input type="checkbox" class="checkbox" x-model="f.required"> {% trans "Required" %}</label>
+              <template x-if="['boolean','integer','decimal','duration'].includes(f.field_type)">
+                <label class="flex items-center gap-1.5"><input type="radio" class="radio" name="metric" :checked="form.metric===f.ref" @change="form.metric=f.ref"> {% trans "Use for the goal" %}</label>
+              </template>
+            </div>
+            <p class="field-error" x-show="errors['field_'+i]" x-text="errors['field_'+i]"></p>
+          </div>
+        </template>
+        <label class="flex items-center gap-2 text-xs text-muted" x-show="form.fields.length"><input type="radio" class="radio" name="metric" :checked="!form.metric" @change="form.metric=null"> {% trans "Goal counts entries (sessions) instead of a field" %}</label>
+      </div>
+    </section>
+
+    {# ---------- Step 3: goal #}
+    <section x-show="step===3" x-cloak class="card-pad space-y-5">
+      <div><h2 class="card-title">{% trans "Set your goal" %}</h2><p class="card-subtitle">{% trans "How much, and over which period?" %}</p></div>
+      <div class="flex flex-wrap items-end gap-3">
+        <div class="w-36">
+          <label class="label" for="w-target">{% trans "Target" %}</label>
+          <input id="w-target" type="number" min="0.01" step="any" class="input text-lg font-semibold tabular" x-model="form.goal.target" :class="errors.target && 'is-invalid'">
+        </div>
+        <div class="pb-2.5 text-sm text-muted" x-text="unitLabel"></div>
+        <div class="seg">
+          <button type="button" class="seg-item" :aria-pressed="form.goal.period==='daily'" @click="form.goal.period='daily'">{% trans "per day" %}</button>
+          <button type="button" class="seg-item" :aria-pressed="form.goal.period==='weekly'" @click="form.goal.period='weekly'">{% trans "per week" %}</button>
+          <button type="button" class="seg-item" :aria-pressed="form.goal.period==='monthly'" @click="form.goal.period='monthly'">{% trans "per month" %}</button>
+          <button type="button" class="seg-item" :aria-pressed="form.goal.period==='total'" @click="form.goal.period='total'">{% trans "in total" %}</button>
+        </div>
+      </div>
+      <p class="field-error" x-show="errors.target" x-text="errors.target"></p>
+      <template x-if="primary && primary.field_type==='duration' && form.goal.aggregation==='sum'"><p class="hint">{% trans "Durations are entered in minutes (120 = 2 hours)." %}</p></template>
+      <template x-if="canUseMinimum">
+        <div class="space-y-3 rounded-xl bg-subtle p-4">
+          <div class="text-sm font-medium">{% trans "How should it count?" %}</div>
+          <div class="seg">
+            <button type="button" class="seg-item" :aria-pressed="form.goal.aggregation==='sum'" @click="form.goal.aggregation='sum'">{% trans "Add up the values" %}</button>
+            <button type="button" class="seg-item" :aria-pressed="form.goal.aggregation==='count'" @click="form.goal.aggregation='count'">{% trans "Count sessions" %}</button>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 text-sm">
+            <span class="text-muted">{% trans "Only count entries of at least" %}</span>
+            <input type="number" min="0" step="any" class="input input-sm w-24" x-model="form.goal.min_per_entry" placeholder="—">
+            <span class="text-muted" x-text="primary.field_type==='duration' ? 'min' : primary.unit"></span>
+          </div>
+        </div>
+      </template>
+      <div class="flex items-center gap-3 rounded-xl border border-brand/20 bg-brand-soft/40 px-4 py-3 text-sm">
+        <span class="text-brand">{% icon "target" "icon-sm" %}</span><span><span class="font-medium">{% trans "Goal:" %}</span> <span x-text="goalSentence"></span></span>
+      </div>
+    </section>
+
+    {# ---------- Step 4: frequency #}
+    <section x-show="step===4" x-cloak class="card-pad space-y-5">
+      <div><h2 class="card-title">{% trans "When do you plan to do it?" %}</h2><p class="card-subtitle">{% trans "Days outside the schedule are rest days: they never count against you." %}</p></div>
+      <div class="grid gap-3 sm:grid-cols-3">
+        <button type="button" class="tile" :class="form.schedule.frequency==='daily' && 'is-active'" @click="form.schedule.frequency='daily'"><span class="text-brand">{% icon "calendar-days" %}</span><span class="text-sm font-semibold">{% trans "Every day" %}</span></button>
+        <button type="button" class="tile" :class="form.schedule.frequency==='weekdays' && 'is-active'" @click="form.schedule.frequency='weekdays'"><span class="text-brand">{% icon "calendar-check" %}</span><span class="text-sm font-semibold">{% trans "Specific days" %}</span></button>
+        <button type="button" class="tile" :class="form.schedule.frequency==='interval' && 'is-active'" @click="form.schedule.frequency='interval'"><span class="text-brand">{% icon "repeat" %}</span><span class="text-sm font-semibold">{% trans "Every N days" %}</span></button>
+      </div>
+      <div x-show="form.schedule.frequency==='weekdays'" class="flex flex-wrap gap-1.5">
+        <template x-for="(d, i) in weekdayLabels" :key="i">
+          <button type="button" class="h-10 w-12 rounded-lg border text-sm font-medium transition" :class="form.schedule.weekdays.includes(i) ? 'border-brand bg-brand-soft text-brand-strong' : 'border-line text-muted hover:bg-subtle'" @click="toggleWeekday(i)" x-text="d"></button>
+        </template>
+      </div>
+      <p class="field-error" x-show="errors.weekdays" x-text="errors.weekdays"></p>
+      <div x-show="form.schedule.frequency==='interval'" class="flex items-center gap-2 text-sm">{% trans "Every" %} <input type="number" min="2" max="365" class="input input-sm w-20" x-model="form.schedule.interval_days"> {% trans "days" %}</div>
+      <template x-if="form.goal.period !== 'daily'"><p class="hint">{% icon "info" "icon-xs" %} {% trans "With a weekly or monthly goal, the schedule tells LifeFlow on which days the work is expected — so it can tell you if you're on track." %}</p></template>
+    </section>
+
+    {# ---------- Step 5: period #}
+    <section x-show="step===5" x-cloak class="card-pad space-y-5">
+      <div><h2 class="card-title">{% trans "For how long?" %}</h2></div>
+      <div class="seg flex-wrap">
+        <button type="button" class="seg-item" :aria-pressed="duration==='7'" @click="duration='7'">{% trans "7 days" %}</button>
+        <button type="button" class="seg-item" :aria-pressed="duration==='30'" @click="duration='30'">{% trans "30 days" %}</button>
+        <button type="button" class="seg-item" :aria-pressed="duration==='90'" @click="duration='90'">{% trans "90 days" %}</button>
+        <button type="button" class="seg-item" :aria-pressed="duration==='365'" @click="duration='365'">{% trans "1 year" %}</button>
+        <button type="button" class="seg-item" :aria-pressed="duration==='custom'" @click="duration='custom'">{% trans "Custom" %}</button>
+        <button type="button" class="seg-item" :aria-pressed="duration==='open'" @click="duration='open'">{% trans "No end" %}</button>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div><label class="label" for="w-start">{% trans "Start date" %}</label><input id="w-start" type="date" class="input" x-model="form.start_date"></div>
+        <div x-show="duration!=='open'"><label class="label" for="w-end">{% trans "End date" %}</label><input id="w-end" type="date" class="input" x-model="form.end_date" :readonly="duration!=='custom'" :class="[errors.end_date && 'is-invalid', duration!=='custom' && 'bg-subtle']"></div>
+      </div>
+      <p class="field-error" x-show="errors.end_date" x-text="errors.end_date"></p>
+    </section>
+
+    {# ---------- Step 6: review #}
+    <section x-show="step===6" x-cloak class="card-pad space-y-5">
+      <div><h2 class="card-title">{% trans "Review" %}</h2><p class="card-subtitle">{% trans "Everything can be changed later — goal changes never rewrite your history." %}</p></div>
+      <div class="flex items-center gap-4 rounded-2xl bg-subtle p-4" :class="'tone-' + form.color">
+        <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-tone/15 text-tone-strong"><svg class="icon icon-lg"><use :href="LF.cfg.sprite + '#i-' + form.icon"></use></svg></span>
+        <div class="min-w-0"><div class="truncate text-base font-semibold" x-text="form.name"></div><div class="text-xs text-muted" x-text="categoryName"></div></div>
+      </div>
+      <dl class="grid gap-4 text-sm sm:grid-cols-2">
+        <div><dt class="stat-label">{% trans "Goal" %}</dt><dd class="mt-1 font-medium" x-text="goalSentence"></dd></div>
+        <div><dt class="stat-label">{% trans "Schedule" %}</dt><dd class="mt-1 font-medium" x-text="scheduleSentence"></dd></div>
+        <div><dt class="stat-label">{% trans "Period" %}</dt><dd class="mt-1 font-medium"><span x-text="LF.fmtDate(form.start_date, {day:'numeric', month:'short', year:'numeric'})"></span> → <span x-text="form.end_date ? LF.fmtDate(form.end_date, {day:'numeric', month:'short', year:'numeric'}) : '{% trans "no end" as s %}{{ s|escapejs }}'"></span></dd></div>
+        <div><dt class="stat-label">{% trans "Recorded fields" %}</dt><dd class="mt-1 font-medium" x-text="form.fields.length ? form.fields.map(f => f.label).join(', ') : '{% trans "Sessions only" as s %}{{ s|escapejs }}'"></dd></div>
+      </dl>
+      <div class="border-t border-line pt-5">
+        <div class="flex items-center justify-between"><div class="text-sm font-semibold">{% trans "Milestones" %} <span class="font-normal text-faint">({% trans "optional" %})</span></div><button type="button" class="btn btn-ghost btn-sm" @click="addMilestones()">{% icon "flag" "icon-xs" %} {% trans "Add" %}</button></div>
+        <template x-for="(m, i) in form.milestones" :key="i">
+          <div class="mt-2 flex gap-2"><input class="input input-sm flex-1" x-model="m.title" placeholder="{% trans 'Title' %}"><input type="number" class="input input-sm w-28" x-model="m.target_value" placeholder="{% trans 'Total' %}"><button type="button" class="btn btn-ghost btn-icon btn-sm" @click="form.milestones.splice(i,1)">{% icon "x" "icon-sm" %}</button></div>
+        </template>
+      </div>
+      <template x-if="Object.keys(errors).length"><div class="alert alert-error">{% icon "circle-alert" "icon-sm" %}<div x-text="Object.values(errors).join(' ')"></div></div></template>
+    </section>
+
+    <div class="flex items-center justify-between border-t border-line px-5 py-4 sm:px-6">
+      <button type="button" class="btn btn-ghost" @click="back()" x-show="step>1">{% icon "arrow-left" "icon-sm" %} {% trans "Back" %}</button>
+      <span x-show="step===1"></span>
+      <button type="button" class="btn btn-primary" @click="next()" x-show="step<steps.length">{% trans "Continue" %} {% icon "arrow-right" "icon-sm" %}</button>
+      <button type="button" class="btn btn-primary" @click="submit()" x-show="step===steps.length" :disabled="saving">
+        <span x-show="saving" class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>{% icon "check" "icon-sm" %} {% trans "Create challenge" %}
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock %}

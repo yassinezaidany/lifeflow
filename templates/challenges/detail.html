@@ -1,0 +1,268 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{{ challenge.name }}{% endblock %}
+{% block content %}
+<div class="tone-{{ challenge.color }}">
+  <a href="{% url 'challenges:list' %}" class="mb-4 inline-flex items-center gap-1 text-sm text-muted hover:text-ink">{% icon "chevron-left" "icon-sm" %} {% trans "Challenges" %}</a>
+
+  <div class="flex flex-wrap items-start justify-between gap-4">
+    <div class="flex min-w-0 items-center gap-4">
+      <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-tone/15 text-tone-strong">{% icon challenge.icon "icon-xl" %}</span>
+      <div class="min-w-0">
+        <div class="flex flex-wrap items-center gap-2">
+          <h1 class="truncate text-2xl font-semibold">{{ challenge.name }}</h1>
+          {% status_badge p.status %}
+          {% if challenge.status != "active" %}{% status_badge challenge.status %}{% endif %}
+        </div>
+        <p class="mt-1 text-sm text-muted">
+          {% if challenge.category %}{{ challenge.category.name|trans_default }} · {% endif %}{{ p.goal_description }} ·
+          {{ challenge.start_date|udate:user }} → {% if challenge.end_date %}{{ challenge.end_date|udate:user }}{% else %}{% trans "no end" %}{% endif %}
+        </p>
+      </div>
+    </div>
+    <div class="flex gap-2">
+      <a href="{% url 'challenges:settings' challenge.pk %}" class="btn btn-secondary">{% icon "settings" "icon-sm" %} <span class="hidden sm:inline">{% trans "Edit" %}</span></a>
+      {% if challenge.status == "active" %}
+      <button class="btn btn-primary" @click="$dispatch('lf:entry', {challenge_id: {{ challenge.pk }}})">{% icon "plus" "icon-sm" %} {% trans "Record" %}</button>
+      {% endif %}
+    </div>
+  </div>
+  {% if challenge.description %}<p class="mt-4 max-w-3xl text-sm text-muted">{{ challenge.description|linebreaksbr }}</p>{% endif %}
+
+  {# ---------------------------------------------------------------- KPIs #}
+  <div class="mt-6 grid gap-3 lg:grid-cols-[auto_1fr] lg:gap-4">
+    <div class="card flex items-center gap-5 p-5">
+      {% ring p.progress 112 10 %}
+      <div class="space-y-2">
+        <div><div class="stat-label">{% trans "Actual" %}</div><div class="text-2xl font-semibold tabular">{{ p.display.actual }} <span class="text-sm font-medium text-muted">{{ p.unit }}</span></div></div>
+        <div class="text-xs text-muted">{% trans "Goal" %} <span class="font-semibold text-ink tabular">{{ p.display.goal }}</span> {{ p.unit }}{% if not challenge.end_date and p.period != "total" %} <span class="text-faint">({% trans "to date" %})</span>{% endif %}</div>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
+      <div class="card p-4"><div class="stat-label">{% trans "Expected" %}</div><div class="mt-1 text-xl font-semibold tabular">{{ p.display.expected }}</div><div class="text-[11px] text-faint">{% trans "by yesterday" %}</div></div>
+      <div class="card p-4"><div class="stat-label">{% trans "Gap" %}</div><div class="mt-1 text-xl font-semibold tabular {% if p.gap is not None and p.gap >= 0 %}text-success{% elif p.gap is not None %}text-warning{% endif %}">{{ p.display.gap }}</div><div class="text-[11px] text-faint">{% trans "vs expected" %}</div></div>
+      <div class="card p-4"><div class="stat-label">{% trans "Remaining" %}</div><div class="mt-1 text-xl font-semibold tabular">{{ p.display.remaining }}</div><div class="text-[11px] text-faint">{{ p.unit }}</div></div>
+      <div class="card p-4"><div class="stat-label">{% trans "Completion" %}</div><div class="mt-1 text-xl font-semibold tabular">{{ p.completion_rate|pct }}</div><div class="text-[11px] text-faint">{{ p.completed_periods }} / {{ p.due_periods }}</div></div>
+      <div class="card p-4"><div class="stat-label">{% trans "Current streak" %}</div><div class="mt-1 flex items-center gap-1 text-xl font-semibold tabular">{% if p.current_streak %}<span class="text-orange-500">{% icon "flame" "icon-sm" %}</span>{% endif %}{{ p.current_streak }}</div><div class="text-[11px] text-faint">{% streak_text p.current_streak p.streak_unit %}</div></div>
+      <div class="card p-4"><div class="stat-label">{% trans "Best streak" %}</div><div class="mt-1 flex items-center gap-1 text-xl font-semibold tabular"><span class="text-amber-500">{% icon "trophy" "icon-sm" %}</span>{{ p.best_streak }}</div><div class="text-[11px] text-faint">{% streak_text p.best_streak p.streak_unit %}</div></div>
+    </div>
+  </div>
+
+  {# ---------------------------------------------------------------- Today strip #}
+  {% if challenge.status == "active" and p.status != "not_started" %}
+  <div class="mt-4 flex flex-wrap items-center gap-3 rounded-xl border border-line bg-surface px-4 py-3 text-sm">
+    {% if p.today.done %}<span class="text-success">{% icon "circle-check" "icon-sm" %}</span> {% trans "Today's target is reached." %}
+    {% elif p.today.type == "rest" %}<span class="text-sky-500">{% icon "coffee" "icon-sm" %}</span> {% trans "Rest day — enjoy it." %}
+    {% elif p.today.type == "active" %}<span class="text-muted">{% icon "clock" "icon-sm" %}</span>
+      {% if p.period == "daily" %}{% blocktrans with a=p.today.display.actual t=p.today.display.target u=p.unit %}Today: {{ a }} / {{ t }} {{ u }}{% endblocktrans %}
+      {% else %}{% blocktrans with a=p.today.display.period_actual t=p.today.display.period_target u=p.unit %}This period: {{ a }} / {{ t }} {{ u }}{% endblocktrans %}{% endif %}
+    {% elif p.today.type == "paused" %}{% trans "This challenge is paused." %}
+    {% endif %}
+    <span class="ml-auto text-xs text-muted">{% trans "Average" %}: <b class="text-ink tabular">{{ p.display.average }}</b> {{ p.unit }} / {% trans "active day" %}</span>
+  </div>
+  {% endif %}
+
+  {# ---------------------------------------------------------------- Charts #}
+  <div class="mt-6 grid gap-4 lg:grid-cols-3">
+    <section class="card p-5 lg:col-span-2">
+      <div class="mb-4 flex items-center justify-between">
+        <div><h2 class="card-title">{% trans "Progress over time" %}</h2><p class="card-subtitle">{% trans "Cumulative actual vs. expected pace" %}</p></div>
+      </div>
+      <div class="h-64"><canvas id="ch-line" role="img" aria-label="{% trans 'Progress over time' %}"></canvas></div>
+    </section>
+    <section class="card p-5">
+      <h2 class="card-title">{% trans "Completion" %}</h2>
+      <p class="card-subtitle">{% if p.period == "weekly" %}{% trans "Weeks achieved" %}{% elif p.period == "monthly" %}{% trans "Months achieved" %}{% else %}{% trans "Days achieved" %}{% endif %}</p>
+      <div class="relative mx-auto mt-4 h-48 w-48"><canvas id="ch-donut" role="img" aria-label="{% trans 'Completion rate' %}"></canvas>
+        <div class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center"><span class="text-2xl font-semibold tabular">{{ p.completion_rate|pct }}</span><span class="text-xs text-muted">{{ p.completed_periods }}/{{ p.due_periods }}</span></div>
+      </div>
+    </section>
+    <section class="card p-5 lg:col-span-2">
+      <h2 class="card-title">{% trans "Weekly: actual vs target" %}</h2>
+      <div class="mt-4 h-56"><canvas id="ch-bar" role="img" aria-label="{% trans 'Weekly actual vs target' %}"></canvas></div>
+    </section>
+    <section class="card p-5">
+      <h2 class="card-title">{% trans "Statistics" %}</h2>
+      {% with s=p.statistics %}
+      <dl class="mt-3 grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+        <div><dt class="stat-label">{% trans "Total" %}</dt><dd class="font-semibold tabular">{{ s.display.total }} <span class="text-xs font-normal text-muted">{{ p.unit }}</span></dd></div>
+        <div><dt class="stat-label">{% trans "Entries" %}</dt><dd class="font-semibold tabular">{{ s.entries }}</dd></div>
+        <div><dt class="stat-label">{% trans "Active days" %}</dt><dd class="font-semibold tabular">{{ s.active_days }}</dd></div>
+        <div><dt class="stat-label">{% trans "Completed days" %}</dt><dd class="font-semibold tabular">{{ s.completed_days }}</dd></div>
+        {% if s.missed_days is not None %}<div><dt class="stat-label">{% trans "Missed days" %}</dt><dd class="font-semibold tabular">{{ s.missed_days }}</dd></div>{% endif %}
+        <div><dt class="stat-label">{% trans "Rest days" %}</dt><dd class="font-semibold tabular">{{ s.rest_days }}</dd></div>
+        <div><dt class="stat-label">{% trans "Avg / entry" %}</dt><dd class="font-semibold tabular">{{ s.display.average_per_entry }}</dd></div>
+        <div><dt class="stat-label">{% trans "Min / max day" %}</dt><dd class="font-semibold tabular">{{ s.display.min }} – {{ s.display.max }}</dd></div>
+        {% if s.best_day %}<div class="col-span-2"><dt class="stat-label">{% trans "Best day" %}</dt><dd class="font-semibold tabular">{{ s.display.best_day }} <span class="text-xs font-normal text-muted">· {{ s.best_day.date }}</span></dd></div>{% endif %}
+        {% if s.paused_days %}<div><dt class="stat-label">{% trans "Paused days" %}</dt><dd class="font-semibold tabular">{{ s.paused_days }}</dd></div>{% endif %}
+      </dl>
+      {% endwith %}
+    </section>
+  </div>
+
+  {# ---------------------------------------------------------------- Heatmap #}
+  {% if heatmap %}
+  <section class="card mt-4 p-5">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <h2 class="card-title">{% trans "Activity" %}</h2>
+      <div class="flex items-center gap-1.5 text-[11px] text-muted">{% trans "Less" %}
+        <span class="hm-cell"></span><span class="hm-cell bg-tone/25"></span><span class="hm-cell bg-tone/50"></span><span class="hm-cell bg-tone/80"></span><span class="hm-cell bg-tone"></span>{% trans "More" %}
+        <span class="ml-3 hm-cell bg-red-500/40"></span>{% trans "Missed" %}<span class="ml-2 hm-cell border border-dashed border-sky-400 bg-transparent"></span>{% trans "Rest" %}
+      </div>
+    </div>
+    <div class="mt-4 flex gap-[3px] overflow-x-auto pb-1 scrollbar-thin">
+      {% for week in heatmap %}
+      <div class="flex flex-col gap-[3px]">
+        {% for c in week %}
+        <span class="hm-cell {% if c.status == 'outside' or c.status == 'none' %}opacity-30{% elif c.level == 4 %}bg-tone{% elif c.level == 3 %}bg-tone/80{% elif c.level == 2 %}bg-tone/50{% elif c.level == 1 %}bg-tone/25{% elif c.status == 'missed' %}bg-red-500/40{% elif c.status == 'rest' %}border border-dashed border-sky-400 bg-transparent{% elif c.status == 'paused' %}bg-line{% endif %}" title="{{ c.date|date:'D j M' }} · {{ c.status|status_label }}"></span>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {# ---------------------------------------------------------------- Milestones #}
+  {% if p.milestones %}
+  <section class="card mt-4 p-5">
+    <h2 class="card-title">{% trans "Milestones" %}</h2>
+    <ol class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {% for m in p.milestones %}
+      <li class="rounded-xl border p-3 {% if m.reached %}border-tone/40 bg-tone/5{% else %}border-line{% endif %}">
+        <div class="flex items-center gap-2 text-sm font-semibold">{% if m.reached %}<span class="text-tone-strong">{% icon "medal" "icon-sm" %}</span>{% else %}<span class="text-faint">{% icon "flag" "icon-sm" %}</span>{% endif %}{{ m.title }}</div>
+        <div class="mt-1 text-xs text-muted">{{ m.target_display }} {{ p.unit }}{% if m.reached_on %} · {% trans "reached" %} {{ m.reached_on }}{% endif %}</div>
+        <div class="bar mt-2"><span style="width:{{ m.progress }}%"></span></div>
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
+  {% endif %}
+
+  {# ---------------------------------------------------------------- Entries #}
+  <section class="card mt-4 overflow-hidden">
+    <div class="flex items-center justify-between px-5 py-4">
+      <h2 class="card-title">{% trans "Entries" %}</h2>
+      <a href="{% url 'reports:export' %}?format=csv&kind=entries&challenge={{ challenge.pk }}" class="btn btn-ghost btn-sm">{% icon "download" "icon-xs" %} CSV</a>
+    </div>
+    {% if entries %}
+    <div class="overflow-x-auto">
+      <table class="table">
+        <thead><tr><th>{% trans "Date" %}</th>{% for f in fields %}<th>{{ f.label }}</th>{% endfor %}<th>{% trans "Note" %}</th><th class="w-20"></th></tr></thead>
+        <tbody>
+          {% for e in entries %}
+          <tr x-data="entryEditor({{ e.json|json_attr }}, {{ fields_json|json_attr }})">
+            <td class="whitespace-nowrap tabular">{{ e.obj.date|udate:user }}{% if e.obj.source == "planner" %} <span class="text-faint" title="{% trans 'From planner' %}">{% icon "calendar-check" "icon-xs" %}</span>{% endif %}</td>
+            {% for f in fields %}{% with v=e.values|get_item:f.pk %}
+            <td class="whitespace-nowrap tabular">{% if v is None %}<span class="text-faint">—</span>{% elif v.value is True %}<span class="text-success">{% icon "check" "icon-sm" %}</span>{% elif v.value is False %}<span class="text-faint">{% icon "x" "icon-sm" %}</span>{% elif f.field_type == "duration" %}{{ v.value|minutes }}{% else %}{{ v.value }} <span class="text-xs text-muted">{{ f.unit }}</span>{% endif %}</td>
+            {% endwith %}{% endfor %}
+            <td class="max-w-xs truncate text-muted">{{ e.obj.note }}</td>
+            <td class="whitespace-nowrap text-right" x-data="entryActions({{ e.obj.pk }})">
+              <button class="btn btn-ghost btn-icon btn-sm" @click="open=true" aria-label="{% trans 'Edit' %}">{% icon "pencil" "icon-sm" %}</button>
+              <button class="btn btn-ghost btn-icon btn-sm text-danger" @click="remove()" aria-label="{% trans 'Delete' %}">{% icon "trash-2" "icon-sm" %}</button>
+              <template x-teleport="body">
+                <div x-show="open" x-cloak @keydown.escape.window="open=false">
+                  <div class="modal-backdrop" @click="open=false"></div>
+                  <form class="modal-panel space-y-4 p-5 text-left sm:max-w-md" @submit.prevent="save()">
+                    <h3 class="text-base font-semibold">{% trans "Edit entry" %}</h3>
+                    <div><label class="label">{% trans "Date" %}</label><input type="date" class="input" x-model="date" :max="LF.cfg.today"><p class="field-error" x-show="errors.date" x-text="errors.date"></p></div>
+                    <template x-for="f in fields" :key="f.key">
+                      <div>
+                        <label class="label" x-text="f.label"></label>
+                        <template x-if="f.field_type==='boolean'"><select class="select" x-model="values[f.key]" @change="values[f.key] = $event.target.value === 'true' ? true : ($event.target.value === 'false' ? false : null)"><option value="">—</option><option value="true" :selected="values[f.key]===true">{% trans "Done" %}</option><option value="false" :selected="values[f.key]===false">{% trans "Not done" %}</option></select></template>
+                        <template x-if="['integer','decimal','duration'].includes(f.field_type)"><input type="number" min="0" step="any" class="input" x-model="values[f.key]" :placeholder="f.field_type==='duration' ? 'min' : f.unit"></template>
+                        <template x-if="f.field_type==='time'"><input type="time" class="input" x-model="values[f.key]"></template>
+                        <template x-if="f.field_type==='text'"><input type="text" class="input" x-model="values[f.key]"></template>
+                        <template x-if="f.field_type==='select'"><select class="select" x-model="values[f.key]"><option value="">—</option><template x-for="o in f.options" :key="o"><option :value="o" x-text="o" :selected="values[f.key]===o"></option></template></select></template>
+                        <p class="field-error" x-show="errors[f.key]" x-text="errors[f.key]"></p>
+                      </div>
+                    </template>
+                    <div><label class="label">{% trans "Note" %}</label><textarea class="textarea" rows="2" x-model="note"></textarea></div>
+                    <div class="flex justify-end gap-2"><button type="button" class="btn btn-secondary" @click="open=false">{% trans "Cancel" %}</button><button class="btn btn-primary" :disabled="saving">{% trans "Save" %}</button></div>
+                  </form>
+                </div>
+              </template>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if page.has_other_pages %}
+    <div class="flex items-center justify-between border-t border-line px-5 py-3 text-sm">
+      <span class="text-muted">{% blocktrans with n=page.number total=page.paginator.num_pages %}Page {{ n }} of {{ total }}{% endblocktrans %}</span>
+      <div class="flex gap-2">
+        {% if page.has_previous %}<a href="?page={{ page.previous_page_number }}" class="btn btn-secondary btn-sm">{% trans "Previous" %}</a>{% endif %}
+        {% if page.has_next %}<a href="?page={{ page.next_page_number }}" class="btn btn-secondary btn-sm">{% trans "Next" %}</a>{% endif %}
+      </div>
+    </div>
+    {% endif %}
+    {% else %}
+    <div class="px-5 pb-8 pt-2 text-center text-sm text-muted">
+      {% trans "No entry yet. Record your first result to start seeing your progress." %}
+      {% if challenge.status == "active" %}<div><button class="btn btn-primary btn-sm mt-4" @click="$dispatch('lf:entry', {challenge_id: {{ challenge.pk }}})">{% icon "plus" "icon-xs" %} {% trans "Record" %}</button></div>{% endif %}
+    </div>
+    {% endif %}
+  </section>
+
+  {# ---------------------------------------------------------------- History #}
+  {% if goals|length > 1 or schedules|length > 1 or pauses %}
+  <section class="card mt-4 p-5">
+    <h2 class="card-title">{% trans "History" %}</h2>
+    <p class="card-subtitle">{% trans "Past days are always evaluated with the rules in force at the time." %}</p>
+    <ul class="mt-4 space-y-2 text-sm">
+      {% for g in goals %}<li class="flex gap-3"><span class="w-48 shrink-0 text-xs text-muted tabular">{{ g.effective_from|udate:user }} → {% if g.effective_to %}{{ g.effective_to|udate:user }}{% else %}{% trans "now" %}{% endif %}</span><span>{% icon "target" "icon-xs" %} {% trans "Goal" %}: {{ g.target|floatformat:"-2" }} {{ g.unit_label }} {{ g.get_period_display }}</span></li>{% endfor %}
+      {% for s in schedules %}<li class="flex gap-3"><span class="w-48 shrink-0 text-xs text-muted tabular">{{ s.effective_from|udate:user }} → {% if s.effective_to %}{{ s.effective_to|udate:user }}{% else %}{% trans "now" %}{% endif %}</span><span>{% icon "calendar" "icon-xs" %} {{ s.get_frequency_display }}</span></li>{% endfor %}
+      {% for pz in pauses %}<li class="flex gap-3"><span class="w-48 shrink-0 text-xs text-muted tabular">{{ pz.start_date|udate:user }} → {% if pz.end_date %}{{ pz.end_date|udate:user }}{% else %}{% trans "now" %}{% endif %}</span><span>{% icon "pause" "icon-xs" %} {% trans "Paused" %}</span></li>{% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+</div>
+{{ chart_data|json_script:"chart-data" }}
+{% endblock %}
+{% block page_scripts %}
+<script>
+lfReady(function () {
+  const el = document.getElementById("chart-data");
+  if (!el) return;
+  const d = JSON.parse(el.textContent);
+  const color = d.color;
+  const fmt = (v) => d.is_duration ? LF.fmtMinutes(v) : (Math.round(v * 100) / 100);
+  let cumA = 0, cumE = 0;
+  const labels = [], actual = [], expected = [];
+  d.days.forEach((p) => {
+    cumA += p.actual; cumE += p.target;
+    labels.push(LF.parseISO(p.date).toLocaleDateString(LF.cfg.locale, { day: "numeric", month: "short" }));
+    actual.push(Math.round(cumA * 100) / 100);
+    expected.push(Math.round(cumE * 100) / 100);
+  });
+  const yTicks = { callback: (v) => fmt(v) };
+  LF.chart(document.getElementById("ch-line"), () => ({
+    type: "line",
+    data: { labels, datasets: [
+      { label: "{% trans 'Actual' as s %}{{ s|escapejs }}", data: actual, borderColor: LF.tone(color), backgroundColor: LF.tone(color, 0.12), fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2 },
+      { label: "{% trans 'Expected' as s %}{{ s|escapejs }}", data: expected, borderColor: LF.cssVar("--c-faint"), borderDash: [5, 4], pointRadius: 0, borderWidth: 1.5, fill: false },
+    ] },
+    options: { maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
+      plugins: { legend: { position: "bottom", labels: { boxWidth: 10, usePointStyle: true } }, tooltip: { ...LF.tooltip, displayColors: true, callbacks: { label: (c) => `${c.dataset.label}: ${fmt(c.parsed.y)}` } } },
+      scales: LF.baseScales({ y: { ticks: yTicks }, x: { ticks: { maxTicksLimit: 8 } } }) },
+  }));
+  const missed = Math.max(d.due - d.completed, 0);
+  LF.chart(document.getElementById("ch-donut"), () => ({
+    type: "doughnut",
+    data: { labels: ["{% trans 'Achieved' as s %}{{ s|escapejs }}", "{% trans 'Not achieved' as s %}{{ s|escapejs }}"], datasets: [{ data: d.due ? [d.completed, missed] : [0, 1], backgroundColor: [LF.tone(color), LF.cssVar("--c-subtle")], borderWidth: 0 }] },
+    options: { cutout: "78%", plugins: { legend: { display: false }, tooltip: LF.tooltip } },
+  }));
+  const weeks = d.weekly.slice(-12);
+  LF.chart(document.getElementById("ch-bar"), () => ({
+    type: "bar",
+    data: { labels: weeks.map((w) => LF.parseISO(w.start).toLocaleDateString(LF.cfg.locale, { day: "numeric", month: "short" })),
+      datasets: [
+        { label: "{% trans 'Actual' as s %}{{ s|escapejs }}", data: weeks.map((w) => w.actual), backgroundColor: LF.tone(color, 0.85), borderRadius: 6, maxBarThickness: 26 },
+        { label: "{% trans 'Target' as s %}{{ s|escapejs }}", data: weeks.map((w) => Math.round(w.target * 100) / 100), backgroundColor: LF.cssVarA("--c-faint", 0.25), borderRadius: 6, maxBarThickness: 26 },
+      ] },
+    options: { maintainAspectRatio: false, plugins: { legend: { position: "bottom", labels: { boxWidth: 10, usePointStyle: true } }, tooltip: { ...LF.tooltip, displayColors: true, callbacks: { label: (c) => `${c.dataset.label}: ${fmt(c.parsed.y)}` } } },
+      scales: LF.baseScales({ y: { ticks: yTicks } }) },
+  }));
+});
+</script>
+{% endblock %}

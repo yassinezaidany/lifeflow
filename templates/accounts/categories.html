@@ -1,0 +1,7 @@
+{% extends "accounts/_settings_layout.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Categories" %}{% endblock %}
+{% block settings %}
+{% include "accounts/_category_manager.html" with endpoint="/api/challenge-categories/" title=_("Challenge categories") subtitle=_("Used to group your challenges.") %}
+{% include "accounts/_category_manager.html" with endpoint="/api/planner/categories/" title=_("Planner categories") subtitle=_("Used to colour and organise your planned activities.") %}
+{% endblock %}

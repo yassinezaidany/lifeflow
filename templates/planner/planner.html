@@ -1,0 +1,157 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Planner" %}{% endblock %}
+{% block main_attrs %}data-no-refresh{% endblock %}
+{% block content %}
+{{ planner_opts|json_script:"planner-opts" }}
+<div x-data="planner(JSON.parse(document.getElementById('planner-opts').textContent))"
+     @pointermove.window="onDrag($event)" @pointerup.window="endDrag()" class="select-none">
+
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div class="flex items-center gap-2">
+      <button class="btn btn-secondary btn-icon" @click="shift(-1)" aria-label="{% trans 'Previous' %}">{% icon "chevron-left" "icon-sm" %}</button>
+      <button class="btn btn-secondary" @click="goToday()">{% trans "Today" %}</button>
+      <button class="btn btn-secondary btn-icon" @click="shift(1)" aria-label="{% trans 'Next' %}">{% icon "chevron-right" "icon-sm" %}</button>
+      <h1 class="ml-2 text-lg font-semibold capitalize sm:text-xl" x-text="title"></h1>
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      <div class="seg" role="tablist">
+        <button class="seg-item" role="tab" :aria-selected="mode==='day'" @click="setMode('day')">{% trans "Day" %}</button>
+        <button class="seg-item" role="tab" :aria-selected="mode==='week'" @click="setMode('week')">{% trans "Week" %}</button>
+      </div>
+      <button class="btn btn-secondary" @click="openTemplates()">{% icon "layout-template" "icon-sm" %} <span class="hidden sm:inline">{% trans "Templates" %}</span></button>
+      <button class="btn btn-primary" @click="$dispatch('lf:activity', {date: selected})">{% icon "plus" "icon-sm" %} <span class="hidden sm:inline">{% trans "Add" %}</span></button>
+    </div>
+  </div>
+
+  <div class="mt-3 flex flex-wrap items-center justify-between gap-2">
+    {% include "planner/_tabs.html" %}
+    <template x-if="summary">
+      <div class="flex gap-3 text-xs text-muted">
+        <span><b class="text-ink tabular" x-text="summary.planned"></b> {% trans "planned" %}</span>
+        <span><b class="text-success tabular" x-text="summary.completed"></b> {% trans "done" %}</span>
+        <span><b class="text-ink tabular" x-text="fmtMinutes(summary.planned_minutes)"></b> {% trans "scheduled" %}</span>
+      </div>
+    </template>
+  </div>
+
+  {# mobile day picker in week mode #}
+  <div class="no-scrollbar -mx-4 mt-4 flex gap-1.5 overflow-x-auto px-4 md:hidden" x-show="mode==='week'">
+    <template x-for="day in days" :key="day.date">
+      <button class="flex min-w-[3.25rem] flex-col items-center rounded-xl border px-2 py-1.5 transition"
+              :class="day.date===selected ? 'border-brand bg-brand-soft text-brand-strong' : 'border-line bg-surface text-muted'" @click="selected = day.date">
+        <span class="text-[10px] font-semibold uppercase" x-text="dayLabel(day).weekday"></span>
+        <span class="text-base font-semibold" :class="day.date===today && 'text-brand'" x-text="dayLabel(day).num"></span>
+        <span class="mt-0.5 h-1 w-1 rounded-full" :class="day.activities.length ? 'bg-current' : 'bg-transparent'"></span>
+      </button>
+    </template>
+  </div>
+
+  <template x-if="error"><div class="alert alert-error mt-4">{% icon "circle-alert" "icon-sm" %}<span x-text="error"></span><button class="ml-auto underline" @click="load()">{% trans "Retry" %}</button></div></template>
+
+  <div class="card mt-4 overflow-hidden">
+    {# day headers #}
+    <div class="flex border-b border-line bg-surface">
+      <div class="w-14 shrink-0"></div>
+      <template x-for="day in days" :key="'h'+day.date">
+        <div class="flex-1 border-l border-line px-2 py-2 text-center" :class="mode==='week' && day.date!==selected ? 'hidden md:block' : ''">
+          <div class="text-[11px] font-semibold uppercase tracking-wide" :class="day.date===today ? 'text-brand' : 'text-faint'" x-text="dayLabel(day).weekday"></div>
+          <div class="mx-auto mt-0.5 flex h-7 w-7 items-center justify-center rounded-full text-sm font-semibold tabular" :class="day.date===today ? 'bg-brand text-white dark:text-zinc-950' : ''" x-text="dayLabel(day).num"></div>
+          <div class="mt-1 h-1 overflow-hidden rounded-full bg-subtle" x-show="day.summary.planned" :title="day.summary.completed + '/' + day.summary.planned">
+            <div class="h-full rounded-full bg-success" :style="'width:' + (day.summary.completion_rate || 0) + '%'"></div>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <div x-ref="scroller" class="relative max-h-[calc(100vh-17rem)] min-h-[24rem] overflow-y-auto scrollbar-thin">
+      <template x-if="loading">
+        <div class="absolute inset-0 z-30 flex items-start justify-center bg-surface/60 pt-24"><span class="h-6 w-6 animate-spin rounded-full border-2 border-line border-t-brand"></span></div>
+      </template>
+      <div class="flex" :style="'height:' + gridHeight + 'px'">
+        <div class="relative w-14 shrink-0">
+          <template x-for="m in hours" :key="m">
+            <div class="absolute right-2 -translate-y-1/2 text-[10px] font-medium text-faint tabular" :style="'top:' + ((m - dayStart) * hourPx / 60) + 'px'" x-text="m === dayStart ? '' : hourLabel(m)"></div>
+          </template>
+        </div>
+        <template x-for="day in days" :key="'c'+day.date">
+          <div class="relative flex-1 cursor-cell border-l border-line"
+               :class="[mode==='week' && day.date!==selected ? 'hidden md:block' : '', day.date===today ? 'bg-brand/[0.02]' : '']"
+               :data-day-col="day.date"
+               style="background-image: repeating-linear-gradient(to bottom, rgb(var(--c-line) / .8) 0 1px, transparent 1px 30px, rgb(var(--c-line) / .35) 30px 31px, transparent 31px 60px);"
+               @click.self="createAt(day, $event)">
+            <template x-for="it in blocks(day)" :key="it.a.id">
+              <div x-show="visible(it)" class="tl-block" tabindex="0" role="button"
+                   :class="['tone-' + it.a.effective_color, ['completed','partial'].includes(it.a.status) && 'is-done', it.a.status==='cancelled' && 'is-cancelled', drag && drag.a.id===it.a.id && drag.moved && 'is-dragging']"
+                   :style="blockStyle(it)"
+                   @pointerdown="startDrag($event, it, day, 'move')"
+                   @keydown.enter.prevent="open(it.a)" @keydown="keyMove($event, it)"
+                   :aria-label="it.a.title + ', ' + label(it)">
+                <div class="flex items-start gap-1">
+                  <span class="tl-title min-w-0 flex-1 truncate text-xs font-semibold leading-4" x-text="it.a.title"></span>
+                  <template x-if="it.a.status==='completed'"><svg class="icon icon-xs shrink-0"><use :href="LF.cfg.sprite + '#i-check'"></use></svg></template>
+                  <template x-if="it.a.status==='missed'"><svg class="icon icon-xs shrink-0 text-danger"><use :href="LF.cfg.sprite + '#i-x'"></use></svg></template>
+                  <template x-if="it.a.is_recurring"><svg class="icon icon-xs shrink-0 opacity-60"><use :href="LF.cfg.sprite + '#i-repeat'"></use></svg></template>
+                </div>
+                <div x-show="!isCompact(it)" class="truncate text-[11px] leading-4 opacity-80 tabular" x-text="label(it)"></div>
+                <div x-show="!isCompact(it) && it.a.challenge" class="truncate text-[11px] leading-4 opacity-80">
+                  <svg class="icon icon-xs"><use :href="LF.cfg.sprite + '#i-target'"></use></svg> <span x-text="it.a.challenge && it.a.challenge.name"></span>
+                </div>
+                <div class="absolute inset-x-0 bottom-0 h-2 cursor-ns-resize" @pointerdown.stop="startDrag($event, it, day, 'resize')" aria-hidden="true"></div>
+              </div>
+            </template>
+            <template x-if="showNow(day)">
+              <div class="pointer-events-none absolute inset-x-0 z-10 flex items-center" :style="'top:' + nowTop() + 'px'">
+                <span class="-ml-1 h-2 w-2 rounded-full bg-danger"></span><span class="h-px flex-1 bg-danger"></span>
+              </div>
+            </template>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+  <p class="mt-3 hidden text-xs text-muted md:block">{% icon "info" "icon-xs" %} {% trans "Click an empty slot to add an activity. Drag to move (also to another day), drag the bottom edge to resize. Keyboard: Alt + arrows." %}</p>
+
+  {# ---------------------------------------------------------------- templates modal #}
+  <div x-show="templatesOpen" x-cloak @keydown.escape.window="templatesOpen=false">
+    <div class="modal-backdrop" x-transition.opacity @click="templatesOpen=false"></div>
+    <div class="modal-panel sm:max-w-lg" x-transition role="dialog" aria-modal="true" x-trap.noscroll="templatesOpen">
+      <div class="flex items-center justify-between border-b border-line px-5 py-4">
+        <h2 class="text-base font-semibold">{% trans "Day templates" %}</h2>
+        <button class="btn btn-ghost btn-icon btn-sm" @click="templatesOpen=false" aria-label="{% trans 'Close' %}">{% icon "x" "icon-sm" %}</button>
+      </div>
+      <div class="space-y-5 px-5 py-5">
+        <div>
+          <div class="label">{% trans "Apply to" %}</div>
+          <div class="flex flex-wrap gap-1.5">
+            <template x-for="day in days" :key="'a'+day.date">
+              <button type="button" class="flex min-w-[3rem] flex-col items-center rounded-lg border px-2 py-1 text-xs transition"
+                      :class="applyDays.includes(day.date) ? 'border-brand bg-brand-soft text-brand-strong' : 'border-line text-muted hover:bg-subtle'" @click="toggleApplyDay(day.date)">
+                <span class="font-semibold uppercase" x-text="dayLabel(day).weekday"></span><span x-text="dayLabel(day).num"></span>
+              </button>
+            </template>
+          </div>
+          <label class="mt-3 flex items-center gap-2 text-sm"><input type="checkbox" class="checkbox" x-model="applyReplace"> {% trans "Replace the activities already planned on these days" %}</label>
+        </div>
+        <div>
+          <div class="label">{% trans "Choose a template" %}</div>
+          <template x-if="!templates.length"><p class="text-sm text-muted">{% trans "You have no template yet. Save a day below, or create one in Day templates." %}</p></template>
+          <div class="space-y-2">
+            <template x-for="tpl in templates" :key="tpl.id">
+              <div class="flex items-center gap-3 rounded-xl border border-line p-3" :class="'tone-' + tpl.color">
+                <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-tone/10 text-tone-strong"><svg class="icon"><use :href="LF.cfg.sprite + '#i-' + tpl.icon"></use></svg></span>
+                <div class="min-w-0 flex-1"><div class="truncate text-sm font-medium" x-text="tpl.name"></div><div class="text-xs text-muted" x-text="tpl.items.length + ' {% trans "activities" as s %}{{ s|escapejs }}'"></div></div>
+                <button class="btn btn-primary btn-sm" @click="applyTemplate(tpl)">{% trans "Apply" %}</button>
+              </div>
+            </template>
+          </div>
+        </div>
+        <div class="border-t border-line pt-4">
+          <div class="label">{% trans "Save the selected day as a template" %}</div>
+          <div class="flex gap-2"><input class="input" x-model="saveName" placeholder="{% trans 'e.g. University day' %}" maxlength="80"><button class="btn btn-secondary" @click="saveDayAsTemplate()">{% trans "Save" %}</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

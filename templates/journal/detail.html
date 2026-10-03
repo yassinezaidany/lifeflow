@@ -1,0 +1,25 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{% if entry %}{{ entry.title|default:_("Journal") }}{% else %}{% trans "New entry" %}{% endif %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-2xl">
+  <a href="{% url 'journal:list' %}" class="mb-4 inline-flex items-center gap-1 text-sm text-muted hover:text-ink">{% icon "chevron-left" "icon-sm" %} {% trans "Journal" %}</a>
+  <form method="post" class="card card-pad space-y-5" novalidate>
+    {% csrf_token %}
+    <div class="grid gap-4 sm:grid-cols-[10rem_1fr]">
+      {% include "partials/field.html" with field=form.date %}
+      {% include "partials/field.html" with field=form.title %}
+    </div>
+    {% include "partials/field.html" with field=form.content %}
+    <div class="grid gap-4 sm:grid-cols-2">
+      {% include "partials/field.html" with field=form.mood %}
+      {% include "partials/field.html" with field=form.challenge %}
+    </div>
+    <div class="flex items-center justify-between border-t border-line pt-5">
+      {% if entry %}<button type="submit" form="delete-form" class="btn btn-ghost text-danger">{% icon "trash-2" "icon-sm" %} {% trans "Delete" %}</button>{% else %}<span></span>{% endif %}
+      <button class="btn btn-primary">{% trans "Save" %}</button>
+    </div>
+  </form>
+  {% if entry %}<form id="delete-form" method="post" action="{% url 'journal:delete' entry.pk %}">{% csrf_token %}</form>{% endif %}
+</div>
+{% endblock %}

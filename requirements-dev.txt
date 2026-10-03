@@ -1,0 +1,6 @@
+-r requirements.txt
+pytest>=8.0
+pytest-django>=4.8
+# Optional: browser-level QA scripts (UI screenshots / end-to-end runs)
+playwright>=1.40
+pypdfium2>=4.0

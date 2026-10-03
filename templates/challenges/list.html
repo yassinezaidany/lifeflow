@@ -1,0 +1,59 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Challenges" %}{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-end justify-between gap-4">
+  <div>
+    <h1 class="text-2xl font-semibold">{% trans "Challenges" %}</h1>
+    <p class="mt-1 text-sm text-muted">{% trans "Everything you want to do regularly — measured your way." %}</p>
+  </div>
+  <div class="flex gap-2">
+    <a href="{% url 'challenges:templates' %}" class="btn btn-secondary">{% icon "layout-template" "icon-sm" %} {% trans "From a template" %}</a>
+    <a href="{% url 'challenges:create' %}" class="btn btn-primary">{% icon "plus" "icon-sm" %} {% trans "New challenge" %}</a>
+  </div>
+</div>
+
+<div class="mt-6 flex flex-wrap items-center justify-between gap-3">
+  <div class="no-scrollbar -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+    <div class="seg">
+      {% for t in tabs %}
+      <a href="?status={{ t }}" class="seg-item {% if status == t %}is-active{% endif %}">{{ t|status_label }} <span class="text-faint tabular">{{ counts|get_item:t|default:0 }}</span></a>
+      {% endfor %}
+      <a href="?status=all" class="seg-item {% if status == 'all' %}is-active{% endif %}">{% trans "All" %} <span class="text-faint tabular">{{ total }}</span></a>
+    </div>
+  </div>
+  <form method="get" class="flex gap-2">
+    <input type="hidden" name="status" value="{{ status }}">
+    {% if categories %}
+    <select name="category" class="select h-9 w-44" onchange="this.form.submit()" aria-label="{% trans 'Category' %}">
+      <option value="">{% trans "All categories" %}</option>
+      {% for c in categories %}<option value="{{ c.pk }}" {% if category == c.pk|stringformat:'s' %}selected{% endif %}>{{ c.name|trans_default }}</option>{% endfor %}
+    </select>
+    {% endif %}
+    <div class="relative">
+      <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-faint">{% icon "search" "icon-sm" %}</span>
+      <input type="search" name="q" value="{{ q }}" class="input h-9 w-48 pl-9" placeholder="{% trans 'Search' %}">
+    </div>
+  </form>
+</div>
+
+<div class="mt-5">
+{% if cards %}
+  <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3 lg:gap-4">
+    {% for card in cards %}{% include "challenges/_card.html" with show_today=True %}{% endfor %}
+  </div>
+{% else %}
+  <div class="empty">
+    <div class="empty-icon">{% icon "target" "icon-lg" %}</div>
+    {% if status == "active" and not q %}
+      <h3 class="text-sm font-semibold">{% trans "You don't have any active challenges yet." %}</h3>
+      <p class="mt-1 max-w-sm text-sm text-muted">{% trans "Start from a template or build your own in a few steps." %}</p>
+      <a href="{% url 'challenges:create' %}" class="btn btn-primary mt-5">{% trans "Create your first challenge" %} {% icon "arrow-right" "icon-sm" %}</a>
+    {% else %}
+      <h3 class="text-sm font-semibold">{% trans "Nothing here" %}</h3>
+      <p class="mt-1 text-sm text-muted">{% trans "No challenge matches this view." %}</p>
+    {% endif %}
+  </div>
+{% endif %}
+</div>
+{% endblock %}

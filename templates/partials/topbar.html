@@ -1,0 +1,52 @@
+{% load static i18n ui %}
+<header class="sticky top-0 z-20 border-b border-line/70 bg-canvas/80 backdrop-blur-md">
+  <div class="mx-auto flex h-14 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:h-16 lg:px-8">
+    <a href="{% url 'dashboard:home' %}" class="flex items-center gap-2 lg:hidden">
+      <img src="{% static 'img/logo.svg' %}" alt="" class="h-7 w-7"><span class="font-semibold tracking-tight">{{ APP_NAME }}</span>
+    </a>
+    <div class="hidden min-w-0 flex-1 lg:block">
+      <div class="truncate text-sm text-muted">{{ today|date:"l j F Y" }}</div>
+    </div>
+    <div class="ml-auto flex items-center gap-1">
+      <div x-data="themeSwitch('{{ theme }}')" class="relative">
+        <div x-data="{open:false}" class="relative">
+          <button type="button" class="btn btn-ghost btn-icon" @click="open=!open" aria-label="{% trans 'Theme' %}" data-tip="{% trans 'Theme' %}">
+            <span class="dark:hidden">{% icon "sun" %}</span><span class="hidden dark:inline">{% icon "moon" %}</span>
+          </button>
+          <div x-show="open" x-cloak @click.outside="open=false" class="menu right-0 min-w-[10rem]">
+            <button class="menu-item" @click="set('light'); open=false">{% icon "sun" "icon-sm" %} {% trans "Light" %} <span x-show="theme==='light'" class="ml-auto text-brand">{% icon "check" "icon-sm" %}</span></button>
+            <button class="menu-item" @click="set('dark'); open=false">{% icon "moon" "icon-sm" %} {% trans "Dark" %} <span x-show="theme==='dark'" class="ml-auto text-brand">{% icon "check" "icon-sm" %}</span></button>
+            <button class="menu-item" @click="set('system'); open=false">{% icon "monitor" "icon-sm" %} {% trans "System" %} <span x-show="theme==='system'" class="ml-auto text-brand">{% icon "check" "icon-sm" %}</span></button>
+          </div>
+        </div>
+      </div>
+      <div x-data="notifications" class="relative" @keydown.escape="open=false">
+        <button type="button" class="btn btn-ghost btn-icon relative" @click="toggle()" aria-label="{% trans 'Notifications' %}">
+          {% icon "bell" %}
+          <span x-show="unread>0" x-cloak class="absolute right-2 top-2 h-2 w-2 rounded-full bg-danger ring-2 ring-canvas"></span>
+        </button>
+        <div x-show="open" x-cloak @click.outside="open=false" class="menu right-0 w-80 p-0">
+          <div class="flex items-center justify-between border-b border-line px-4 py-3">
+            <span class="text-sm font-semibold">{% trans "Notifications" %}</span>
+            <button class="text-xs font-medium text-brand hover:underline" @click="readAll()" x-show="unread>0">{% trans "Mark all read" %}</button>
+          </div>
+          <div class="max-h-96 overflow-y-auto p-1 scrollbar-thin">
+            <template x-if="loading"><div class="space-y-2 p-3"><div class="skeleton h-10"></div><div class="skeleton h-10"></div></div></template>
+            <template x-if="!loading && !items.length">
+              <div class="px-4 py-10 text-center text-sm text-muted">{% icon "inbox" "icon-lg mb-2 mx-auto block" %}{% trans "You're all caught up." %}</div>
+            </template>
+            <template x-for="n in items" :key="n.id">
+              <button class="flex w-full gap-3 rounded-lg px-3 py-2.5 text-left hover:bg-subtle" @click="openItem(n)">
+                <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full" :class="n.is_read ? 'bg-transparent' : 'bg-brand'"></span>
+                <span class="min-w-0"><span class="block truncate text-sm font-medium" x-text="n.title"></span>
+                  <span class="block truncate text-xs text-muted" x-text="n.body"></span>
+                  <span class="mt-0.5 block text-[11px] text-faint" x-text="ago(n.created_at)"></span></span>
+              </button>
+            </template>
+          </div>
+        </div>
+      </div>
+      <a href="{% url 'accounts:settings' %}" class="ml-1 lg:hidden" aria-label="{% trans 'Profile' %}">{% include "partials/avatar.html" with size="h-8 w-8 text-xs" %}</a>
+    </div>
+  </div>
+</header>

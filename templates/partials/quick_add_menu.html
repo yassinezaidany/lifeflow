@@ -1,0 +1,7 @@
+{% load i18n ui %}
+<div x-show="open" x-cloak @click.outside="open=false" x-transition.origin.top class="menu {{ position|default:'right-0' }} {{ extra }}" role="menu">
+  <button type="button" class="menu-item" role="menuitem" @click="choose('activity')">{% icon "calendar-plus" "icon-sm text-muted" %} {% trans "Add activity" %}</button>
+  <button type="button" class="menu-item" role="menuitem" @click="choose('entry')">{% icon "circle-check" "icon-sm text-muted" %} {% trans "Record progress" %}</button>
+  <button type="button" class="menu-item" role="menuitem" @click="choose('task')">{% icon "square-check" "icon-sm text-muted" %} {% trans "Add task" %}</button>
+  <button type="button" class="menu-item" role="menuitem" @click="choose('note')">{% icon "sticky-note" "icon-sm text-muted" %} {% trans "Add note" %}</button>
+</div>

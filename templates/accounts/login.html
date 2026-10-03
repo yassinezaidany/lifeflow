@@ -1,0 +1,23 @@
+{% extends "layouts/auth.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Sign in" %}{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-semibold">{% trans "Welcome back" %}</h1>
+<p class="mt-2 text-sm text-muted">{% trans "Sign in to continue planning and tracking." %}</p>
+<form method="post" class="mt-8 space-y-5" novalidate>
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ next }}">
+  {% if form.non_field_errors %}<div class="alert alert-error">{% icon "circle-alert" "icon-sm mt-0.5" %}<div>{{ form.non_field_errors|join:" " }}</div></div>{% endif %}
+  {% include "partials/field.html" with field=form.username %}
+  <div>
+    <div class="flex items-center justify-between">
+      <label class="label" for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+      <a href="{% url 'accounts:password_reset' %}" class="mb-1.5 text-xs font-medium text-brand hover:underline">{% trans "Forgot password?" %}</a>
+    </div>
+    {{ form.password }}
+  </div>
+  {% include "partials/field.html" with field=form.remember %}
+  <button class="btn btn-primary btn-lg w-full">{% trans "Sign in" %}</button>
+</form>
+<p class="mt-8 text-center text-sm text-muted">{% trans "New to LifeFlow?" %} <a href="{% url 'accounts:register' %}" class="font-medium text-brand hover:underline">{% trans "Create an account" %}</a></p>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block content %}
+<div class="mb-6">
+  <h1 class="text-2xl font-semibold">{% trans "Settings" %}</h1>
+  <p class="mt-1 text-sm text-muted">{% trans "Manage your profile, preferences and account." %}</p>
+</div>
+<div class="grid gap-6 lg:grid-cols-[13rem_1fr]">
+  <nav class="no-scrollbar -mx-4 flex gap-1 overflow-x-auto px-4 lg:mx-0 lg:flex-col lg:px-0" aria-label="{% trans 'Settings sections' %}">
+    <a href="{% url 'accounts:settings' %}" class="nav-link shrink-0 {% if tab == 'profile' %}is-active{% endif %}">{% icon "user" %} {% trans "Profile & preferences" %}</a>
+    <a href="{% url 'accounts:categories' %}" class="nav-link shrink-0 {% if tab == 'categories' %}is-active{% endif %}">{% icon "tag" %} {% trans "Categories" %}</a>
+    <a href="{% url 'accounts:notifications' %}" class="nav-link shrink-0 {% if tab == 'notifications' %}is-active{% endif %}">{% icon "bell" %} {% trans "Notifications" %}</a>
+    <a href="{% url 'accounts:security' %}" class="nav-link shrink-0 {% if tab == 'security' %}is-active{% endif %}">{% icon "lock" %} {% trans "Security" %}</a>
+    <a href="{% url 'reports:list' %}#export" class="nav-link shrink-0">{% icon "download" %} {% trans "Export data" %}</a>
+  </nav>
+  <div class="min-w-0 space-y-6">{% block settings %}{% endblock %}</div>
+</div>
+{% endblock %}

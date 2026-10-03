@@ -1,0 +1,36 @@
+{% load static i18n ui %}<!doctype html>
+{% get_current_language as LANG %}
+<html lang="{{ LANG }}" data-theme="{{ theme|default:'system' }}" class="h-full">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#4F46E5">
+  <title>{% block title %}{{ APP_NAME }}{% endblock %} · {{ APP_NAME }}</title>
+  <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+  <link rel="manifest" href="{% static 'manifest.webmanifest' %}">
+  <link rel="preload" href="{% static 'fonts/inter-latin-wght-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <script>
+    (function () {
+      var t = document.documentElement.dataset.theme || "system";
+      var dark = t === "dark" || (t === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      if (dark) document.documentElement.classList.add("dark");
+    })();
+    /* Page initialisers: run once the app is loaded and again after a soft refresh. */
+    window.lfReady = function (fn) { (window.__lfq = window.__lfq || []).push(fn); };
+  </script>
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body class="h-full {% block body_class %}{% endblock %}">
+  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] btn btn-primary">{% trans "Skip to content" %}</a>
+  {% block body %}{% endblock %}
+
+  {% if lf_config %}{{ lf_config|json_script:"lf-config" }}{% endif %}
+  <script src="{% static 'js/app.js' %}" defer></script>
+  {% block scripts %}{% endblock %}
+  <script src="{% static 'vendor/alpine-focus.min.js' %}" defer></script>
+  <script src="{% static 'vendor/alpine-collapse.min.js' %}" defer></script>
+  <script src="{% static 'vendor/alpine.min.js' %}" defer></script>
+</body>
+</html>

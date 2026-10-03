@@ -1,0 +1,6 @@
+{% load i18n ui %}
+<div class="seg">
+  <a href="{% url 'planner:week' %}" class="seg-item {% if request.resolver_match.url_name == 'week' %}is-active{% endif %}">{% icon "calendar-days" "icon-xs" %} {% trans "Planner" %}</a>
+  <a href="{% url 'planner:rules' %}" class="seg-item {% if request.resolver_match.url_name == 'rules' %}is-active{% endif %}">{% icon "repeat" "icon-xs" %} {% trans "Routines" %}</a>
+  <a href="{% url 'planner:templates' %}" class="seg-item {% if request.resolver_match.url_name == 'templates' %}is-active{% endif %}">{% icon "layout-template" "icon-xs" %} {% trans "Day templates" %}</a>
+</div>

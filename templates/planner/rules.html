@@ -1,0 +1,116 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Routines" %}{% endblock %}
+{% block main_attrs %}data-no-refresh{% endblock %}
+{% block content %}
+<div x-data="{
+  rules: [], loading: true, editing: null, errors: {}, cats: [], challenges: [],
+  weekdays: LF.cfg.weekdays,
+  async load() {
+    this.loading = true;
+    const [rules, cats, ch] = await Promise.all([LF.api('/api/planner/rules/'), LF.api('/api/planner/categories/'), LF.api('/api/challenges/', {params: {status: 'active', page_size: 100}})]);
+    this.rules = rules; this.cats = cats; this.challenges = ch.results; this.loading = false;
+  },
+  describe(r) {
+    if (r.frequency === 'daily') return '{% trans "Every day" as s %}{{ s|escapejs }}';
+    if (r.frequency === 'interval') return '{% trans "Every %s days" as s %}{{ s|escapejs }}'.replace('%s', r.interval_days);
+    return r.weekdays.map(d => this.weekdays[d]).join(', ');
+  },
+  edit(r) {
+    this.errors = {};
+    this.editing = r ? {...r, category_id: r.category ? r.category.id : '', challenge_id: r.challenge ? r.challenge.id : '', end_date: r.end_date || ''}
+      : {id: null, title: '', start_time: '09:00', end_time: '10:00', frequency: 'weekly', weekdays: [0, 2, 4], interval_days: 2, start_date: LF.cfg.today, end_date: '', category_id: '', challenge_id: '', is_active: true, priority: 'medium', color: '', notes: '', description: ''};
+  },
+  toggleDay(i) { const s = new Set(this.editing.weekdays); s.has(i) ? s.delete(i) : s.add(i); this.editing.weekdays = [...s].sort(); },
+  async save() {
+    const e = this.editing; this.errors = {};
+    const body = {title: e.title, start_time: e.start_time, end_time: e.end_time, frequency: e.frequency, weekdays: e.weekdays, interval_days: Number(e.interval_days) || 1,
+      start_date: e.start_date, end_date: e.end_date || null, category_id: e.category_id || null, challenge_id: e.challenge_id || null, is_active: e.is_active, priority: e.priority, color: e.color || '', notes: e.notes || ''};
+    try {
+      if (e.id) await LF.api('/api/planner/rules/' + e.id + '/', {method: 'PUT', body}); else await LF.api('/api/planner/rules/', {method: 'POST', body});
+      this.editing = null; LF.toast('{% trans "Routine saved — future days are updated" as s %}{{ s|escapejs }}'); this.load();
+    } catch (err) { this.errors = LF.fieldErrors(err); LF.toast(err.message, 'error'); }
+  },
+  async remove(r) {
+    if (!(await LF.confirm('{% trans "Delete this routine? Activities already done are kept." as s %}{{ s|escapejs }}', {danger: true, confirm: '{% trans "Delete" as s %}{{ s|escapejs }}'}))) return;
+    await LF.api('/api/planner/rules/' + r.id + '/', {method: 'DELETE'}); this.load();
+  },
+  async toggleActive(r) { await LF.api('/api/planner/rules/' + r.id + '/', {method: 'PATCH', body: {is_active: !r.is_active}}); this.load(); }
+}" x-init="load()">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h1 class="text-2xl font-semibold">{% trans "Routines" %}</h1>
+      <p class="mt-1 text-sm text-muted">{% trans "Recurring activities appear automatically in your planner. Editing a routine updates future days only." %}</p>
+    </div>
+    <button class="btn btn-primary" @click="edit(null)">{% icon "plus" "icon-sm" %} {% trans "New routine" %}</button>
+  </div>
+  <div class="mt-4">{% include "planner/_tabs.html" %}</div>
+
+  <div class="mt-6">
+    <template x-if="loading"><div class="space-y-2"><div class="skeleton h-16"></div><div class="skeleton h-16"></div></div></template>
+    <template x-if="!loading && !rules.length">
+      <div class="empty">
+        <div class="empty-icon">{% icon "repeat" "icon-lg" %}</div>
+        <h3 class="text-sm font-semibold">{% trans "No routine yet" %}</h3>
+        <p class="mt-1 max-w-sm text-sm text-muted">{% trans "For example: Gym on Monday, Wednesday and Friday from 09:00 to 10:30." %}</p>
+        <button class="btn btn-primary mt-5" @click="edit(null)">{% trans "Create a routine" %}</button>
+      </div>
+    </template>
+    <div class="card divide-y divide-line" x-show="!loading && rules.length">
+      <template x-for="r in rules" :key="r.id">
+        <div class="flex flex-wrap items-center gap-3 px-5 py-4" :class="['tone-' + (r.color || (r.category ? r.category.color : 'slate')), !r.is_active && 'opacity-50']">
+          <span class="h-10 w-1 rounded-full bg-tone"></span>
+          <div class="min-w-0 flex-1">
+            <div class="truncate text-sm font-semibold" x-text="r.title"></div>
+            <div class="mt-0.5 flex flex-wrap gap-x-3 text-xs text-muted">
+              <span class="tabular" x-text="LF.fmtTime(r.start_time) + ' – ' + LF.fmtTime(r.end_time)"></span>
+              <span x-text="describe(r)"></span>
+              <span x-show="r.category" x-text="r.category && r.category.name"></span>
+              <span x-show="r.challenge"><svg class="icon icon-xs"><use :href="LF.cfg.sprite + '#i-target'"></use></svg> <span x-text="r.challenge && r.challenge.name"></span></span>
+              <span x-show="r.end_date" x-text="'→ ' + r.end_date"></span>
+            </div>
+          </div>
+          <button class="btn btn-ghost btn-sm" @click="toggleActive(r)" x-text="r.is_active ? '{% trans "Pause" as s %}{{ s|escapejs }}' : '{% trans "Resume" as s %}{{ s|escapejs }}'"></button>
+          <button class="btn btn-ghost btn-icon btn-sm" @click="edit(r)" aria-label="{% trans 'Edit' %}">{% icon "pencil" "icon-sm" %}</button>
+          <button class="btn btn-ghost btn-icon btn-sm text-danger" @click="remove(r)" aria-label="{% trans 'Delete' %}">{% icon "trash-2" "icon-sm" %}</button>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <div x-show="editing" x-cloak @keydown.escape.window="editing=null">
+    <div class="modal-backdrop" @click="editing=null"></div>
+    <div class="modal-panel sm:max-w-lg" role="dialog" aria-modal="true">
+      <template x-if="editing">
+        <form class="space-y-4 p-5" @submit.prevent="save()">
+          <h2 class="text-base font-semibold" x-text="editing.id ? '{% trans "Edit routine" as s %}{{ s|escapejs }}' : '{% trans "New routine" as s %}{{ s|escapejs }}'"></h2>
+          <div><label class="label">{% trans "Title" %}</label><input class="input" x-model="editing.title" required maxlength="120"><p class="field-error" x-show="errors.title" x-text="errors.title"></p></div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="label">{% trans "Start" %}</label><input type="time" class="input" x-model="editing.start_time"></div>
+            <div><label class="label">{% trans "End" %}</label><input type="time" class="input" x-model="editing.end_time"></div>
+          </div>
+          <p class="field-error" x-show="errors.end_time" x-text="errors.end_time"></p>
+          <div>
+            <label class="label">{% trans "Repeat" %}</label>
+            <div class="seg"><button type="button" class="seg-item" :aria-pressed="editing.frequency==='daily'" @click="editing.frequency='daily'">{% trans "Every day" %}</button><button type="button" class="seg-item" :aria-pressed="editing.frequency==='weekly'" @click="editing.frequency='weekly'">{% trans "Some days" %}</button><button type="button" class="seg-item" :aria-pressed="editing.frequency==='interval'" @click="editing.frequency='interval'">{% trans "Every N days" %}</button></div>
+            <div class="mt-3 flex flex-wrap gap-1.5" x-show="editing.frequency==='weekly'">
+              <template x-for="(d, i) in weekdays" :key="i"><button type="button" class="h-9 w-11 rounded-lg border text-xs font-medium" :class="editing.weekdays.includes(i) ? 'border-brand bg-brand-soft text-brand-strong' : 'border-line text-muted'" @click="toggleDay(i)" x-text="d"></button></template>
+            </div>
+            <div class="mt-3 flex items-center gap-2 text-sm" x-show="editing.frequency==='interval'">{% trans "Every" %} <input type="number" min="2" class="input input-sm w-20" x-model="editing.interval_days"> {% trans "days" %}</div>
+            <p class="field-error" x-show="errors.weekdays" x-text="errors.weekdays"></p>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="label">{% trans "From" %}</label><input type="date" class="input" x-model="editing.start_date"></div>
+            <div><label class="label">{% trans "Until" %} <span class="font-normal text-faint">({% trans "optional" %})</span></label><input type="date" class="input" x-model="editing.end_date"></div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="label">{% trans "Category" %}</label><select class="select" x-model="editing.category_id"><option value="">—</option><template x-for="c in cats" :key="c.id"><option :value="c.id" x-text="c.name" :selected="String(c.id)===String(editing.category_id)"></option></template></select></div>
+            <div><label class="label">{% trans "Challenge" %}</label><select class="select" x-model="editing.challenge_id"><option value="">—</option><template x-for="c in challenges" :key="c.id"><option :value="c.id" x-text="c.name" :selected="String(c.id)===String(editing.challenge_id)"></option></template></select></div>
+          </div>
+          <div class="flex justify-end gap-2 pt-2"><button type="button" class="btn btn-secondary" @click="editing=null">{% trans "Cancel" %}</button><button class="btn btn-primary">{% trans "Save" %}</button></div>
+        </form>
+      </template>
+    </div>
+  </div>
+</div>
+{% endblock %}
