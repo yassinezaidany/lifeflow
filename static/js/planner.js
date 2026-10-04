@@ -137,7 +137,7 @@
       isCompact(it) { return (it.e - it.s) < 40; },
       label(it) {
         if (it.spill) return `→ ${fmtTime(it.a.end_time)}`;
-        return `${fmtTime(it.a.start_time)} – ${fmtTime(it.a.end_time)}${it.a.overnight ? " (+1)" : ""}`;
+        return `${fmtTime(it.a.start_time)} – ${fmtTime(it.a.end_time)}${it.a.overnight ? " ⁦(+1)⁩" : ""}`;
       },
       dayLabel(day) {
         const d = parseISO(day.date);

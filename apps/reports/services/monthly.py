@@ -48,7 +48,7 @@ def generate_monthly_report(user, year: int, month: int) -> MonthlyReport:
     for order, c in enumerate(challenges):
         r = results[c.pk]
         snapshots.append(ReportChallengeSnapshot(
-            challenge=c, name=c.name, category=c.category.name if c.category else "", color=c.color,
+            challenge=c, name=c.name, category=_(c.category.name) if c.category else "", color=c.color,
             goal_description=r.goal_description[:160], unit=r.unit[:30], is_duration=r.is_duration,
             goal=r.goal, actual=r.actual, expected=r.expected, progress=r.progress, gap=r.gap,
             status=r.status.value, completion_rate=r.completion_rate, current_streak=r.current_streak,

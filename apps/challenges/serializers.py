@@ -41,6 +41,11 @@ class ChallengeCategorySerializer(serializers.ModelSerializer):
         model = ChallengeCategory
         fields = ["id", "name", "icon", "color", "order"]
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data["name"] = _(data["name"])  # default (seeded) names in the user's language; custom names unchanged
+        return data
+
     def validate_name(self, value):
         value = value.strip()
         user = self.context["request"].user

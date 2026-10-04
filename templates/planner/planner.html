@@ -27,7 +27,7 @@
   <div class="mt-3 flex flex-wrap items-center justify-between gap-2">
     <div class="flex flex-wrap items-center gap-2">
       {% include "planner/_tabs.html" %}
-      <a href="{% url 'planner:export_ics' %}" class="btn btn-ghost btn-sm" data-tip="{% trans 'Export to your calendar' %}">{% icon "calendar-plus" "icon-xs" %} .ics</a>
+      <a href="{% url 'planner:export_ics' %}" class="btn btn-ghost btn-sm" data-tip="{% trans 'Export to your calendar' %}">{% icon "calendar-plus" "icon-xs" %} <bdi dir="ltr">.ics</bdi></a>
     </div>
     <template x-if="summary">
       <div class="flex gap-3 text-xs text-muted">

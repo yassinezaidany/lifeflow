@@ -2571,14 +2571,6 @@ msgid "This email is already used."
 msgstr "Cet e-mail est déjà utilisé."
 
 #: apps\challenges\serializers.py
-msgid ""
-"This field can't be measured (choose a number, duration or done/not done "
-"field)."
-msgstr ""
-"Ce champ n'est pas mesurable (choisissez un nombre, une durée ou un champ "
-"fait/non fait)."
-
-#: apps\challenges\serializers.py
 msgid "This field can't be measured."
 msgstr "Ce champ n'est pas mesurable."
 
@@ -3244,222 +3236,237 @@ msgstr "…"
 #: apps\notifications\reminders.py
 msgid "%(n)s activity planned"
 msgid_plural "%(n)s activities planned"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(n)s activité prévue"
+msgstr[1] "%(n)s activités prévues"
 
 #: apps\notifications\reminders.py
 msgid "%(n)s challenge still open today"
 msgid_plural "%(n)s challenges still open today"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(n)s défi encore ouvert aujourd'hui"
+msgstr[1] "%(n)s défis encore ouverts aujourd'hui"
 
 #: apps\notifications\reminders.py
 msgid "%(n)s challenge to do"
 msgid_plural "%(n)s challenges to do"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(n)s défi à faire"
+msgstr[1] "%(n)s défis à faire"
 
 #: templates\notifications\list.html
 msgid "%(n)s unread"
 msgid_plural "%(n)s unread"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(n)s non lue"
+msgstr[1] "%(n)s non lues"
 
 #: apps\core\js_i18n.py
 msgid "%s offline item(s) synced"
-msgstr ""
+msgstr "%s élément(s) hors ligne synchronisé(s)"
 
 #: apps\core\js_i18n.py
 msgid "An offline entry could not be saved:"
-msgstr ""
+msgstr "Une entrée hors ligne n'a pas pu être enregistrée :"
 
 #: templates\accounts\notifications.html
 msgid "Channels"
-msgstr ""
+msgstr "Canaux"
 
 #: templates\challenges\settings.html
 msgid "Daily reminder"
-msgstr ""
+msgstr "Rappel quotidien"
 
 #: apps\challenges\models.py
 msgid "Daily reminder on active days, if not done yet."
-msgstr ""
+msgstr "Rappel quotidien les jours actifs, si ce n'est pas encore fait."
 
 #: apps\core\js_i18n.py
 msgid "Describe your challenge first."
-msgstr ""
+msgstr "Décrivez d'abord votre défi."
 
 #: templates\accounts\notifications.html
 msgid "Disable"
-msgstr ""
+msgstr "Désactiver"
 
 #: apps\accounts\forms.py
 msgid "E-mail notifications"
-msgstr ""
+msgstr "Notifications par e-mail"
 
 #: templates\accounts\notifications.html
 msgid "Enable"
-msgstr ""
+msgstr "Activer"
 
 #: apps\planner\models.py
 msgid "End time must be different from start time."
-msgstr ""
+msgstr "L'heure de fin doit être différente de l'heure de début."
 
 #: apps\accounts\forms.py
 msgid "End-of-day check at"
-msgstr ""
+msgstr "Bilan de fin de journée à"
 
 #: templates\accounts\notifications.html
 msgid "Get reminders on this phone or computer, even when LifeFlow is closed."
 msgstr ""
+"Recevez des rappels sur ce téléphone ou cet ordinateur, même quand LifeFlow "
+"est fermé."
 
 #: templates\accounts\settings.html
 msgid "Install"
-msgstr ""
+msgstr "Installer"
 
 #: templates\accounts\settings.html
 msgid ""
 "Install LifeFlow on your phone or computer: it opens like an app, starts on "
 "Today, and keeps working offline."
 msgstr ""
+"Installez LifeFlow sur votre téléphone ou ordinateur : il s'ouvre comme une "
+"application, démarre sur Aujourd'hui et fonctionne hors ligne."
 
 #: templates\partials\sidebar.html
 msgid "Install the app"
-msgstr ""
+msgstr "Installer l'application"
 
 #: apps\notifications\api.py
 msgid "Invalid push endpoint."
-msgstr ""
+msgstr "Point de terminaison push invalide."
 
 #: templates\layouts\auth.html
 msgid "Language"
-msgstr ""
+msgstr "Langue"
 
 #: templates\accounts\settings.html
 msgid "LifeFlow app"
-msgstr ""
+msgstr "Application LifeFlow"
 
 #: apps\core\js_i18n.py
 msgid "LifeFlow is installed"
-msgstr ""
+msgstr "LifeFlow est installé"
 
 #: templates\accounts\settings.html
 msgid "LifeFlow is installed on this device."
-msgstr ""
+msgstr "LifeFlow est installé sur cet appareil."
 
 #: apps\notifications\api.py
 msgid "LifeFlow notifications work 🎉"
-msgstr ""
+msgstr "Les notifications LifeFlow fonctionnent 🎉"
 
 #: apps\notifications\api.py
 msgid "Missing subscription keys."
-msgstr ""
+msgstr "Clés d'abonnement manquantes."
 
 #: apps\accounts\forms.py
 msgid "Morning summary & challenge reminders"
-msgstr ""
+msgstr "Résumé du matin et rappels de défis"
 
 #: apps\accounts\forms.py
 msgid "Morning summary at"
-msgstr ""
+msgstr "Résumé du matin à"
 
 #: apps\core\js_i18n.py
 msgid "Notifications are blocked in your browser settings."
 msgstr ""
+"Les notifications sont bloquées dans les paramètres de votre navigateur."
 
 #: apps\core\js_i18n.py
 msgid "Notifications disabled on this device"
-msgstr ""
+msgstr "Notifications désactivées sur cet appareil"
 
 #: apps\core\js_i18n.py
 msgid "Notifications enabled on this device"
-msgstr ""
+msgstr "Notifications activées sur cet appareil"
 
 #: templates\accounts\notifications.html
 msgid "Notifications on this device"
-msgstr ""
+msgstr "Notifications sur cet appareil"
 
 #: templates\partials\topbar.html
 msgid "Offline"
-msgstr ""
+msgstr "Hors ligne"
 
 #: templates\accounts\settings.html
 msgid "On iPhone/iPad: tap Share, then “Add to Home Screen”."
-msgstr ""
+msgstr "Sur iPhone/iPad : touchez Partager, puis « Sur l'écran d'accueil »."
 
 #: templates\notifications\email.html
 msgid "Open LifeFlow"
-msgstr ""
+msgstr "Ouvrir LifeFlow"
 
 #: templates\pwa\offline.html
 msgid "Open Today"
-msgstr ""
+msgstr "Ouvrir Aujourd'hui"
 
 #: templates\accounts\notifications.html
 msgid ""
 "Per-challenge reminders are set in each challenge's settings (reminder "
 "time)."
 msgstr ""
+"Les rappels par défi se règlent dans les paramètres de chaque défi (heure de"
+" rappel)."
 
 #: templates\notifications\list.html
 msgid "Preferences"
-msgstr ""
+msgstr "Préférences"
 
 #: templates\accounts\notifications.html
 msgid ""
 "Push isn't configured on this server yet (run “python manage.py "
 "generate_vapid_keys --write”). In-app notifications still work."
 msgstr ""
+"Le push n'est pas encore configuré sur ce serveur (lancez « python manage.py"
+" generate_vapid_keys --write »). Les notifications dans l'application "
+"fonctionnent quand même."
 
 #: apps\accounts\forms.py
 msgid "Push notifications"
-msgstr ""
+msgstr "Notifications push"
 
 #: templates\accounts\notifications.html
 msgid "Push notifications are active on this device."
-msgstr ""
+msgstr "Les notifications push sont actives sur cet appareil."
 
 #: apps\core\js_i18n.py
 msgid "Push notifications are not available on this browser."
-msgstr ""
+msgstr "Les notifications push ne sont pas disponibles sur ce navigateur."
 
 #: apps\notifications\api.py
 msgid "Push notifications are not configured on this server."
-msgstr ""
+msgstr "Les notifications push ne sont pas configurées sur ce serveur."
 
 #: templates\notifications\list.html
 msgid "Reminders and report notifications will appear here."
-msgstr ""
+msgstr "Les rappels et les notifications de rapports apparaîtront ici."
 
 #: apps\core\js_i18n.py
 msgid "Saved offline — it will sync automatically"
-msgstr ""
+msgstr "Enregistré hors ligne — synchronisation automatique"
 
 #: templates\accounts\notifications.html
 msgid "Send a test"
-msgstr ""
+msgstr "Envoyer un test"
 
 #: apps\accounts\models.py
 msgid "Send to devices where push is enabled."
-msgstr ""
+msgstr "Envoyer aux appareils où le push est activé."
 
 #: templates\challenges\settings.html
 msgid "Sent on active days only, if you haven't recorded progress yet."
 msgstr ""
+"Envoyé uniquement les jours actifs, si vous n'avez pas encore enregistré de "
+"progression."
 
 #: apps\core\js_i18n.py
 msgid "Suggestion applied — review each step before creating."
-msgstr ""
+msgstr "Suggestion appliquée — vérifiez chaque étape avant de créer."
 
 #: templates\partials\topbar.html
 msgid "Sync now"
-msgstr ""
+msgstr "Synchroniser"
 
 #: templates\accounts\notifications.html
 msgid ""
 "This browser doesn't support push notifications. Install LifeFlow as an app "
 "(or use Chrome, Edge, Firefox or Safari 16.4+)."
 msgstr ""
+"Ce navigateur ne prend pas en charge les notifications push. Installez "
+"LifeFlow comme application (ou utilisez Chrome, Edge, Firefox ou Safari "
+"16.4+)."
 
 #: templates\pwa\offline.html
 msgid ""
@@ -3467,48 +3474,178 @@ msgid ""
 "(like Today) remain available, and progress you record offline is synced "
 "automatically when the connection comes back."
 msgstr ""
+"Cette page n'a pas encore été enregistrée sur cet appareil. Les pages "
+"récemment consultées (comme Aujourd'hui) restent disponibles, et les "
+"progressions enregistrées hors ligne sont synchronisées automatiquement au "
+"retour de la connexion."
 
 #: apps\notifications\reminders.py
 msgid "Time for %(name)s"
-msgstr ""
+msgstr "C'est l'heure : %(name)s"
 
 #: templates\accounts\notifications.html
 msgid "What to be reminded of"
-msgstr ""
+msgstr "De quoi être rappelé"
 
 #: templates\notifications\email.html
 msgid ""
 "You receive this e-mail because e-mail notifications are enabled in your "
 "LifeFlow settings."
 msgstr ""
+"Vous recevez cet e-mail car les notifications par e-mail sont activées dans "
+"vos paramètres LifeFlow."
 
 #: apps\notifications\api.py
 msgid "You'll be reminded here."
-msgstr ""
+msgstr "Vous serez rappelé ici."
 
 #: templates\pwa\offline.html
 msgid "You're offline"
-msgstr ""
+msgstr "Vous êtes hors ligne"
 
 #: apps\core\js_i18n.py
 msgid "You're offline. This data isn't available on this device yet."
 msgstr ""
+"Vous êtes hors ligne. Ces données ne sont pas encore disponibles sur cet "
+"appareil."
 
 #: apps\notifications\reminders.py
 msgid "Your day at a glance"
-msgstr ""
+msgstr "Votre journée en un coup d'œil"
 
 #: templates\accounts\notifications.html
 msgid "devices"
-msgstr ""
+msgstr "appareils"
 
 #: templates\partials\modals.html
 msgid "ends the next day"
-msgstr ""
+msgstr "se termine le lendemain"
 
 #: templates\partials\topbar.html
 msgid "to sync"
+msgstr "à synchroniser"
+
+#: templates\challenges\create.html
+msgid "A day counts when the time is"
+msgstr "Un jour compte quand l'heure est"
+
+#: apps\planner\views.py
+msgid "A new calendar link was created. The previous link no longer works."
 msgstr ""
+"Un nouveau lien de calendrier a été créé. L'ancien lien ne fonctionne plus."
+
+#: templates\accounts\settings.html
+msgid "Calendar link"
+msgstr "Lien du calendrier"
+
+#: templates\accounts\settings.html
+msgid "Calendar sync"
+msgstr "Synchronisation du calendrier"
+
+#: templates\challenges\create.html
+msgid "Check the next steps."
+msgstr "Vérifiez les étapes suivantes."
+
+#: apps\challenges\serializers.py
+msgid "Choose the time to beat (e.g. before 05:30)."
+msgstr "Choisissez l'heure à battre (ex. avant 05:30)."
+
+#: templates\accounts\settings.html
+msgid "Copied"
+msgstr "Copié"
+
+#: templates\accounts\settings.html
+msgid "Copy"
+msgstr "Copier"
+
+#: templates\challenges\create.html
+msgid "Describe it in your own words"
+msgstr "Décrivez-le avec vos mots"
+
+#: templates\accounts\settings.html
+msgid "Download .ics"
+msgstr "Télécharger le .ics"
+
+#: templates\challenges\create.html
+msgid "Example: wake-up time before 05:30, every day."
+msgstr "Exemple : heure de réveil avant 05:30, chaque jour."
+
+#: templates\planner\planner.html
+msgid "Export to your calendar"
+msgstr "Exporter vers votre calendrier"
+
+#: templates\accounts\settings.html
+msgid "Generate a new link"
+msgstr "Générer un nouveau lien"
+
+#: templates\accounts\settings.html
+msgid ""
+"Subscribe to your planner from Google Calendar, Apple Calendar or Outlook "
+"(read-only, updated automatically). Keep this link private."
+msgstr ""
+"Abonnez-vous à votre planning depuis Google Agenda, Apple Calendrier ou "
+"Outlook (lecture seule, mise à jour automatique). Gardez ce lien privé."
+
+#: templates\challenges\create.html
+msgid "Suggest"
+msgstr "Suggérer"
+
+#: templates\challenges\create.html
+msgid "Suggested by the AI assistant."
+msgstr "Suggéré par l'assistant IA."
+
+#: templates\challenges\create.html
+msgid "Suggested by the built-in assistant."
+msgstr "Suggéré par l'assistant intégré."
+
+#: apps\challenges\serializers.py
+msgid ""
+"This field can't be measured (choose a number, duration, time or done/not "
+"done field)."
+msgstr ""
+"Ce champ n'est pas mesurable (choisissez un nombre, une durée, une heure ou "
+"un champ fait/non fait)."
+
+#: templates\challenges\create.html
+msgid "What do you want to achieve?"
+msgstr "Que voulez-vous accomplir ?"
+
+#: templates\challenges\create.html
+msgid "after"
+msgstr "après"
+
+#: apps\analytics\services\progress\goals.py
+msgid "after %(t)s"
+msgstr "après %(t)s"
+
+#: templates\challenges\create.html
+msgid "before"
+msgstr "avant"
+
+#: apps\analytics\services\progress\goals.py
+msgid "before %(t)s"
+msgstr "avant %(t)s"
+
+#: templates\challenges\create.html
+msgid ""
+"e.g. “I want to learn Python 2 hours a day for 30 days” or “Courir 3 fois "
+"par semaine, au moins 30 minutes”. You'll review everything before it's "
+"created."
+msgstr ""
+"ex. « Je veux apprendre Python 2 heures par jour pendant 30 jours » ou « "
+"Courir 3 fois par semaine, au moins 30 minutes ». Vous vérifierez tout avant"
+" la création."
+
+#: apps\analytics\services\progress\goals.py
+msgid "every scheduled day"
+msgstr "chaque jour prévu"
+
+#~ msgid ""
+#~ "This field can't be measured (choose a number, duration or done/not done "
+#~ "field)."
+#~ msgstr ""
+#~ "Ce champ n'est pas mesurable (choisissez un nombre, une durée ou un champ "
+#~ "fait/non fait)."
 
 #~ msgid "%(n)s challenge(s) still open today"
 #~ msgstr "%(n)s défi(s) encore à faire aujourd'hui"

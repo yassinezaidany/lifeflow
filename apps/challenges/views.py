@@ -5,6 +5,7 @@ from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, render
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.utils.translation import gettext as _
 
 from apps.analytics.services.progress import ProgressEngine
 from apps.core.dates import user_today, week_start_for
@@ -23,7 +24,7 @@ def _owned(request, pk):
 
 
 def _categories(user):
-    return list(ChallengeCategory.objects.filter(user=user).values("id", "name", "color", "icon"))
+    return [{**c, "name": _(c["name"])} for c in ChallengeCategory.objects.filter(user=user).values("id", "name", "color", "icon")]
 
 
 @login_required
