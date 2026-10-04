@@ -22,6 +22,7 @@ class EntryData:
     date: date
     numbers: dict[int, float | None] = field(default_factory=dict)
     bools: dict[int, bool | None] = field(default_factory=dict)
+    times: dict[int, object] = field(default_factory=dict)
 
 
 def goal_for_day(goals: list[Goal], day: date) -> Goal | None:
@@ -53,6 +54,12 @@ def entry_value(goal: Goal, entry: EntryData) -> float:
         return 1.0
     if metric.field_type == TrackingField.FieldType.BOOLEAN:
         return 1.0 if entry.bools.get(metric.pk) else 0.0
+    if metric.field_type == TrackingField.FieldType.TIME:
+        recorded, threshold = entry.times.get(metric.pk), goal.time_threshold
+        if recorded is None or threshold is None:
+            return 0.0
+        ok = recorded >= threshold if goal.time_comparison == "after" else recorded <= threshold
+        return 1.0 if ok else 0.0
     value = entry.numbers.get(metric.pk)
     return float(value) if value is not None else 0.0
 
@@ -84,7 +91,7 @@ def format_value(value: float | None, goal: Goal | None) -> str:
 def _counted_unit(goal: Goal, n: float) -> str:
     """Pluralised unit for count-like goals; free-text units are returned as typed."""
     count = 1 if abs(n - 1) < EPSILON else 2
-    if goal.metric is not None and goal.metric.field_type == TrackingField.FieldType.BOOLEAN:
+    if goal.metric is not None and goal.metric.field_type in (TrackingField.FieldType.BOOLEAN, TrackingField.FieldType.TIME):
         return ngettext("day", "days", count)
     if goal.metric is None or goal.aggregation == Goal.Aggregation.COUNT:
         return ngettext("session", "sessions", count)
@@ -96,6 +103,13 @@ def describe_goal(goal: Goal | None) -> str:
         return _("No goal defined")
     target = float(goal.target)
     is_boolean = goal.metric is not None and goal.metric.field_type == TrackingField.FieldType.BOOLEAN
+    if goal.is_time_goal and goal.time_threshold:
+        when = (_("after %(t)s") if goal.time_comparison == "after" else _("before %(t)s")) % {"t": goal.time_threshold.strftime("%H:%M")}
+        if goal.period == Goal.Period.DAILY and abs(target - 1) < EPSILON:
+            return f"{goal.metric.label} {when} · " + _("every scheduled day")
+        return f"{goal.metric.label} {when} · {format_value(target, None)} {_counted_unit(goal, target)} " + {
+            Goal.Period.DAILY: _("/ day"), Goal.Period.WEEKLY: _("/ week"), Goal.Period.MONTHLY: _("/ month"), Goal.Period.TOTAL: _("in total"),
+        }[goal.period]
     if is_boolean and goal.period == Goal.Period.DAILY and abs(target - 1) < EPSILON:
         return _("Every scheduled day")
     amount = format_value(target, goal)

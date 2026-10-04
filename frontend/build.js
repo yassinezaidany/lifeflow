@@ -24,6 +24,11 @@ copy(nm("@alpinejs/collapse/dist/cdn.min.js"), out("vendor/alpine-collapse.min.j
 copy(nm("chart.js/dist/chart.umd.js"), out("vendor/chart.umd.min.js"));
 copy(nm("@fontsource-variable/inter/files/inter-latin-wght-normal.woff2"), out("fonts/inter-latin-wght-normal.woff2"));
 copy(nm("@fontsource-variable/inter/files/inter-latin-ext-wght-normal.woff2"), out("fonts/inter-latin-ext-wght-normal.woff2"));
+copy(nm("@fontsource-variable/noto-sans-arabic/files/noto-sans-arabic-arabic-wght-normal.woff2"), out("fonts/noto-sans-arabic-arabic-wght-normal.woff2"));
+// TTF fonts for the PDF generator (ReportLab needs TrueType; DejaVu covers Latin + Arabic).
+const pdfFonts = path.join(root, "apps", "reports", "fonts");
+copy(nm("dejavu-fonts-ttf/ttf/DejaVuSans.ttf"), path.join(pdfFonts, "DejaVuSans.ttf"));
+copy(nm("dejavu-fonts-ttf/ttf/DejaVuSans-Bold.ttf"), path.join(pdfFonts, "DejaVuSans-Bold.ttf"));
 
 const icons = JSON.parse(fs.readFileSync(path.join(__dirname, "icons.json"), "utf8"));
 const names = [...new Set([...icons.ui, ...icons.picker])].sort();

@@ -20,6 +20,16 @@
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
+/* Arabic script: only downloaded when Arabic glyphs are rendered (unicode-range). */
+@font-face {
+  font-family: "Noto Sans Arabic Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../fonts/noto-sans-arabic-arabic-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+
 @layer base {
   :root {
     --c-canvas: 247 247 248;
@@ -62,6 +72,9 @@
   ::selection { @apply bg-brand/20; }
   :focus-visible { @apply outline-none ring-2 ring-brand/60 ring-offset-2 ring-offset-canvas; }
   [x-cloak] { display: none !important; }
+  [dir="rtl"] .rtl-flip { transform: scaleX(-1); }
+  [dir="rtl"] body { letter-spacing: 0; }
+  [dir="rtl"] .tracking-tight, [dir="rtl"] .tracking-wide, [dir="rtl"] .tracking-wider { letter-spacing: 0; } /* Arabic must not be letter-spaced */
   /* Grid children must be allowed to shrink (charts, long text) — prevents horizontal overflow on mobile. */
   .grid > * { min-width: 0; }
   input[type="number"]::-webkit-inner-spin-button { opacity: .4; }
@@ -109,7 +122,7 @@
   .field-error { @apply mt-1.5 text-xs font-medium text-danger; }
   .input { @apply form-input block w-full rounded-lg border-line bg-surface px-3 h-10 text-sm text-ink placeholder:text-faint shadow-sm transition focus:border-brand focus:ring-2 focus:ring-brand/20; }
   .input-sm { @apply h-8 text-[13px] px-2.5; }
-  .select { @apply form-select block w-full rounded-lg border-line bg-surface pl-3 pr-9 h-10 text-sm text-ink shadow-sm focus:border-brand focus:ring-2 focus:ring-brand/20; }
+  .select { @apply form-select block w-full rounded-lg border-line bg-surface ps-3 pe-9 h-10 text-sm text-ink shadow-sm focus:border-brand focus:ring-2 focus:ring-brand/20; }
   .textarea { @apply form-textarea block w-full rounded-lg border-line bg-surface px-3 py-2.5 text-sm text-ink placeholder:text-faint shadow-sm focus:border-brand focus:ring-2 focus:ring-brand/20; }
   .checkbox { @apply form-checkbox h-4 w-4 rounded border-line bg-surface text-brand focus:ring-brand/30; }
   .radio { @apply form-radio h-4 w-4 border-line bg-surface text-brand focus:ring-brand/30; }
@@ -121,7 +134,7 @@
   .seg-item.is-active, .seg-item[aria-pressed="true"], .seg-item[aria-selected="true"] { @apply bg-surface text-ink shadow-sm; }
 
   /* Choice tiles (wizard) */
-  .tile { @apply relative flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-surface p-4 text-left transition hover:border-brand/50 hover:bg-subtle/50; }
+  .tile { @apply relative flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-surface p-4 text-start transition hover:border-brand/50 hover:bg-subtle/50; }
   .tile.is-active { @apply border-brand ring-2 ring-brand/20 bg-brand-soft/40; }
 
   /* Badges */
@@ -148,7 +161,7 @@
 
   /* Menus / popovers */
   .menu { @apply absolute z-40 mt-1 min-w-[12rem] rounded-xl border border-line bg-surface p-1 shadow-pop animate-fade-in; }
-  .menu-item { @apply flex w-full items-center gap-2.5 rounded-lg px-2.5 h-9 text-sm text-ink hover:bg-subtle text-left; }
+  .menu-item { @apply flex w-full items-center gap-2.5 rounded-lg px-2.5 h-9 text-sm text-ink hover:bg-subtle text-start; }
   .menu-item.is-danger { @apply text-danger; }
 
   /* Modal */
@@ -157,7 +170,7 @@
 
   /* Tables */
   .table { @apply w-full text-sm; }
-  .table th { @apply px-4 py-2.5 text-left text-xs font-medium uppercase tracking-wide text-faint border-b border-line; }
+  .table th { @apply px-4 py-2.5 text-start text-xs font-medium uppercase tracking-wide text-faint border-b border-line; }
   .table td { @apply px-4 py-3 border-b border-line; }
   .table tr:last-child td { @apply border-b-0; }
 
@@ -191,7 +204,7 @@
   .toast { @apply pointer-events-auto flex items-center gap-3 rounded-xl border border-line bg-surface px-4 py-3 text-sm shadow-pop animate-fade-in; }
 
   /* Planner */
-  .tl-block { @apply absolute overflow-hidden rounded-lg border-l-[3px] border-tone bg-tone/10 px-2 py-1 text-left text-tone-strong transition-shadow hover:shadow-pop hover:z-20 cursor-pointer select-none; }
+  .tl-block { @apply absolute overflow-hidden rounded-lg border-s-[3px] border-tone bg-tone/10 px-2 py-1 text-start text-tone-strong transition-shadow hover:shadow-pop hover:z-20 cursor-pointer select-none; }
   .tl-block.is-done { @apply opacity-60; }
   .tl-block.is-done .tl-title { @apply line-through; }
   .tl-block.is-cancelled { @apply opacity-40 border-dashed; }

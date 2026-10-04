@@ -95,6 +95,17 @@ SYSTEM_TEMPLATES = [
         },
     },
     {
+        "slug": "early-riser", "name": "Early riser", "icon": "alarm-clock", "color": "amber",
+        "category_name": "Productivity", "duration_days": 30,
+        "description": "Wake up before 06:00 every day — log your wake-up time.",
+        "definition": {
+            "fields": [{"key": "wake_up", "label": "Wake-up time", "field_type": "time", "required": True}],
+            "goal": {"metric": "wake_up", "period": "daily", "aggregation": "count", "target": 1,
+                     "time_comparison": "before", "time_threshold": "06:00"},
+            "schedule": {"frequency": "daily"},
+        },
+    },
+    {
         "slug": "digital-detox", "name": "Digital Detox", "icon": "smartphone", "color": "sky",
         "category_name": "Digital Wellbeing", "duration_days": 30,
         "description": "A day without social media counts as a win.",

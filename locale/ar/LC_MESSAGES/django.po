@@ -2,3279 +2,734 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: LifeFlow\n"
-"Language: fr\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-#: templates\reports\list.html
-msgid "%(n)s challenges"
-msgstr "%(n)s défis"
-
-#: templates\challenges\templates.html
-msgid "%(n)s day"
-msgid_plural "%(n)s days"
-msgstr[0] "%(n)s jour"
-msgstr[1] "%(n)s jours"
-
-#: apps\core\templatetags\ui.py
-msgid "%(n)s month"
-msgid_plural "%(n)s months"
-msgstr[0] "%(n)s mois"
-msgstr[1] "%(n)s mois"
-
-#: apps\core\templatetags\ui.py
-msgid "%(n)s week"
-msgid_plural "%(n)s weeks"
-msgstr[0] "%(n)s semaine"
-msgstr[1] "%(n)s semaines"
-
-#: apps\challenges\api.py
-msgid "%(name)s (copy)"
-msgstr "%(name)s (copie)"
-
-#: apps\core\js_i18n.py
-msgid "%s activities added"
-msgstr "%s activités ajoutées"
-
-#: apps\analytics\services\progress\goals.py
-msgid "/ day"
-msgstr "/ jour"
-
-#: apps\analytics\services\progress\goals.py
-msgid "/ month"
-msgstr "/ mois"
-
-#: apps\analytics\services\progress\goals.py
-msgid "/ week"
-msgstr "/ semaine"
-
-#: apps\challenges\models.py
-msgid "0 = Monday … 6 = Sunday"
-msgstr "0 = lundi … 6 = dimanche"
-
-#: templates\analytics\overview.html
-msgid "1 year"
-msgstr "1 an"
-
-#: apps\accounts\forms.py
-msgid "3+ characters: letters, numbers and . @ + - _ only."
-msgstr "3 caractères minimum : lettres, chiffres et . @ + - _ uniquement."
-
-#: templates\analytics\overview.html
-msgid "30 days"
-msgstr "30 jours"
-
-#: templates\challenges\create.html
-msgid "7 days"
-msgstr "7 jours"
-
-#: templates\analytics\overview.html
-msgid "90 days"
-msgstr "90 jours"
-
-#: apps\challenges\api.py
-msgid "A challenge can have at most 12 fields."
-msgstr "Un défi peut avoir au maximum 12 champs."
-
-#: apps\challenges\serializers.py
-msgid "A challenge can last at most 5 years."
-msgstr "Un défi peut durer au maximum 5 ans."
-
-#: templates\dashboard\home.html
-msgid ""
-"A challenge is anything you want to do regularly: read, train, learn, pray, "
-"drink water…"
-msgstr ""
-"Un défi, c'est tout ce que vous voulez faire régulièrement : lire, vous "
-"entraîner, apprendre, prier, boire de l'eau…"
-
-#: templates\challenges\settings.html
-msgid ""
-"A change applies from the chosen date. Earlier days keep the previous goal: "
-"your history is never rewritten."
-msgstr ""
-"Une modification s'applique à partir de la date choisie. Les jours "
-"précédents gardent l'ancien objectif : votre historique n'est jamais "
-"réécrit."
-
-#: apps\challenges\models.py
-msgid "A choice field needs at least one option."
-msgstr "Une liste de choix nécessite au moins une option."
-
-#: templates\challenges\create.html
-msgid "A number"
-msgstr "Un nombre"
-
-#: templates\challenges\settings.html
-msgid ""
-"A paused period is neither a success nor a failure. Archived challenges keep"
-" their full history."
-msgstr ""
-"Une période en pause n'est ni une réussite ni un échec. Les défis archivés "
-"conservent tout leur historique."
-
-#: templates\dashboard\today.html
-msgid "A planned activity never counts as done until you confirm it."
-msgstr ""
-"Une activité planifiée n'est jamais comptée comme faite tant que vous ne "
-"l'avez pas confirmée."
-
-#: apps\planner\serializers.py
-msgid "A template can contain at most 60 activities."
-msgstr "Un modèle peut contenir au maximum 60 activités."
-
-#: templates\403.html
-msgid "Access denied"
-msgstr "Accès refusé"
-
-#: apps\core\models.py
-msgid "Account event"
-msgstr "Événement du compte"
-
-#: templates\challenges\detail.html
-msgid "Achieved"
-msgstr "Atteint"
-
-#: templates\reports\detail.html
-msgid "Active"
-msgstr "Actif"
-
-#: templates\challenges\detail.html
-msgid "Active days"
-msgstr "Jours actifs"
-
-#: templates\challenges\detail.html
-msgid "Activity"
-msgstr "Activité"
-
-#: apps\core\js_i18n.py
-msgid "Activity added"
-msgstr "Activité ajoutée"
-
-#: apps\core\js_i18n.py
-msgid "Activity added (overlaps another activity)"
-msgstr "Activité ajoutée (chevauche une autre activité)"
-
-#: apps\core\js_i18n.py
-msgid "Activity completed"
-msgstr "Activité terminée"
-
-#: apps\core\js_i18n.py
-msgid "Activity duplicated"
-msgstr "Activité dupliquée"
-
-#: apps\core\js_i18n.py
-msgid "Activity moved"
-msgstr "Activité déplacée"
-
-#: apps\tracking\api.py
-msgid "Activity not found."
-msgstr "Activité introuvable."
-
-#: apps\notifications\models.py
-msgid "Activity reminder"
-msgstr "Rappel d'activité"
-
-#: apps\core\js_i18n.py
-msgid "Activity rescheduled"
-msgstr "Activité reportée"
-
-#: apps\core\js_i18n.py
-msgid "Activity updated"
-msgstr "Activité mise à jour"
-
-#: templates\analytics\overview.html
-msgid "Actual"
-msgstr "Réalisé"
-
-#: templates\partials\modals.html
-msgid "Actual time"
-msgstr "Temps réel"
-
-#: templates\accounts\_category_manager.html
-msgid "Add"
-msgstr "Ajouter"
-
-#: templates\accounts\onboarding.html
-msgid "Add a block"
-msgstr "Ajouter un créneau"
-
-#: templates\dashboard\today.html
-msgid ""
-"Add a few activities, or apply one of your day templates from the planner."
-msgstr ""
-"Ajoutez quelques activités, ou appliquez un de vos modèles de journée depuis"
-" le planner."
-
-#: templates\dashboard\today.html
-msgid "Add activity"
-msgstr "Ajouter une activité"
-
-#: apps\challenges\serializers.py
-msgid "Add at least one option."
-msgstr "Ajoutez au moins une option."
-
-#: templates\challenges\create.html
-msgid "Add field"
-msgstr "Ajouter un champ"
-
-#: templates\partials\quick_add_menu.html
-msgid "Add note"
-msgstr "Ajouter une note"
-
-#: templates\partials\quick_add_menu.html
-msgid "Add task"
-msgstr "Ajouter une tâche"
-
-#: templates\challenges\create.html
-msgid "Add up the values"
-msgstr "Additionner les valeurs"
-
-#: apps\reports\generators\pdf.py
-msgid "Ahead"
-msgstr "En avance"
-
-#: templates\challenges\list.html
-msgid "All"
-msgstr "Tous"
-
-#: templates\challenges\list.html
-msgid "All categories"
-msgstr "Toutes les catégories"
-
-#: templates\journal\list.html
-msgid "All challenges"
-msgstr "Tous les défis"
-
-#: templates\accounts\register.html
-msgid "Already have an account?"
-msgstr "Vous avez déjà un compte ?"
-
-#: apps\challenges\models.py
-msgid "Amber"
-msgstr "Ambre"
-
-#: apps\core\js_i18n.py
-msgid "Amount"
-msgstr "Quantité"
-
-#: apps\accounts\api.py
-msgid "An account already exists with this email."
-msgstr "Un compte existe déjà avec cet e-mail."
-
-#: templates\analytics\overview.html
-msgid "Analytics"
-msgstr "Statistiques"
-
-#: templates\accounts\onboarding.html
-msgid "Analyze"
-msgstr "Analyser"
-
-#: templates\layouts\auth.html
-msgid "Any challenge"
-msgstr "Tous vos défis"
-
-#: templates\accounts\onboarding.html
-msgid "Anything you want to measure"
-msgstr "Tout ce que vous voulez mesurer"
-
-#: templates\challenges\settings.html
-msgid "Applies from"
-msgstr "Applicable à partir du"
-
-#: templates\planner\planner.html
-msgid "Apply"
-msgstr "Appliquer"
-
-#: templates\planner\planner.html
-msgid "Apply to"
-msgstr "Appliquer à"
-
-#: templates\challenges\settings.html
-msgid "Archive"
-msgstr "Archiver"
-
-#: apps\challenges\models.py
-msgid "Archived"
-msgstr "Archivé"
-
-#: apps\core\js_i18n.py
-msgid "Are you sure?"
-msgstr "Êtes-vous sûr ?"
-
-#: apps\accounts\forms.py
-msgid "At least 8 characters, not too common."
-msgstr "Au moins 8 caractères, pas trop courant."
-
-#: templates\challenges\detail.html
-msgid "Average"
-msgstr "Moyenne"
-
-#: apps\reports\generators\pdf.py
-msgid "Average / active day"
-msgstr "Moyenne / jour actif"
-
-#: templates\reports\detail.html
-msgid "Avg / day"
-msgstr "Moy. / jour"
-
-#: templates\challenges\detail.html
-msgid "Avg / entry"
-msgstr "Moy. / entrée"
-
-#: templates\analytics\overview.html
-msgid "Avg. challenge completion"
-msgstr "Réussite moyenne des défis"
-
-#: templates\reports\detail.html
-msgid "Avg. completion"
-msgstr "Réussite moy."
-
-#: templates\accounts\onboarding.html
-msgid "Back"
-msgstr "Retour"
-
-#: templates\403.html
-msgid "Back to LifeFlow"
-msgstr "Retour à LifeFlow"
-
-#: templates\accounts\password_reset.html
-msgid "Back to sign in"
-msgstr "Retour à la connexion"
-
-#: templates\challenges\create.html
-msgid "Basics"
-msgstr "Infos"
-
-#: apps\reports\generators\pdf.py
-msgid "Behind"
-msgstr "En retard"
-
-#: templates\dashboard\home.html
-msgid "Best active streak"
-msgstr "Meilleure série en cours"
-
-#: templates\challenges\detail.html
-msgid "Best day"
-msgstr "Meilleur jour"
-
-#: templates\analytics\overview.html
-msgid "Best streak"
-msgstr "Meilleure série"
-
-#: apps\challenges\models.py
-msgid "Blue"
-msgstr "Bleu"
-
-#: templates\accounts\onboarding.html
-msgid "Breakfast"
-msgstr "Petit-déjeuner"
-
-#: templates\reports\list.html
-msgid "CSV — all entries"
-msgstr "CSV — toutes les entrées"
-
-#: templates\reports\list.html
-msgid "CSV — challenge statistics"
-msgstr "CSV — statistiques des défis"
-
-#: templates\dashboard\calendar.html
-msgid "Calendar"
-msgstr "Calendrier"
-
-#: templates\challenges\detail.html
-msgid "Cancel"
-msgstr "Annuler"
-
-#: apps\planner\models.py
-msgid "Cancelled"
-msgstr "Annulé"
-
-#: templates\accounts\categories.html
-msgid "Categories"
-msgstr "Catégories"
-
-#: templates\challenges\create.html
-msgid "Category"
-msgstr "Catégorie"
-
-#: templates\accounts\_category_manager.html
-msgid "Category added"
-msgstr "Catégorie ajoutée"
-
-#: templates\analytics\overview.html
-msgid "Challenge"
-msgstr "Défi"
-
-#: apps\core\js_i18n.py
-msgid "Challenge created"
-msgstr "Défi créé"
-
-#: apps\core\models.py
-msgid "Challenge deleted"
-msgstr "Défi supprimé"
-
-#: templates\dashboard\calendar.html
-msgid "Challenge done"
-msgstr "Défi réussi"
-
-#: apps\tracking\services.py
-msgid "Challenge not found."
-msgstr "Défi introuvable."
-
-#: apps\notifications\models.py
-msgid "Challenge reminder"
-msgstr "Rappel de défi"
-
-#: apps\core\models.py
-msgid "Challenge status changed"
-msgstr "Statut du défi modifié"
-
-#: templates\challenges\templates.html
-msgid "Challenge templates"
-msgstr "Modèles de défis"
-
-#: apps\core\models.py
-msgid "Challenge updated"
-msgstr "Défi modifié"
-
-#: templates\challenges\create.html
-msgid "Challenges"
-msgstr "Défis"
-
-#: templates\analytics\overview.html
-msgid "Challenges in this period"
-msgstr "Défis sur cette période"
-
-#: templates\journal\review.html
-msgid "Challenges this week"
-msgstr "Défis de la semaine"
-
-#: templates\dashboard\home.html
-msgid "Challenges today"
-msgstr "Défis du jour"
-
-#: templates\accounts\security.html
-msgid "Change password"
-msgstr "Changer le mot de passe"
-
-#: templates\accounts\password_reset_done.html
-msgid "Check your email"
-msgstr "Vérifiez vos e-mails"
-
-#: templates\challenges\create.html
-msgid "Choice list"
-msgstr "Liste de choix"
-
-#: apps\challenges\models.py
-msgid "Choices for select fields."
-msgstr "Choix pour les listes."
-
-#: apps\tracking\api.py
-msgid "Choose a challenge."
-msgstr "Choisissez un défi."
-
-#: apps\planner\api.py
-msgid "Choose a new date."
-msgstr "Choisissez une nouvelle date."
-
-#: templates\accounts\password_reset_confirm.html
-msgid "Choose a new password"
-msgstr "Choisissez un nouveau mot de passe"
-
-#: templates\planner\planner.html
-msgid "Choose a template"
-msgstr "Choisissez un modèle"
-
-#: apps\reports\views.py
-msgid "Choose a valid month."
-msgstr "Choisissez un mois valide."
-
-#: apps\journal\views.py
-msgid "Choose a value between 1 and 5."
-msgstr "Choisissez une valeur entre 1 et 5."
-
-#: apps\core\js_i18n.py
-msgid "Choose at least one day."
-msgstr "Choisissez au moins un jour."
-
-#: apps\planner\api.py
-msgid "Choose at least one valid day."
-msgstr "Choisissez au moins un jour valide."
-
-#: apps\tracking\services.py
-msgid "Choose done or not done."
-msgstr "Choisissez fait ou non fait."
-
-#: templates\challenges\create.html
-msgid ""
-"Choose how you'll record your progress. You can add extra details below."
-msgstr ""
-"Choisissez comment vous enregistrerez votre progression. Vous pouvez ajouter"
-" des détails ci-dessous."
-
-#: apps\challenges\serializers.py
-msgid "Choose one of the challenge's fields."
-msgstr "Choisissez un des champs du défi."
-
-#: apps\journal\api.py
-msgid "Choose the challenge this note is about."
-msgstr "Choisissez le défi concerné par cette note."
-
-#: apps\core\js_i18n.py
-msgid "Choose what you want to measure."
-msgstr "Choisissez ce que vous voulez mesurer."
-
-#: templates\journal\list.html
-msgid "Clear"
-msgstr "Effacer"
-
-#: templates\planner\planner.html
-msgid ""
-"Click an empty slot to add an activity. Drag to move (also to another day), "
-"drag the bottom edge to resize. Keyboard: Alt + arrows."
-msgstr ""
-"Cliquez sur un créneau vide pour ajouter une activité. Glissez pour déplacer"
-" (y compris vers un autre jour), tirez le bord inférieur pour "
-"redimensionner. Clavier : Alt + flèches."
-
-#: templates\partials\modals.html
-msgid "Close"
-msgstr "Fermer"
-
-#: templates\challenges\create.html
-msgid "Color"
-msgstr "Couleur"
-
-#: apps\notifications\management\commands\send_reminders.py
-msgid "Coming up: %(t)s"
-msgstr "Bientôt : %(t)s"
-
-#: templates\partials\modals.html
-msgid "Complete"
-msgstr "Terminer"
-
-#: templates\dashboard\home.html
-msgid "Complete a day to start one"
-msgstr "Réussissez une journée pour en démarrer une"
-
-#: templates\dashboard\today.html
-msgid "Completed"
-msgstr "Terminé"
-
-#: templates\challenges\detail.html
-msgid "Completed days"
-msgstr "Jours réussis"
-
-#: templates\analytics\overview.html
-msgid "Completion"
-msgstr "Réussite"
-
-#: templates\analytics\overview.html
-msgid "Completion by challenge"
-msgstr "Réussite par défi"
-
-#: templates\challenges\detail.html
-msgid "Completion rate"
-msgstr "Taux de réussite"
-
-#: apps\core\js_i18n.py
-msgid "Confirm"
-msgstr "Confirmer"
-
-#: templates\accounts\security.html
-msgid "Confirm with your password"
-msgstr "Confirmez avec votre mot de passe"
-
-#: templates\accounts\onboarding.html
-msgid "Continue"
-msgstr "Continuer"
-
-#: templates\dashboard\home.html
-msgid "Continue setup"
-msgstr "Continuer la configuration"
-
-#: templates\challenges\create.html
-msgid "Count sessions"
-msgstr "Compter les séances"
-
-#: templates\challenges\settings.html
-msgid "Counting"
-msgstr "Mode de calcul"
-
-#: templates\challenges\create.html
-msgid "Create a challenge"
-msgstr "Créer un défi"
-
-#: templates\analytics\overview.html
-msgid "Create a challenge and record a few entries to see your analytics."
-msgstr ""
-"Créez un défi et enregistrez quelques entrées pour voir vos statistiques."
-
-#: templates\planner\rules.html
-msgid "Create a routine"
-msgstr "Créer une routine"
-
-#: templates\planner\templates.html
-msgid "Create a template"
-msgstr "Créer un modèle"
-
-#: templates\accounts\register.html
-msgid "Create account"
-msgstr "Créer le compte"
-
-#: templates\accounts\login.html
-msgid "Create an account"
-msgstr "Créer un compte"
-
-#: templates\challenges\create.html
-msgid "Create challenge"
-msgstr "Créer le défi"
-
-#: templates\accounts\onboarding.html
-msgid "Create my routine & finish"
-msgstr "Créer ma routine et terminer"
-
-#: templates\planner\templates.html
-msgid "Create one here, or save any day of your planner as a template."
-msgstr ""
-"Créez-en un ici, ou enregistrez n'importe quelle journée de votre planner "
-"comme modèle."
-
-#: templates\accounts\register.html
-msgid "Create your account"
-msgstr "Créez votre compte"
-
-#: templates\accounts\onboarding.html
-msgid "Create your first challenge"
-msgstr "Créez votre premier défi"
-
-#: templates\dashboard\home.html
-msgid "Create your first challenge and sketch your typical day."
-msgstr "Créez votre premier défi et esquissez votre journée type."
-
-#: apps\accounts\models.py
-msgid "Created by the demo seed command."
-msgstr "Créé par la commande de démonstration."
-
-#: templates\challenges\detail.html
-msgid "Cumulative actual vs. expected pace"
-msgstr "Réalisé cumulé vs rythme attendu"
-
-#: templates\challenges\settings.html
-msgid "Cumulative totals to celebrate along the way (e.g. 25h, 50h, 100h)."
-msgstr "Totaux cumulés à célébrer en chemin (ex. 25 h, 50 h, 100 h)."
-
-#: templates\challenges\detail.html
-msgid "Current streak"
-msgstr "Série actuelle"
-
-#: templates\challenges\create.html
-msgid "Custom"
-msgstr "Personnalisé"
-
-#: templates\accounts\onboarding.html
-msgid "Custom challenge"
-msgstr "Défi personnalisé"
-
-#: apps\notifications\models.py
-msgid "Daily goal"
-msgstr "Objectif quotidien"
-
-#: templates\partials\topbar.html
-msgid "Dark"
-msgstr "Sombre"
-
-#: templates\dashboard\home.html
-msgid "Dashboard"
-msgstr "Tableau de bord"
-
-#: templates\challenges\detail.html
-msgid "Date"
-msgstr "Date"
-
-#: apps\challenges\models.py
-msgid "Date the challenge was completed/archived early."
-msgstr "Date de clôture anticipée du défi."
-
-#: templates\planner\planner.html
-msgid "Day"
-msgstr "Jour"
-
-#: templates\planner\templates.html
-msgid "Day template"
-msgstr "Modèle de journée"
-
-#: apps\core\models.py
-msgid "Day template applied"
-msgstr "Modèle de journée appliqué"
-
-#: templates\challenges\templates.html
-msgid "Day templates"
-msgstr "Modèles de journée"
-
-#: templates\challenges\detail.html
-msgid "Days achieved"
-msgstr "Jours réussis"
-
-#: templates\challenges\settings.html
-msgid "Days outside the schedule are rest days."
-msgstr "Les jours hors planning sont des jours de repos."
-
-#: templates\challenges\create.html
-msgid "Days outside the schedule are rest days: they never count against you."
-msgstr ""
-"Les jours hors planning sont des jours de repos : ils ne comptent jamais "
-"contre vous."
-
-#: templates\challenges\create.html
-msgid "Decimal number"
-msgstr "Nombre décimal"
-
-#: templates\challenges\create.html
-msgid "Decimal values with a unit"
-msgstr "Valeurs décimales avec unité"
-
-#: templates\accounts\_category_manager.html
-msgid "Delete"
-msgstr "Supprimer"
-
-#: templates\accounts\security.html
-msgid "Delete account"
-msgstr "Supprimer le compte"
-
-#: templates\accounts\security.html
-msgid "Delete forever"
-msgstr "Supprimer définitivement"
-
-#: templates\accounts\security.html
-msgid "Delete my account"
-msgstr "Supprimer mon compte"
-
-#: apps\core\js_i18n.py
-msgid "Delete the whole series? Past activities are kept."
-msgstr "Supprimer toute la série ? Les activités passées sont conservées."
-
-#: apps\core\js_i18n.py
-msgid "Delete this activity?"
-msgstr "Supprimer cette activité ?"
-
-#: templates\accounts\_category_manager.html
-msgid "Delete this category? Items using it will simply have no category."
-msgstr ""
-"Supprimer cette catégorie ? Les éléments concernés n'auront simplement plus "
-"de catégorie."
-
-#: apps\core\js_i18n.py
-msgid ""
-"Delete this challenge and all its entries? This cannot be undone. Archiving "
-"keeps your history."
-msgstr ""
-"Supprimer ce défi et toutes ses entrées ? C'est irréversible. L'archivage "
-"conserve votre historique."
-
-#: apps\core\js_i18n.py
-msgid "Delete this entry?"
-msgstr "Supprimer cette entrée ?"
-
-#: templates\reports\detail.html
-msgid "Delete this report"
-msgstr "Supprimer ce rapport"
-
-#: templates\reports\detail.html
-msgid "Delete this report?"
-msgstr "Supprimer ce rapport ?"
-
-#: templates\planner\rules.html
-msgid "Delete this routine? Activities already done are kept."
-msgstr "Supprimer cette routine ? Les activités déjà faites sont conservées."
-
-#: templates\planner\templates.html
-msgid "Delete this template?"
-msgstr "Supprimer ce modèle ?"
-
-#: apps\core\js_i18n.py
-msgid "Deleted"
-msgstr "Supprimé"
-
-#: templates\challenges\create.html
-msgid "Description"
-msgstr "Description"
-
-#: templates\layouts\auth.html
-msgid "Design your days. Keep your promises to yourself."
-msgstr "Organisez vos journées. Tenez les promesses que vous vous faites."
-
-#: templates\challenges\create.html
-msgid "Design your own fields"
-msgstr "Créez vos propres champs"
-
-#: templates\accounts\onboarding.html
-msgid "Digital Wellbeing"
-msgstr "Bien-être numérique"
-
-#: templates\partials\modals.html
-msgid "Dismiss"
-msgstr "Fermer"
-
-#: apps\core\js_i18n.py
-msgid "Distance"
-msgstr "Distance"
-
-#: templates\challenges\create.html
-msgid "Distance, weight, money…"
-msgstr "Distance, poids, argent…"
-
-#: templates\accounts\onboarding.html
-msgid "Do the work"
-msgstr "Passer à l'action"
-
-#: templates\challenges\detail.html
-msgid "Done"
-msgstr "Fait"
-
-#: apps\challenges\models.py
-msgid "Done / Not done"
-msgstr "Fait / Non fait"
-
-#: templates\challenges\create.html
-msgid "Done / not done"
-msgstr "Fait / non fait"
-
-#: templates\challenges\_card.html
-msgid "Done for today"
-msgstr "Fait pour aujourd'hui"
-
-#: templates\reports\detail.html
-msgid "Download PDF"
-msgstr "Télécharger le PDF"
-
-#: templates\challenges\settings.html
-msgid "Duplicate"
-msgstr "Dupliquer"
-
-#: templates\challenges\create.html
-msgid "Duration"
-msgstr "Durée"
-
-#: apps\challenges\models.py
-msgid "Duration (minutes)"
-msgstr "Durée (minutes)"
-
-#: templates\challenges\create.html
-msgid "Durations are entered in minutes (120 = 2 hours)."
-msgstr "Les durées se saisissent en minutes (120 = 2 heures)."
-
-#: templates\accounts\_category_manager.html
-msgid "Edit"
-msgstr "Modifier"
-
-#: templates\challenges\settings.html
-msgid "Edit challenge"
-msgstr "Modifier le défi"
-
-#: templates\challenges\detail.html
-msgid "Edit entry"
-msgstr "Modifier l'entrée"
-
-#: templates\planner\rules.html
-msgid "Edit routine"
-msgstr "Modifier la routine"
-
-#: apps\planner\models.py
-msgid "Edited individually; no longer follows its rule."
-msgstr "Modifiée individuellement ; ne suit plus sa règle."
-
-#: apps\accounts\forms.py
-msgid "Email"
-msgstr "E-mail"
-
-#: apps\accounts\forms.py
-msgid "Email or username"
-msgstr "E-mail ou nom d'utilisateur"
-
-#: apps\challenges\models.py
-msgid "Emerald"
-msgstr "Émeraude"
-
-#: templates\accounts\onboarding.html
-msgid "End"
-msgstr "Fin"
-
-#: templates\challenges\create.html
-msgid "End date"
-msgstr "Date de fin"
-
-#: apps\challenges\models.py
-msgid "End date must be on or after the start date."
-msgstr "La date de fin doit être postérieure ou égale à la date de début."
-
-#: apps\notifications\models.py
-msgid "End of day"
-msgstr "Fin de journée"
-
-#: apps\planner\services.py
-msgid "Enter a duration between 0 and 24 hours."
-msgstr "Saisissez une durée entre 0 et 24 heures."
-
-#: apps\tracking\services.py
-msgid "Enter a number."
-msgstr "Saisissez un nombre."
-
-#: apps\planner\serializers.py
-msgid "Enter a realistic date."
-msgstr "Saisissez une date réaliste."
-
-#: apps\challenges\api.py
-msgid "Enter a valid date."
-msgstr "Saisissez une date valide."
-
-#: apps\planner\api.py
-msgid "Enter a valid time (HH:MM)."
-msgstr "Saisissez une heure valide (HH:MM)."
-
-#: apps\planner\api.py
-msgid "Enter a whole number of minutes."
-msgstr "Saisissez un nombre entier de minutes."
-
-#: apps\tracking\services.py
-msgid "Enter a whole number."
-msgstr "Saisissez un nombre entier."
-
-#: templates\accounts\password_reset.html
-msgid "Enter your email and we'll send you a link to choose a new password."
-msgstr ""
-"Saisissez votre e-mail et nous vous enverrons un lien pour choisir un "
-"nouveau mot de passe."
-
-#: templates\challenges\detail.html
-msgid "Entries"
-msgstr "Entrées"
-
-#: templates\challenges\settings.html
-msgid "Entries (sessions)"
-msgstr "Entrées (séances)"
-
-#: templates\analytics\overview.html
-msgid "Entries per weekday"
-msgstr "Entrées par jour de la semaine"
-
-#: templates\analytics\overview.html
-msgid "Entries recorded"
-msgstr "Entrées enregistrées"
-
-#: apps\core\models.py
-msgid "Entry created"
-msgstr "Entrée créée"
-
-#: apps\core\js_i18n.py
-msgid "Entry deleted"
-msgstr "Entrée supprimée"
-
-#: apps\core\models.py
-msgid "Entry modified"
-msgstr "Entrée modifiée"
-
-#: apps\core\js_i18n.py
-msgid "Entry updated"
-msgstr "Entrée mise à jour"
-
-#: templates\challenges\create.html
-msgid "Every"
-msgstr "Tous les"
-
-#: templates\planner\rules.html
-msgid "Every %s days"
-msgstr "Tous les %s jours"
-
-#: templates\challenges\create.html
-msgid "Every N days"
-msgstr "Tous les N jours"
-
-#: templates\challenges\create.html
-msgid "Every day"
-msgstr "Tous les jours"
-
-#: apps\analytics\services\progress\goals.py
-msgid "Every scheduled day"
-msgstr "Chaque jour prévu"
-
-#: templates\challenges\create.html
-msgid ""
-"Everything can be changed later — goal changes never rewrite your history."
-msgstr ""
-"Tout pourra être modifié plus tard — changer un objectif ne réécrit jamais "
-"votre historique."
-
-#: templates\challenges\list.html
-msgid "Everything you want to do regularly — measured your way."
-msgstr "Tout ce que vous voulez faire régulièrement — mesuré à votre façon."
-
-#: templates\reports\list.html
-msgid "Excel (statistics + entries)"
-msgstr "Excel (statistiques + entrées)"
-
-#: templates\accounts\onboarding.html
-msgid "Execute"
-msgstr "Exécuter"
-
-#: templates\challenges\detail.html
-msgid "Expected"
-msgstr "Attendu"
-
-#: templates\accounts\_settings_layout.html
-msgid "Export data"
-msgstr "Exporter les données"
-
-#: templates\reports\list.html
-msgid "Export your data"
-msgstr "Exporter vos données"
-
-#: apps\planner\defaults.py
-msgid "Family"
-msgstr "Famille"
-
-#: apps\core\js_i18n.py
-msgid "Field added"
-msgstr "Champ ajouté"
-
-#: templates\challenges\settings.html
-msgid "Field name"
-msgstr "Nom du champ"
-
-#: templates\challenges\create.html
-msgid "Field name (e.g. Pages, Surah, Type)"
-msgstr "Nom du champ (ex. Pages, Sourate, Type)"
-
-#: apps\challenges\api.py
-msgid "Field names must be unique."
-msgstr "Les noms de champs doivent être uniques."
-
-#: apps\core\js_i18n.py
-msgid "Field removed"
-msgstr "Champ retiré"
-
-#: apps\core\js_i18n.py
-msgid "Field renamed"
-msgstr "Champ renommé"
-
-#: apps\challenges\models.py
-msgid "Field that is measured. Empty = count entries (sessions)."
-msgstr "Champ mesuré. Vide = compter les entrées (séances)."
-
-#: apps\tracking\services.py
-msgid "Fill in at least one value."
-msgstr "Renseignez au moins une valeur."
-
-#: apps\challenges\defaults.py
-msgid "Finance"
-msgstr "Finances"
-
-#: templates\dashboard\home.html
-msgid "Finish setting up LifeFlow"
-msgstr "Terminez la configuration de LifeFlow"
-
-#: apps\accounts\models.py
-msgid "First hour shown in the planner."
-msgstr "Première heure affichée dans le planner."
-
-#: apps\accounts\forms.py
-msgid "First name"
-msgstr "Prénom"
-
-#: apps\planner\defaults.py
-msgid "Food"
-msgstr "Repas"
-
-#: templates\planner\rules.html
-msgid "For example: Gym on Monday, Wednesday and Friday from 09:00 to 10:30."
-msgstr ""
-"Par exemple : salle de sport lundi, mercredi et vendredi de 09:00 à 10:30."
-
-#: templates\challenges\create.html
-msgid "For how long?"
-msgstr "Pendant combien de temps ?"
-
-#: templates\accounts\login.html
-msgid "Forgot password?"
-msgstr "Mot de passe oublié ?"
-
-#: templates\accounts\register.html
-msgid "Free, private, and built around your own goals."
-msgstr "Gratuit, privé, et construit autour de vos propres objectifs."
-
-#: templates\challenges\create.html
-msgid "Frequency"
-msgstr "Fréquence"
-
-#: templates\planner\rules.html
-msgid "From"
-msgstr "Du"
-
-#: templates\challenges\list.html
-msgid "From a template"
-msgstr "Depuis un modèle"
-
-#: templates\challenges\detail.html
-msgid "From planner"
-msgstr "Depuis le planner"
-
-#: templates\challenges\detail.html
-msgid "Gap"
-msgstr "Écart"
-
-#: templates\challenges\settings.html
-msgid "General"
-msgstr "Général"
-
-#: templates\reports\list.html
-msgid "Generate a monthly report"
-msgstr "Générer un rapport mensuel"
-
-#: templates\reports\list.html
-msgid "Generate report"
-msgstr "Générer le rapport"
-
-#: templates\reports\list.html
-msgid ""
-"Generate your first monthly report to keep a permanent record of your "
-"progress."
-msgstr ""
-"Générez votre premier rapport mensuel pour garder une trace permanente de "
-"vos progrès."
-
-#: apps\reports\generators\pdf.py
-msgid "Generated %(d)s"
-msgstr "Généré le %(d)s"
-
-#: templates\reports\list.html
-msgid ""
-"Generating the same month again creates a new version; older versions are "
-"kept."
-msgstr ""
-"Régénérer un même mois crée une nouvelle version ; les anciennes sont "
-"conservées."
-
-#: templates\challenges\create.html
-msgid "Give it a clear, motivating name."
-msgstr "Donnez-lui un nom clair et motivant."
-
-#: apps\core\js_i18n.py
-msgid "Give the template a name."
-msgstr "Donnez un nom au modèle."
-
-#: apps\core\js_i18n.py
-msgid "Give your challenge a name."
-msgstr "Donnez un nom à votre défi."
-
-#: templates\analytics\overview.html
-msgid "Goal"
-msgstr "Objectif"
-
-#: apps\core\models.py
-msgid "Goal changed"
-msgstr "Objectif modifié"
-
-#: templates\challenges\create.html
-msgid "Goal counts entries (sessions) instead of a field"
-msgstr "L'objectif compte les entrées (séances) plutôt qu'un champ"
-
-#: apps\core\js_i18n.py
-msgid "Goal updated — earlier days keep the previous goal"
-msgstr "Objectif mis à jour — les jours précédents gardent l'ancien objectif"
-
-#: templates\challenges\create.html
-msgid "Goal:"
-msgstr "Objectif :"
-
-#: templates\journal\review.html
-msgid "Goals achieved"
-msgstr "Objectifs atteints"
-
-#: apps\dashboard\services.py
-msgid "Good afternoon"
-msgstr "Bon après-midi"
-
-#: apps\dashboard\services.py
-msgid "Good evening"
-msgstr "Bonsoir"
-
-#: apps\dashboard\services.py
-msgid "Good morning"
-msgstr "Bonjour"
-
-#: apps\dashboard\services.py
-msgid "Good night"
-msgstr "Bonne nuit"
-
-#: templates\accounts\onboarding.html
-msgid "Health & Fitness"
-msgstr "Santé & forme"
-
-#: templates\dashboard\home.html
-msgid "Here's your overview for today."
-msgstr "Voici votre aperçu du jour."
-
-#: templates\accounts\emails\password_reset.txt
-msgid "Hi %(name)s,"
-msgstr "Bonjour %(name)s,"
-
-#: templates\partials\modals.html
-msgid "High"
-msgstr "Haute"
-
-#: templates\challenges\detail.html
-msgid "History"
-msgstr "Historique"
-
-#: templates\partials\bottom_nav.html
-msgid "Home"
-msgstr "Accueil"
-
-#: templates\partials\modals.html
-msgid "How did it go?"
-msgstr "Comment ça s'est passé ?"
-
-#: templates\challenges\create.html
-msgid "How much, and over which period?"
-msgstr "Combien, et sur quelle période ?"
-
-#: templates\challenges\create.html
-msgid "How should it count?"
-msgstr "Comment compter ?"
-
-#: apps\journal\views.py
-msgid "How was your week? (1–5)"
-msgstr "Comment était votre semaine ? (1–5)"
-
-#: templates\accounts\settings.html
-msgid "How you appear in LifeFlow."
-msgstr "Votre identité dans LifeFlow."
-
-#: templates\challenges\create.html
-msgid "Icon"
-msgstr "Icône"
-
-#: templates\accounts\password_reset_done.html
-msgid ""
-"If an account exists for this address, you'll receive a link to reset your "
-"password in a few minutes."
-msgstr ""
-"Si un compte existe pour cette adresse, vous recevrez un lien de "
-"réinitialisation dans quelques minutes."
-
-#: templates\accounts\emails\password_reset.txt
-msgid "If you didn't ask for it, you can ignore this email."
-msgstr "Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail."
-
-#: apps\planner\models.py
-msgid "In progress"
-msgstr "En cours"
-
-#: apps\challenges\models.py
-msgid "Inactive fields keep their history but are hidden from forms."
-msgstr ""
-"Les champs inactifs gardent leur historique mais sont masqués des "
-"formulaires."
-
-#: apps\accounts\api.py
-msgid "Incorrect password."
-msgstr "Mot de passe incorrect."
-
-#: apps\accounts\views.py
-msgid "Incorrect password. Your account was not deleted."
-msgstr "Mot de passe incorrect. Votre compte n'a pas été supprimé."
-
-#: apps\challenges\models.py
-msgid "Indigo"
-msgstr "Indigo"
-
-#: apps\accounts\api.py
-msgid "Invalid credentials."
-msgstr "Identifiants invalides."
-
-#: apps\reports\api.py
-msgid "Invalid month."
-msgstr "Mois invalide."
-
-#: apps\reports\api.py
-msgid "Invalid year."
-msgstr "Année invalide."
-
-#: templates\404.html
-msgid "It may have been moved or deleted."
-msgstr "Elle a peut-être été déplacée ou supprimée."
-
-#: templates\dashboard\calendar.html
-msgid "Journal"
-msgstr "Journal"
-
-#: apps\journal\views.py
-msgid "Journal entry deleted."
-msgstr "Note supprimée."
-
-#: apps\journal\views.py
-msgid "Journal entry saved."
-msgstr "Note enregistrée."
-
-#: apps\tracking\services.py
-msgid "Keep it under 500 characters."
-msgstr "Restez sous 500 caractères."
-
-#: apps\accounts\forms.py
-msgid "Keep me signed in"
-msgstr "Rester connecté"
-
-#: templates\dashboard\home.html
-msgid "Last 7 days"
-msgstr "7 derniers jours"
-
-#: templates\dashboard\home.html
-msgid "Last 7 days chart"
-msgstr "Graphique des 7 derniers jours"
-
-#: apps\accounts\models.py
-msgid "Last hour shown in the planner."
-msgstr "Dernière heure affichée dans le planner."
-
-#: templates\accounts\onboarding.html
-msgid "Learning"
-msgstr "Apprentissage"
-
-#: apps\challenges\models.py
-msgid "Leave empty for an open-ended challenge."
-msgstr "Laissez vide pour un défi sans fin."
-
-#: templates\dashboard\today.html
-msgid "Left"
-msgstr "Restant"
-
-#: templates\challenges\detail.html
-msgid "Less"
-msgstr "Moins"
-
-#: templates\accounts\onboarding.html
-msgid "Let's go"
-msgstr "C'est parti"
-
-#: templates\layouts\auth.html
-msgid ""
-"LifeFlow brings your planner, your personal challenges and your progress "
-"together — so you always know what you planned, what you did, and how you're"
-" improving."
-msgstr ""
-"LifeFlow réunit votre planning, vos défis personnels et votre progression — "
-"pour toujours savoir ce que vous avez prévu, ce que vous avez fait, et "
-"comment vous progressez."
-
-#: templates\accounts\onboarding.html
-msgid ""
-"LifeFlow follows a simple loop: plan your days, do the work, record what you"
-" actually did, and see how you progress. Let's set up the basics in two "
-"minutes."
-msgstr ""
-"LifeFlow suit une boucle simple : planifiez vos journées, passez à l'action,"
-" enregistrez ce que vous avez réellement fait et voyez votre progression. "
-"Configurons l'essentiel en deux minutes."
-
-#: apps\challenges\defaults.py
-msgid "Lifestyle"
-msgstr "Mode de vie"
-
-#: templates\partials\topbar.html
-msgid "Light"
-msgstr "Clair"
-
-#: apps\challenges\models.py
-msgid "Lime"
-msgstr "Citron vert"
-
-#: templates\partials\modals.html
-msgid "Linked challenge"
-msgstr "Défi lié"
-
-#: templates\partials\modals.html
-msgid "Low"
-msgstr "Basse"
-
-#: templates\accounts\onboarding.html
-msgid "Lunch"
-msgstr "Déjeuner"
-
-#: templates\partials\sidebar.html
-msgid "Main navigation"
-msgstr "Navigation principale"
-
-#: templates\accounts\_settings_layout.html
-msgid "Manage your profile, preferences and account."
-msgstr "Gérez votre profil, vos préférences et votre compte."
-
-#: apps\tracking\models.py
-msgid "Manual"
-msgstr "Manuel"
-
-#: templates\partials\topbar.html
-msgid "Mark all read"
-msgstr "Tout marquer comme lu"
-
-#: templates\challenges\settings.html
-msgid "Mark as completed"
-msgstr "Marquer comme terminé"
-
-#: templates\dashboard\today.html
-msgid "Mark as done"
-msgstr "Marquer comme fait"
-
-#: templates\dashboard\today.html
-msgid "Mark as missed"
-msgstr "Marquer comme manqué"
-
-#: templates\dashboard\_day_detail.html
-msgid "Mark as rest day"
-msgstr "Marquer comme jour de repos"
-
-#: apps\tracking\api.py
-msgid "Mark the activity as completed first."
-msgstr "Marquez d'abord l'activité comme terminée."
-
-#: apps\tracking\services.py
-msgid "Maximum is %(v)s."
-msgstr "Le maximum est %(v)s."
-
-#: apps\challenges\models.py
-msgid "Maximum must be greater than minimum."
-msgstr "Le maximum doit être supérieur au minimum."
-
-#: templates\challenges\create.html
-msgid "Measure"
-msgstr "Mesure"
-
-#: templates\challenges\settings.html
-msgid "Measured"
-msgstr "Mesuré"
-
-#: templates\partials\modals.html
-msgid "Medium"
-msgstr "Moyenne"
-
-#: apps\core\js_i18n.py
-msgid "Milestone added"
-msgstr "Palier ajouté"
-
-#: apps\notifications\models.py
-msgid "Milestone reached"
-msgstr "Palier atteint"
-
-#: templates\challenges\create.html
-msgid "Milestones"
-msgstr "Paliers"
-
-#: templates\challenges\detail.html
-msgid "Min / max day"
-msgstr "Jour min / max"
-
-#: apps\tracking\services.py
-msgid "Minimum is %(v)s."
-msgstr "Le minimum est %(v)s."
-
-#: templates\challenges\settings.html
-msgid "Minimum per entry"
-msgstr "Minimum par entrée"
-
-#: apps\challenges\models.py
-msgid "Minimum value for an entry to count (e.g. at least 30 minutes)."
-msgstr "Valeur minimale pour qu'une entrée compte (ex. au moins 30 minutes)."
-
-#: templates\challenges\detail.html
-msgid "Missed"
-msgstr "Manqué"
-
-#: templates\challenges\detail.html
-msgid "Missed days"
-msgstr "Jours manqués"
-
-#: templates\partials\bottom_nav.html
-msgid "Mobile navigation"
-msgstr "Navigation mobile"
-
-#: apps\accounts\models.py
-msgid "Monday"
-msgstr "Lundi"
-
-#: templates\reports\list.html
-msgid "Month"
-msgstr "Mois"
-
-#: templates\reports\detail.html
-msgid "Monthly report"
-msgstr "Rapport mensuel"
-
-#: apps\reports\generators\pdf.py
-msgid "Monthly report — %(period)s"
-msgstr "Rapport mensuel — %(period)s"
-
-#: templates\reports\list.html
-msgid ""
-"Monthly snapshots of your progress. A report never changes once generated."
-msgstr ""
-"Instantanés mensuels de votre progression. Un rapport ne change jamais une "
-"fois généré."
-
-#: templates\challenges\detail.html
-msgid "Months achieved"
-msgstr "Mois réussis"
-
-#: templates\partials\modals.html
-msgid "Mood"
-msgstr "Humeur"
-
-#: templates\challenges\detail.html
-msgid "More"
-msgstr "Plus"
-
-#: templates\partials\modals.html
-msgid "More options"
-msgstr "Plus d'options"
-
-#: templates\accounts\onboarding.html
-msgid "Morning routine"
-msgstr "Routine du matin"
-
-#: apps\core\js_i18n.py
-msgid "Moved — overlaps %s"
-msgstr "Déplacée — chevauche %s"
-
-#: templates\challenges\create.html
-msgid "Name"
-msgstr "Nom"
-
-#: apps\core\js_i18n.py
-msgid "Name this field."
-msgstr "Nommez ce champ."
-
-#: apps\core\js_i18n.py
-msgid "Network error. Check your connection."
-msgstr "Erreur réseau. Vérifiez votre connexion."
-
-#: templates\partials\modals.html
-msgid "New activity"
-msgstr "Nouvelle activité"
-
-#: templates\accounts\_category_manager.html
-msgid "New category name"
-msgstr "Nom de la nouvelle catégorie"
-
-#: templates\challenges\create.html
-msgid "New challenge"
-msgstr "Nouveau défi"
-
-#: templates\partials\modals.html
-msgid "New date"
-msgstr "Nouvelle date"
-
-#: templates\journal\detail.html
-msgid "New entry"
-msgstr "Nouvelle note"
-
-#: templates\partials\modals.html
-msgid "New note"
-msgstr "Nouvelle note"
-
-#: templates\planner\rules.html
-msgid "New routine"
-msgstr "Nouvelle routine"
-
-#: templates\planner\templates.html
-msgid "New template"
-msgstr "Nouveau modèle"
-
-#: templates\accounts\login.html
-msgid "New to LifeFlow?"
-msgstr "Nouveau sur LifeFlow ?"
-
-#: templates\challenges\detail.html
-msgid "Next"
-msgstr "Suivant"
-
-#: templates\dashboard\calendar.html
-msgid "Next month"
-msgstr "Mois suivant"
-
-#: templates\journal\review.html
-msgid "Next week"
-msgstr "Semaine suivante"
-
-#: templates\partials\modals.html
-msgid "No active challenge yet"
-msgstr "Aucun défi actif pour l'instant"
-
-#: templates\partials\modals.html
-msgid "No category"
-msgstr "Sans catégorie"
-
-#: templates\dashboard\today.html
-msgid "No challenge is scheduled today."
-msgstr "Aucun défi prévu aujourd'hui."
-
-#: templates\challenges\list.html
-msgid "No challenge matches this view."
-msgstr "Aucun défi ne correspond à cette vue."
-
-#: templates\dashboard\_day_detail.html
-msgid "No challenge on this day."
-msgstr "Aucun défi ce jour-là."
-
-#: templates\reports\detail.html
-msgid "No challenge was running during this month."
-msgstr "Aucun défi n'était en cours ce mois-ci."
-
-#: templates\journal\review.html
-msgid "No challenge was running this week."
-msgstr "Aucun défi n'était en cours cette semaine."
-
-#: templates\planner\templates.html
-msgid "No day template yet"
-msgstr "Aucun modèle de journée"
-
-#: templates\challenges\create.html
-msgid "No end"
-msgstr "Sans fin"
-
-#: templates\challenges\detail.html
-msgid "No entry yet. Record your first result to start seeing your progress."
-msgstr ""
-"Aucune entrée. Enregistrez votre premier résultat pour voir votre "
-"progression."
-
-#: templates\challenges\create.html
-msgid ""
-"No field needed: each recorded entry counts as one session. Add a field to "
-"note details (type, duration…)."
-msgstr ""
-"Aucun champ nécessaire : chaque entrée compte comme une séance. Ajoutez un "
-"champ pour noter des détails (type, durée…)."
-
-#: templates\challenges\settings.html
-msgid "No field: each entry counts as one session."
-msgstr "Aucun champ : chaque entrée compte comme une séance."
-
-#: apps\analytics\services\progress\goals.py
-msgid "No goal defined"
-msgstr "Aucun objectif défini"
-
-#: templates\reports\list.html
-msgid "No report yet"
-msgstr "Aucun rapport"
-
-#: templates\planner\rules.html
-msgid "No routine yet"
-msgstr "Aucune routine"
-
-#: templates\challenges\templates.html
-msgid "No template available. Run `python manage.py seed_templates`."
-msgstr "Aucun modèle disponible. Lancez `python manage.py seed_templates`."
-
-#: templates\partials\modals.html
-msgid "None"
-msgstr "Aucun"
-
-#: templates\challenges\detail.html
-msgid "Not achieved"
-msgstr "Non atteint"
-
-#: templates\challenges\detail.html
-msgid "Not done"
-msgstr "Non fait"
-
-#: templates\analytics\overview.html
-msgid "Not enough data yet"
-msgstr "Pas encore assez de données"
-
-#: apps\core\api\exceptions.py
-msgid "Not found."
-msgstr "Introuvable."
-
-#: templates\challenges\_card.html
-msgid "Not running today"
-msgstr "Pas actif aujourd'hui"
-
-#: apps\reports\generators\pdf.py
-msgid "Not started"
-msgstr "Pas commencé"
-
-#: templates\challenges\detail.html
-msgid "Note"
-msgstr "Note"
-
-#: apps\core\js_i18n.py
-msgid "Note saved"
-msgstr "Note enregistrée"
-
-#: templates\partials\modals.html
-msgid "Notes"
-msgstr "Notes"
-
-#: templates\dashboard\home.html
-msgid "Nothing else planned today. Well done!"
-msgstr "Plus rien de prévu aujourd'hui. Bravo !"
-
-#: templates\challenges\list.html
-msgid "Nothing here"
-msgstr "Rien ici"
-
-#: templates\dashboard\today.html
-msgid "Nothing planned for today"
-msgstr "Rien de prévu aujourd'hui"
-
-#: templates\dashboard\_day_detail.html
-msgid "Nothing planned."
-msgstr "Rien de prévu."
-
-#: apps\accounts\views.py
-msgid "Notification preferences saved."
-msgstr "Préférences de notification enregistrées."
-
-#: templates\accounts\notifications.html
-msgid "Notifications"
-msgstr "Notifications"
-
-#: templates\dashboard\today.html
-msgid "Now"
-msgstr "Maintenant"
-
-#: apps\challenges\models.py
-msgid "Number of qualifying entries"
-msgstr "Nombre d'entrées valides"
-
-#: apps\reports\generators\pdf.py
-msgid "On track"
-msgstr "Dans les temps"
-
-#: templates\partials\modals.html
-msgid "Once"
-msgstr "Une fois"
-
-#: templates\challenges\create.html
-msgid "Only count entries of at least"
-msgstr "Ne compter que les entrées d'au moins"
-
-#: templates\dashboard\home.html
-msgid "Open today"
-msgstr "Ouvrir aujourd'hui"
-
-#: apps\challenges\serializers.py
-msgid "Options must be unique."
-msgstr "Les options doivent être uniques."
-
-#: templates\challenges\settings.html
-msgid "Options separated by commas"
-msgstr "Options séparées par des virgules"
-
-#: templates\challenges\create.html
-msgid "Options separated by commas — e.g. Gym, Football, Running"
-msgstr "Options séparées par des virgules — ex. Salle, Football, Course"
-
-#: apps\challenges\models.py
-msgid "Orange"
-msgstr "Orange"
-
-#: apps\challenges\defaults.py
-msgid "Other"
-msgstr "Autre"
-
-#: templates\dashboard\home.html
-msgid "Overall progress"
-msgstr "Progression globale"
-
-#: apps\reports\generators\pdf.py
-msgid "Page %(n)s"
-msgstr "Page %(n)s"
-
-#: templates\challenges\detail.html
-msgid "Page %(n)s of %(total)s"
-msgstr "Page %(n)s sur %(total)s"
-
-#: templates\404.html
-msgid "Page not found"
-msgstr "Page introuvable"
-
-#: templates\reports\detail.html
-msgid "Partial"
-msgstr "Partiel"
-
-#: templates\reports\detail.html
-msgid "Partial month — data up to %(d)s"
-msgstr "Mois partiel — données jusqu'au %(d)s"
-
-#: apps\reports\generators\pdf.py
-msgid "Partial month: data up to %(d)s."
-msgstr "Mois partiel : données jusqu'au %(d)s."
-
-#: apps\planner\models.py
-msgid "Partially completed"
-msgstr "Partiellement fait"
-
-#: templates\partials\modals.html
-msgid "Partly done"
-msgstr "Fait en partie"
-
-#: apps\accounts\forms.py
-msgid "Password"
-msgstr "Mot de passe"
-
-#: templates\accounts\password_reset_complete.html
-msgid "Password updated"
-msgstr "Mot de passe mis à jour"
-
-#: apps\accounts\api.py
-msgid "Password updated."
-msgstr "Mot de passe mis à jour."
-
-#: templates\challenges\detail.html
-msgid "Past days are always evaluated with the rules in force at the time."
-msgstr ""
-"Les jours passés sont toujours évalués avec les règles en vigueur à ce "
-"moment-là."
-
-#: templates\challenges\settings.html
-msgid "Pause"
-msgstr "Pause"
-
-#: templates\challenges\detail.html
-msgid "Paused"
-msgstr "En pause"
-
-#: templates\challenges\detail.html
-msgid "Paused days"
-msgstr "Jours en pause"
-
-#: templates\challenges\create.html
-msgid "Period"
-msgstr "Période"
-
-#: templates\accounts\security.html
-msgid ""
-"Permanently delete your account, challenges, planner, journal and reports. "
-"This cannot be undone."
-msgstr ""
-"Supprimer définitivement votre compte, vos défis, votre planning, votre "
-"journal et vos rapports. C'est irréversible."
-
-#: apps\planner\defaults.py
-msgid "Personal"
-msgstr "Personnel"
-
-#: templates\accounts\onboarding.html
-msgid "Pick as many as you like — we'll suggest challenges to start with."
-msgstr ""
-"Choisissez-en autant que vous voulez — nous vous suggérerons des défis pour "
-"commencer."
-
-#: apps\challenges\models.py
-msgid "Pink"
-msgstr "Rose"
-
-#: templates\accounts\onboarding.html
-msgid "Plan"
-msgstr "Planifier"
-
-#: templates\dashboard\home.html
-msgid "Plan an activity"
-msgstr "Planifier une activité"
-
-#: templates\layouts\auth.html
-msgid "Plan · Track · Analyze"
-msgstr "Planifier · Suivre · Analyser"
-
-#: templates\dashboard\today.html
-msgid "Planned"
-msgstr "Prévu"
-
-#: apps\reports\generators\pdf.py
-msgid "Planned time: %(p)s · Completed time: %(d)s"
-msgstr "Temps prévu : %(p)s · Temps réalisé : %(d)s"
-
-#: templates\dashboard\home.html
-msgid "Planned today"
-msgstr "Prévu aujourd'hui"
-
-#: templates\accounts\settings.html
-msgid "Planner"
-msgstr "Planner"
-
-#: templates\dashboard\home.html
-msgid "Planner %"
-msgstr "Planner %"
-
-#: apps\core\models.py
-msgid "Planner activity created"
-msgstr "Activité créée"
-
-#: apps\core\models.py
-msgid "Planner activity deleted"
-msgstr "Activité supprimée"
-
-#: apps\core\models.py
-msgid "Planner activity modified"
-msgstr "Activité modifiée"
-
-#: apps\core\models.py
-msgid "Planner activity status changed"
-msgstr "Statut d'activité modifié"
-
-#: templates\analytics\overview.html
-msgid "Planner completion"
-msgstr "Réalisation du planning"
-
-#: templates\dashboard\home.html
-msgid "Planner completion and recorded entries"
-msgstr "Réalisation du planning et entrées enregistrées"
-
-#: templates\analytics\overview.html
-msgid "Planner completion per week"
-msgstr "Réalisation du planning par semaine"
-
-#: apps\accounts\api.py
-msgid "Please correct the errors below."
-msgstr "Veuillez corriger les erreurs ci-dessous."
-
-#: apps\planner\defaults.py
-msgid "Prayer"
-msgstr "Prière"
-
-#: templates\partials\modals.html
-msgid "Pre-filled from your completed activity — check and confirm."
-msgstr "Pré-rempli depuis votre activité terminée — vérifiez et confirmez."
-
-#: apps\notifications\models.py
-msgid "Prevents sending the same reminder twice."
-msgstr "Évite d'envoyer deux fois le même rappel."
-
-#: templates\challenges\detail.html
-msgid "Previous"
-msgstr "Précédent"
-
-#: templates\dashboard\calendar.html
-msgid "Previous month"
-msgstr "Mois précédent"
-
-#: templates\journal\review.html
-msgid "Previous week"
-msgstr "Semaine précédente"
-
-#: templates\partials\modals.html
-msgid "Priority"
-msgstr "Priorité"
-
-#: templates\accounts\onboarding.html
-msgid "Productivity"
-msgstr "Productivité"
-
-#: templates\accounts\settings.html
-msgid "Profile"
-msgstr "Profil"
-
-#: templates\accounts\_settings_layout.html
-msgid "Profile & preferences"
-msgstr "Profil & préférences"
-
-#: templates\analytics\overview.html
-msgid "Progress"
-msgstr "Progression"
-
-#: templates\challenges\detail.html
-msgid "Progress over time"
-msgstr "Progression dans le temps"
-
-#: apps\core\js_i18n.py
-msgid "Progress recorded"
-msgstr "Progression enregistrée"
-
-#: templates\partials\bottom_nav.html
-msgid "Quick add"
-msgstr "Ajout rapide"
-
-#: apps\planner\defaults.py
-msgid "Qur'an"
-msgstr "Coran"
-
-#: templates\challenges\settings.html
-msgid "Reactivate"
-msgstr "Réactiver"
-
-#: templates\layouts\auth.html
-msgid "Real progress"
-msgstr "Vrais progrès"
-
-#: templates\challenges\detail.html
-msgid "Record"
-msgstr "Enregistrer"
-
-#: templates\partials\modals.html
-msgid "Record in challenge"
-msgstr "Enregistrer dans le défi"
-
-#: templates\dashboard\home.html
-msgid "Record progress"
-msgstr "Enregistrer une progression"
-
-#: templates\accounts\onboarding.html
-msgid "Record results"
-msgstr "Noter les résultats"
-
-#: apps\core\js_i18n.py
-msgid "Record this activity in your challenge “%s”?"
-msgstr "Enregistrer cette activité dans votre défi « %s » ?"
-
-#: templates\dashboard\_day_detail.html
-msgid "Recorded"
-msgstr "Enregistré"
-
-#: templates\challenges\create.html
-msgid "Recorded fields"
-msgstr "Champs enregistrés"
-
-#: templates\dashboard\today.html
-msgid "Recurring"
-msgstr "Récurrent"
-
-#: templates\planner\rules.html
-msgid ""
-"Recurring activities appear automatically in your planner. Editing a routine"
-" updates future days only."
-msgstr ""
-"Les activités récurrentes apparaissent automatiquement dans votre planner. "
-"Modifier une routine ne met à jour que les jours futurs."
-
-#: apps\core\js_i18n.py
-msgid "Recurring activity created"
-msgstr "Activité récurrente créée"
-
-#: apps\core\models.py
-msgid "Recurring rule changed"
-msgstr "Règle récurrente modifiée"
-
-#: templates\partials\sidebar.html
-msgid "Reflect"
-msgstr "Réfléchir"
-
-#: templates\journal\review.html
-msgid "Reflection"
-msgstr "Réflexion"
-
-#: templates\accounts\settings.html
-msgid "Regional preferences"
-msgstr "Préférences régionales"
-
-#: templates\challenges\detail.html
-msgid "Remaining"
-msgstr "Restant"
-
-#: templates\accounts\notifications.html
-msgid "Reminders are optional. LifeFlow works perfectly without them."
-msgstr "Les rappels sont facultatifs. LifeFlow fonctionne parfaitement sans."
-
-#: templates\accounts\onboarding.html
-msgid "Remove"
-msgstr "Retirer"
-
-#: templates\challenges\create.html
-msgid "Remove field"
-msgstr "Retirer le champ"
-
-#: templates\dashboard\_day_detail.html
-msgid "Remove rest day"
-msgstr "Retirer le jour de repos"
-
-#: apps\core\js_i18n.py
-msgid "Remove this field? Recorded values are kept in history."
-msgstr ""
-"Retirer ce champ ? Les valeurs enregistrées restent dans l'historique."
-
-#: templates\challenges\settings.html
-msgid "Removing a field keeps its recorded values in history."
-msgstr "Retirer un champ conserve ses valeurs dans l'historique."
-
-#: templates\partials\modals.html
-msgid "Repeat"
-msgstr "Répéter"
-
-#: templates\accounts\onboarding.html
-msgid "Repeat on"
-msgstr "Répéter le"
-
-#: templates\planner\planner.html
-msgid "Replace the activities already planned on these days"
-msgstr "Remplacer les activités déjà prévues ces jours-là"
-
-#: templates\reports\detail.html
-msgid "Report"
-msgstr "Rapport"
-
-#: apps\reports\views.py
-msgid "Report deleted."
-msgstr "Rapport supprimé."
-
-#: apps\core\models.py
-msgid "Report generated"
-msgstr "Rapport généré"
-
-#: apps\reports\views.py
-msgid "Report generated."
-msgstr "Rapport généré."
-
-#: apps\notifications\models.py
-msgid "Report ready"
-msgstr "Rapport prêt"
-
-#: templates\partials\sidebar.html
-msgid "Reports"
-msgstr "Rapports"
-
-#: templates\accounts\password_reset_confirm.html
-msgid "Request a new link"
-msgstr "Demander un nouveau lien"
-
-#: templates\challenges\create.html
-msgid "Required"
-msgstr "Obligatoire"
-
-#: templates\partials\modals.html
-msgid "Reschedule"
-msgstr "Reporter"
-
-#: apps\planner\models.py
-msgid "Rescheduled"
-msgstr "Reporté"
-
-#: templates\partials\modals.html
-msgid "Reset"
-msgstr "Réinitialiser"
-
-#: templates\accounts\password_reset.html
-msgid "Reset password"
-msgstr "Réinitialiser le mot de passe"
-
-#: templates\accounts\emails\password_reset_subject.txt
-msgid "Reset your LifeFlow password"
-msgstr "Réinitialisez votre mot de passe LifeFlow"
-
-#: templates\accounts\password_reset.html
-msgid "Reset your password"
-msgstr "Réinitialisez votre mot de passe"
-
-#: templates\challenges\detail.html
-msgid "Rest"
-msgstr "Repos"
-
-#: templates\challenges\_card.html
-msgid "Rest day"
-msgstr "Jour de repos"
-
-#: templates\challenges\detail.html
-msgid "Rest day — enjoy it."
-msgstr "Jour de repos — profitez-en."
-
-#: templates\challenges\detail.html
-msgid "Rest days"
-msgstr "Jours de repos"
-
-#: templates\planner\rules.html
-msgid "Resume"
-msgstr "Reprendre"
-
-#: templates\planner\planner.html
-msgid "Retry"
-msgstr "Réessayer"
-
-#: templates\planner\templates.html
-msgid ""
-"Reusable day layouts — University day, Weekend, Ramadan day… Apply them from"
-" the planner."
-msgstr ""
-"Journées types réutilisables — Jour d'université, Week-end, Journée de "
-"Ramadan… Appliquez-les depuis le planner."
-
-#: templates\challenges\create.html
-msgid "Review"
-msgstr "Récapitulatif"
-
-#: apps\core\js_i18n.py
-msgid "Review & record"
-msgstr "Vérifier et enregistrer"
-
-#: apps\challenges\models.py
-msgid "Rose"
-msgstr "Rose vif"
-
-#: templates\planner\rules.html
-msgid "Routine saved — future days are updated"
-msgstr "Routine enregistrée — les jours futurs sont mis à jour"
-
-#: templates\planner\rules.html
-msgid "Routines"
-msgstr "Routines"
-
-#: apps\accounts\models.py
-msgid "Saturday"
-msgstr "Samedi"
-
-#: templates\accounts\notifications.html
-msgid "Save"
-msgstr "Enregistrer"
-
-#: templates\accounts\settings.html
-msgid "Save changes"
-msgstr "Enregistrer les modifications"
-
-#: templates\journal\review.html
-msgid "Save review"
-msgstr "Enregistrer le bilan"
-
-#: templates\planner\planner.html
-msgid "Save the selected day as a template"
-msgstr "Enregistrer le jour sélectionné comme modèle"
-
-#: templates\accounts\_category_manager.html
-msgid "Saved"
-msgstr "Enregistré"
-
-#: templates\challenges\create.html
-msgid "Schedule"
-msgstr "Planning"
-
-#: apps\core\models.py
-msgid "Schedule changed"
-msgstr "Planning modifié"
-
-#: apps\core\js_i18n.py
-msgid "Schedule updated"
-msgstr "Planning mis à jour"
-
-#: templates\challenges\list.html
-msgid "Search"
-msgstr "Rechercher"
-
-#: templates\journal\list.html
-msgid "Search your notes"
-msgstr "Rechercher dans vos notes"
-
-#: templates\accounts\security.html
-msgid "Security"
-msgstr "Sécurité"
-
-#: templates\accounts\onboarding.html
-msgid "See progress"
-msgstr "Voir vos progrès"
-
-#: apps\tracking\services.py
-msgid "Select a valid option."
-msgstr "Choisissez une option valide."
-
-#: apps\challenges\serializers.py
-msgid "Select at least one day of the week."
-msgstr "Choisissez au moins un jour de la semaine."
-
-#: apps\core\js_i18n.py
-msgid "Select at least one day."
-msgstr "Choisissez au moins un jour."
-
-#: apps\challenges\models.py
-msgid "Select at least one valid day of the week."
-msgstr "Choisissez au moins un jour de la semaine valide."
-
-#: apps\planner\models.py
-msgid "Selected days"
-msgstr "Jours choisis"
-
-#: apps\challenges\models.py
-msgid "Selected days of the week"
-msgstr "Jours de la semaine choisis"
-
-#: templates\accounts\password_reset.html
-msgid "Send reset link"
-msgstr "Envoyer le lien"
-
-#: apps\core\js_i18n.py
-msgid "Series updated"
-msgstr "Série mise à jour"
-
-#: templates\challenges\create.html
-msgid "Sessions"
-msgstr "Séances"
-
-#: templates\challenges\create.html
-msgid "Sessions only"
-msgstr "Séances uniquement"
-
-#: templates\challenges\create.html
-msgid "Set your goal"
-msgstr "Fixez votre objectif"
-
-#: templates\accounts\settings.html
-msgid "Settings"
-msgstr "Paramètres"
-
-#: templates\accounts\_settings_layout.html
-msgid "Settings sections"
-msgstr "Sections des paramètres"
-
-#: templates\accounts\login.html
-msgid "Sign in"
-msgstr "Se connecter"
-
-#: templates\accounts\login.html
-msgid "Sign in to continue planning and tracking."
-msgstr "Connectez-vous pour continuer à planifier et suivre."
-
-#: templates\partials\sidebar.html
-msgid "Sign out"
-msgstr "Se déconnecter"
-
-#: templates\accounts\onboarding.html
-msgid "Sketch your typical day"
-msgstr "Esquissez votre journée type"
-
-#: templates\accounts\onboarding.html
-msgid "Skip"
-msgstr "Passer"
-
-#: templates\accounts\onboarding.html
-msgid "Skip setup"
-msgstr "Passer la configuration"
-
-#: templates\accounts\onboarding.html
-msgid "Skip this step"
-msgstr "Passer cette étape"
-
-#: templates\base.html
-msgid "Skip to content"
-msgstr "Aller au contenu"
-
-#: apps\challenges\models.py
-msgid "Sky"
-msgstr "Ciel"
-
-#: apps\challenges\models.py
-msgid "Slate"
-msgstr "Ardoise"
-
-#: templates\accounts\onboarding.html
-msgid "Sleep"
-msgstr "Sommeil"
-
-#: apps\challenges\defaults.py
-msgid "Social"
-msgstr "Social"
-
-#: templates\partials\modals.html
-msgid "Some days"
-msgstr "Certains jours"
-
-#: apps\challenges\serializers.py
-msgid "Some entries are recorded before this date."
-msgstr "Des entrées sont enregistrées avant cette date."
-
-#: templates\accounts\emails\password_reset.txt
-msgid ""
-"Someone asked to reset the password of your LifeFlow account. If it was you,"
-" open this link:"
-msgstr ""
-"Une réinitialisation du mot de passe de votre compte LifeFlow a été "
-"demandée. Si c'est vous, ouvrez ce lien :"
-
-#: apps\core\api\exceptions.py
-msgid "Something went wrong on our side. Please try again."
-msgstr "Un problème est survenu de notre côté. Veuillez réessayer."
-
-#: apps\core\js_i18n.py
-msgid "Something went wrong. Please try again."
-msgstr "Un problème est survenu. Veuillez réessayer."
-
-#: templates\challenges\create.html
-msgid "Specific days"
-msgstr "Jours précis"
-
-#: templates\accounts\onboarding.html
-msgid "Spiritual"
-msgstr "Spirituel"
-
-#: apps\planner\defaults.py
-msgid "Sport"
-msgstr "Sport"
-
-#: templates\accounts\onboarding.html
-msgid "Start"
-msgstr "Début"
-
-#: templates\challenges\create.html
-msgid "Start date"
-msgstr "Date de début"
-
-#: templates\challenges\templates.html
-msgid "Start from a proven setup, then make it yours."
-msgstr "Partez d'une configuration éprouvée, puis adaptez-la."
-
-#: templates\accounts\onboarding.html
-msgid "Start from a template and adjust it, or build your own from scratch."
-msgstr "Partez d'un modèle et ajustez-le, ou créez le vôtre de zéro."
-
-#: templates\challenges\list.html
-msgid "Start from a template or build your own in a few steps."
-msgstr "Partez d'un modèle ou créez le vôtre en quelques étapes."
-
-#: templates\challenges\detail.html
-msgid "Statistics"
-msgstr "Statistiques"
-
-#: templates\analytics\overview.html
-msgid "Status"
-msgstr "Statut"
-
-#: apps\core\js_i18n.py
-msgid "Status updated"
-msgstr "Statut mis à jour"
-
-#: templates\reports\detail.html
-msgid "Streak"
-msgstr "Série"
-
-#: templates\dashboard\home.html
-msgid "Streaks"
-msgstr "Séries"
-
-#: apps\planner\defaults.py
-msgid "Study"
-msgstr "Études"
-
-#: apps\challenges\models.py
-msgid "Sum of the measured value"
-msgstr "Somme de la valeur mesurée"
-
-#: apps\accounts\models.py
-msgid "Sunday"
-msgstr "Dimanche"
-
-#: templates\partials\topbar.html
-msgid "System"
-msgstr "Système"
-
-#: apps\notifications\management\commands\send_reminders.py
-msgid "Take two minutes to reflect on your week."
-msgstr "Prenez deux minutes pour faire le point sur votre semaine."
-
-#: templates\analytics\overview.html
-msgid "Target"
-msgstr "Objectif"
-
-#: apps\reports\generators\pdf.py
-msgid "Target (month)"
-msgstr "Objectif (mois)"
-
-#: apps\challenges\models.py
-msgid "Teal"
-msgstr "Sarcelle"
-
-#: apps\challenges\serializers.py
-msgid "Template not found."
-msgstr "Modèle introuvable."
-
-#: templates\planner\templates.html
-msgid "Template saved"
-msgstr "Modèle enregistré"
-
-#: templates\challenges\templates.html
-msgid "Templates"
-msgstr "Modèles"
-
-#: templates\challenges\create.html
-msgid "Text"
-msgstr "Texte"
-
-#: templates\partials\modals.html
-msgid ""
-"The current activity is kept as “rescheduled” and a new one is created."
-msgstr ""
-"L'activité actuelle est conservée comme « reportée » et une nouvelle est "
-"créée."
-
-#: apps\accounts\views.py
-msgid "The email/username or password is incorrect."
-msgstr "L'e-mail/nom d'utilisateur ou le mot de passe est incorrect."
-
-#: apps\accounts\forms.py
-msgid "The image must be smaller than 2 MB."
-msgstr "L'image doit faire moins de 2 Mo."
-
-#: apps\challenges\serializers.py
-msgid "The minimum cannot be negative."
-msgstr "Le minimum ne peut pas être négatif."
-
-#: apps\accounts\api.py
-msgid "The planner must end after it starts (0–24h)."
-msgstr "Le planner doit finir après avoir commencé (0–24 h)."
-
-#: templates\accounts\password_reset_confirm.html
-msgid "The reset link is invalid or was already used. Request a new one."
-msgstr "Le lien est invalide ou a déjà été utilisé. Demandez-en un nouveau."
-
-#: apps\challenges\serializers.py
-msgid "The target must be greater than zero."
-msgstr "L'objectif doit être supérieur à zéro."
-
-#: apps\challenges\serializers.py
-msgid "The type can't change once values were recorded."
-msgstr "Le type ne peut plus changer une fois des valeurs enregistrées."
-
-#: apps\tracking\services.py
-msgid "The value cannot be negative."
-msgstr "La valeur ne peut pas être négative."
-
-#: templates\partials\topbar.html
-msgid "Theme"
-msgstr "Thème"
-
-#: templates\accounts\onboarding.html
-msgid ""
-"These activities will repeat in your planner. You can change everything "
-"later."
-msgstr ""
-"Ces activités se répéteront dans votre planner. Vous pourrez tout modifier "
-"plus tard."
-
-#: templates\challenges\detail.html
-msgid "This challenge is paused."
-msgstr "Ce défi est en pause."
-
-#: apps\core\api\exceptions.py
-msgid "This change conflicts with existing data (it may already exist)."
-msgstr ""
-"Cette modification est en conflit avec des données existantes (elle existe "
-"peut-être déjà)."
-
-#: apps\tracking\services.py
-msgid "This date is after the challenge ends."
-msgstr "Cette date est après la fin du défi."
-
-#: apps\challenges\serializers.py
-msgid "This date is before the challenge starts."
-msgstr "Cette date est avant le début du défi."
-
-#: apps\planner\services.py
-msgid "This day has no activities to save."
-msgstr "Ce jour ne contient aucune activité à enregistrer."
-
-#: apps\accounts\api.py
-msgid "This email is already used."
-msgstr "Cet e-mail est déjà utilisé."
-
-#: apps\challenges\serializers.py
-msgid ""
-"This field can't be measured (choose a number, duration or done/not done "
-"field)."
-msgstr ""
-"Ce champ n'est pas mesurable (choisissez un nombre, une durée ou un champ "
-"fait/non fait)."
-
-#: apps\challenges\serializers.py
-msgid "This field can't be measured."
-msgstr "Ce champ n'est pas mesurable."
-
-#: apps\tracking\services.py
-msgid "This field is required."
-msgstr "Ce champ est obligatoire."
-
-#: templates\accounts\password_reset_confirm.html
-msgid "This link has expired"
-msgstr "Ce lien a expiré"
-
-#: templates\analytics\overview.html
-msgid "This month"
-msgstr "Ce mois-ci"
-
-#: templates\partials\modals.html
-msgid "This occurrence"
-msgstr "Cette occurrence"
-
-#: templates\404.html
-msgid "This page doesn't exist"
-msgstr "Cette page n'existe pas"
-
-#: templates\dashboard\today.html
-msgid "This period"
-msgstr "Cette période"
-
-#: templates\challenges\_card.html
-msgid "This period: %(a)s / %(t)s"
-msgstr "Cette période : %(a)s / %(t)s"
-
-#: templates\challenges\detail.html
-msgid "This period: %(a)s / %(t)s %(u)s"
-msgstr "Cette période : %(a)s / %(t)s %(u)s"
-
-#: apps\challenges\serializers.py
-msgid "This target is too large."
-msgstr "Cet objectif est trop élevé."
-
-#: apps\accounts\api.py
-msgid "This username is taken."
-msgstr "Ce nom d'utilisateur est déjà pris."
-
-#: apps\tracking\services.py
-msgid "This value is too large."
-msgstr "Cette valeur est trop grande."
-
-#: templates\analytics\overview.html
-msgid "Time by category"
-msgstr "Temps par catégorie"
-
-#: templates\analytics\overview.html
-msgid "Time completed"
-msgstr "Temps réalisé"
-
-#: apps\notifications\management\commands\send_reminders.py
-msgid "Time for your weekly review"
-msgstr "C'est l'heure de votre bilan hebdomadaire"
-
-#: templates\challenges\create.html
-msgid "Time of day"
-msgstr "Heure"
-
-#: templates\challenges\create.html
-msgid "Time spent"
-msgstr "Temps passé"
-
-#: templates\dashboard\today.html
-msgid "Timeline view"
-msgstr "Vue chronologique"
-
-#: templates\accounts\onboarding.html
-msgid "Title"
-msgstr "Titre"
-
-#: templates\partials\modals.html
-msgid "Title (optional)"
-msgstr "Titre (facultatif)"
-
-#: templates\dashboard\today.html
-msgid "To confirm"
-msgstr "À confirmer"
-
-#: templates\dashboard\calendar.html
-msgid "Today"
-msgstr "Aujourd'hui"
-
-#: templates\dashboard\today.html
-msgid "Today's plan"
-msgstr "Planning du jour"
-
-#: templates\challenges\detail.html
-msgid "Today's target is reached."
-msgstr "L'objectif du jour est atteint."
-
-#: templates\challenges\_card.html
-msgid "Today: %(a)s / %(t)s"
-msgstr "Aujourd'hui : %(a)s / %(t)s"
-
-#: templates\challenges\detail.html
-msgid "Today: %(a)s / %(t)s %(u)s"
-msgstr "Aujourd'hui : %(a)s / %(t)s %(u)s"
-
-#: apps\accounts\views.py
-msgid "Too many attempts. Please wait a few minutes and try again."
-msgstr "Trop de tentatives. Patientez quelques minutes puis réessayez."
-
-#: apps\accounts\api.py
-msgid "Too many attempts. Please wait a few minutes."
-msgstr "Trop de tentatives. Patientez quelques minutes."
-
-#: templates\challenges\create.html
-msgid "Total"
-msgstr "Total"
-
-#: templates\accounts\onboarding.html
-msgid "Track"
-msgstr "Suivre"
-
-#: apps\planner\defaults.py
-msgid "Travel"
-msgstr "Trajet"
-
-#: templates\journal\review.html
-msgid "Two minutes to learn from your week."
-msgstr "Deux minutes pour tirer les leçons de votre semaine."
-
-#: templates\challenges\create.html
-msgid "Unit"
-msgstr "Unité"
-
-#: templates\planner\templates.html
-msgid "University day"
-msgstr "Jour d'université"
-
-#: apps\planner\serializers.py
-msgid "Unknown category."
-msgstr "Catégorie inconnue."
-
-#: apps\planner\serializers.py
-msgid "Unknown challenge."
-msgstr "Défi inconnu."
-
-#: apps\tracking\services.py
-msgid "Unknown field(s): %(f)s"
-msgstr "Champ(s) inconnu(s) : %(f)s"
-
-#: apps\challenges\serializers.py
-msgid "Unknown icon."
-msgstr "Icône inconnue."
-
-#: apps\challenges\api.py
-msgid "Unknown status."
-msgstr "Statut inconnu."
-
-#: templates\partials\modals.html
-msgid "Until"
-msgstr "Jusqu'au"
-
-#: templates\dashboard\home.html
-msgid "Up next"
-msgstr "À venir"
-
-#: templates\challenges\settings.html
-msgid "Update goal"
-msgstr "Mettre à jour l'objectif"
-
-#: templates\accounts\password_reset_confirm.html
-msgid "Update password"
-msgstr "Mettre à jour le mot de passe"
-
-#: templates\challenges\settings.html
-msgid "Update schedule"
-msgstr "Mettre à jour le planning"
-
-#: templates\challenges\templates.html
-msgid "Use"
-msgstr "Utiliser"
-
-#: templates\dashboard\today.html
-msgid "Use a template"
-msgstr "Utiliser un modèle"
-
-#: templates\challenges\create.html
-msgid "Use for the goal"
-msgstr "Utiliser pour l'objectif"
-
-#: apps\planner\services.py
-msgid "Use the reschedule action to choose a new time."
-msgstr "Utilisez l'action « Reporter » pour choisir un nouvel horaire."
-
-#: apps\accounts\forms.py
-msgid "Username"
-msgstr "Nom d'utilisateur"
-
-#: apps\core\js_i18n.py
-msgid "Value"
-msgstr "Valeur"
-
-#: templates\reports\list.html
-msgid "View"
-msgstr "Voir"
-
-#: templates\reports\detail.html
-msgid "View PDF"
-msgstr "Voir le PDF"
-
-#: templates\dashboard\home.html
-msgid "View all"
-msgstr "Tout voir"
-
-#: apps\challenges\models.py
-msgid "Violet"
-msgstr "Violet"
-
-#: templates\accounts\settings.html
-msgid "Visible hours and default time slot of your planner."
-msgstr "Heures visibles et créneau par défaut de votre planner."
-
-#: templates\planner\planner.html
-msgid "Week"
-msgstr "Semaine"
-
-#: templates\challenges\detail.html
-msgid "Weekly actual vs target"
-msgstr "Réalisé hebdomadaire vs objectif"
-
-#: templates\layouts\auth.html
-msgid "Weekly planner"
-msgstr "Planner hebdomadaire"
-
-#: templates\journal\list.html
-msgid "Weekly review"
-msgstr "Bilan hebdomadaire"
-
-#: apps\journal\views.py
-msgid "Weekly review saved."
-msgstr "Bilan hebdomadaire enregistré."
-
-#: templates\challenges\detail.html
-msgid "Weekly: actual vs target"
-msgstr "Par semaine : réalisé vs objectif"
-
-#: templates\challenges\detail.html
-msgid "Weeks achieved"
-msgstr "Semaines réussies"
-
-#: templates\accounts\onboarding.html
-msgid "Welcome"
-msgstr "Bienvenue"
-
-#: templates\accounts\login.html
-msgid "Welcome back"
-msgstr "Bon retour"
-
-#: templates\accounts\onboarding.html
-msgid "Welcome, %(name)s"
-msgstr "Bienvenue, %(name)s"
-
-#: templates\accounts\onboarding.html
-msgid "Wellness"
-msgstr "Bien-être"
-
-#: templates\accounts\onboarding.html
-msgid "What do you want to improve?"
-msgstr "Que voulez-vous améliorer ?"
-
-#: templates\challenges\create.html
-msgid "What do you want to measure?"
-msgstr "Que voulez-vous mesurer ?"
-
-#: templates\challenges\create.html
-msgid "What is your challenge?"
-msgstr "Quel est votre défi ?"
-
-#: apps\journal\views.py
-msgid "What should I improve?"
-msgstr "Que dois-je améliorer ?"
-
-#: apps\journal\views.py
-msgid "What was difficult?"
-msgstr "Qu'est-ce qui a été difficile ?"
-
-#: apps\journal\views.py
-msgid "What went well?"
-msgstr "Qu'est-ce qui s'est bien passé ?"
-
-#: templates\challenges\create.html
-msgid "What you fill in each time you record progress."
-msgstr "Ce que vous remplissez à chaque enregistrement."
-
-#: templates\challenges\create.html
-msgid "When do you plan to do it?"
-msgstr "Quand prévoyez-vous de le faire ?"
-
-#: templates\challenges\create.html
-msgid "Whole number"
-msgstr "Nombre entier"
-
-#: templates\partials\modals.html
-msgid "Whole series"
-msgstr "Toute la série"
-
-#: templates\challenges\create.html
-msgid "Why does it matter to you?"
-msgstr "Pourquoi est-ce important pour vous ?"
-
-#: templates\challenges\create.html
-msgid ""
-"With a weekly or monthly goal, the schedule tells LifeFlow on which days the"
-" work is expected — so it can tell you if you're on track."
-msgstr ""
-"Avec un objectif hebdomadaire ou mensuel, le planning indique à LifeFlow les"
-" jours où le travail est attendu — pour vous dire si vous êtes dans les "
-"temps."
-
-#: apps\planner\defaults.py
-msgid "Work"
-msgstr "Travail"
-
-#: templates\accounts\onboarding.html
-msgid "Work / Study"
-msgstr "Travail / Études"
-
-#: templates\journal\list.html
-msgid "Write about your day, a challenge, or what you learned this week."
-msgstr ""
-"Écrivez sur votre journée, un défi, ou ce que vous avez appris cette "
-"semaine."
-
-#: apps\journal\api.py
-msgid "Write something first."
-msgstr "Écrivez d'abord quelque chose."
-
-#: templates\journal\list.html
-msgid "Write your first entry"
-msgstr "Écrire votre première note"
-
-#: templates\partials\modals.html
-msgid "Write your thoughts…"
-msgstr "Écrivez vos pensées…"
-
-#: apps\challenges\serializers.py
-msgid "You already have a category with this name."
-msgstr "Vous avez déjà une catégorie avec ce nom."
-
-#: apps\planner\serializers.py
-msgid "You already have a template with this name."
-msgstr "Vous avez déjà un modèle avec ce nom."
-
-#: apps\planner\services.py
-msgid "You can apply a template to at most 62 days at once."
-msgstr "Vous pouvez appliquer un modèle à 62 jours maximum à la fois."
-
-#: templates\accounts\password_reset_complete.html
-msgid "You can now sign in with your new password."
-msgstr ""
-"Vous pouvez maintenant vous connecter avec votre nouveau mot de passe."
-
-#: apps\reports\services\monthly.py
-msgid "You can't generate a report for a future month."
-msgstr "Impossible de générer un rapport pour un mois futur."
-
-#: apps\tracking\services.py
-msgid "You can't record results in the future."
-msgstr "Impossible d'enregistrer des résultats dans le futur."
-
-#: templates\challenges\list.html
-msgid "You don't have any active challenges yet."
-msgstr "Vous n'avez encore aucun défi actif."
-
-#: apps\accounts\views.py
-msgid "You have been signed out."
-msgstr "Vous avez été déconnecté."
-
-#: templates\planner\planner.html
-msgid ""
-"You have no template yet. Save a day below, or create one in Day templates."
-msgstr ""
-"Vous n'avez pas encore de modèle. Enregistrez un jour ci-dessous ou créez-en"
-" un dans Modèles de journée."
-
-#: templates\partials\topbar.html
-msgid "You're all caught up."
-msgstr "Vous êtes à jour."
-
-#: apps\accounts\views.py
-msgid "Your account and all your data were deleted."
-msgstr "Votre compte et toutes vos données ont été supprimés."
-
-#: templates\challenges\create.html
-msgid "Your challenge"
-msgstr "Votre défi"
-
-#: templates\dashboard\home.html
-msgid "Your challenges"
-msgstr "Vos défis"
-
-#: templates\accounts\register.html
-msgid "Your data is yours: it is never shared with other users."
-msgstr ""
-"Vos données vous appartiennent : elles ne sont jamais partagées avec "
-"d'autres utilisateurs."
-
-#: templates\accounts\onboarding.html
-msgid "Your day & week"
-msgstr "Votre journée & semaine"
-
-#: templates\dashboard\home.html
-msgid "Your day is empty."
-msgstr "Votre journée est vide."
-
-#: templates\journal\list.html
-msgid "Your journal is empty"
-msgstr "Votre journal est vide"
-
-#: templates\analytics\overview.html
-msgid "Your most active days"
-msgstr "Vos jours les plus actifs"
-
-#: apps\accounts\views.py
-msgid "Your password was changed."
-msgstr "Votre mot de passe a été modifié."
-
-#: templates\journal\list.html
-msgid "Your private notes and reflections."
-msgstr "Vos notes et réflexions privées."
-
-#: apps\reports\services\monthly.py
-msgid "Your report for %(period)s is ready"
-msgstr "Votre rapport de %(period)s est prêt"
-
-#: templates\accounts\onboarding.html
-msgid "Your routine is in the planner"
-msgstr "Votre routine est dans le planner"
-
-#: apps\core\js_i18n.py
-msgid "Your session expired. Please sign in again."
-msgstr "Votre session a expiré. Veuillez vous reconnecter."
-
-#: templates\403.html
-msgid "Your session may have expired. Reload the page and try again."
-msgstr "Votre session a peut-être expiré. Rechargez la page et réessayez."
-
-#: apps\accounts\views.py
-msgid "Your settings were saved."
-msgstr "Vos paramètres ont été enregistrés."
-
-#: templates\accounts\settings.html
-msgid ""
-"Your timezone defines when a day starts and ends — it drives streaks, the "
-"calendar and reports."
-msgstr ""
-"Votre fuseau horaire définit le début et la fin d'une journée — il pilote "
-"les séries, le calendrier et les rapports."
-
-#: templates\dashboard\home.html
-msgid "across %(n)s challenge"
-msgid_plural "across %(n)s challenges"
-msgstr[0] "sur %(n)s défi"
-msgstr[1] "sur %(n)s défis"
-
-#: templates\challenges\detail.html
-msgid "active day"
-msgstr "jour actif"
-
-#: templates\planner\planner.html
-msgid "activities"
-msgstr "activités"
-
-#: templates\reports\list.html
-msgid "avg. completion"
-msgstr "réussite moy."
-
-#: templates\challenges\detail.html
-msgid "by yesterday"
-msgstr "à hier"
-
-#: apps\analytics\services\progress\goals.py
-msgid "day"
-msgid_plural "days"
-msgstr[0] "jour"
-msgstr[1] "jours"
-
-#: templates\challenges\create.html
-msgid "days"
-msgstr "jours"
-
-#: templates\dashboard\home.html
-msgid "done"
-msgstr "faits"
-
-#: templates\challenges\create.html
-msgid "e.g. 2 hours of coding per day"
-msgstr "ex. 2 heures de code par jour"
-
-#: templates\challenges\create.html
-msgid "e.g. Fajr on time, no social media"
-msgstr "ex. Fajr à l'heure, pas de réseaux sociaux"
-
-#: templates\partials\modals.html
-msgid "e.g. Gym, Deep work, Fajr + Qur’an"
-msgstr "ex. Salle, Travail profond, Fajr + Coran"
-
-#: templates\challenges\create.html
-msgid "e.g. Read 20 pages, Learn English, 10,000 steps"
-msgstr "ex. Lire 20 pages, Apprendre l'anglais, 10 000 pas"
-
-#: templates\planner\planner.html
-msgid "e.g. University day"
-msgstr "ex. Jour d'université"
-
-#: templates\challenges\create.html
-msgid "e.g. gym 3 times a week"
-msgstr "ex. salle 3 fois par semaine"
-
-#: templates\challenges\create.html
-msgid "e.g. pages, steps, glasses of water"
-msgstr "ex. pages, pas, verres d'eau"
-
-#: apps\accounts\models.py
-msgid "email address"
-msgstr "adresse e-mail"
-
-#: templates\reports\detail.html
-msgid "generated"
-msgstr "généré"
-
-#: templates\challenges\settings.html
-msgid "goal"
-msgstr "objectif"
-
-#: templates\reports\list.html
-msgid "in progress"
-msgstr "en cours"
-
-#: templates\challenges\create.html
-msgid "in total"
-msgstr "au total"
-
-#: apps\core\js_i18n.py
-msgid "km"
-msgstr "km"
-
-#: templates\dashboard\home.html
-msgid "left"
-msgstr "restants"
-
-#: apps\core\js_i18n.py
-msgid "min."
-msgstr "min."
-
-#: apps\analytics\services\progress\goals.py
-msgid "min. %(value)s per entry"
-msgstr "min. %(value)s par entrée"
-
-#: templates\partials\modals.html
-msgid "minutes"
-msgstr "minutes"
-
-#: templates\dashboard\home.html
-msgid "missed"
-msgstr "manqués"
-
-#: templates\challenges\create.html
-msgid "no end"
-msgstr "sans fin"
-
-#: templates\challenges\detail.html
-msgid "now"
-msgstr "maintenant"
-
-#: templates\analytics\overview.html
-msgid "of"
-msgstr "sur"
-
-#: templates\challenges\create.html
-msgid "optional"
-msgstr "facultatif"
-
-#: apps\core\js_i18n.py
-msgid "pages"
-msgstr "pages"
-
-#: templates\reports\list.html
-msgid "partial"
-msgstr "partiel"
-
-#: templates\challenges\create.html
-msgid "per day"
-msgstr "par jour"
-
-#: apps\core\js_i18n.py
-msgid "per entry"
-msgstr "par entrée"
-
-#: templates\challenges\create.html
-msgid "per month"
-msgstr "par mois"
-
-#: templates\challenges\create.html
-msgid "per week"
-msgstr "par semaine"
-
-#: templates\analytics\overview.html
-msgid "planned"
-msgstr "prévus"
-
-#: templates\challenges\detail.html
-msgid "reached"
-msgstr "atteint"
-
-#: templates\planner\planner.html
-msgid "scheduled"
-msgstr "planifiés"
-
-#: apps\analytics\services\progress\goals.py
-msgid "session"
-msgid_plural "sessions"
-msgstr[0] "séance"
-msgstr[1] "séances"
-
-#: apps\challenges\models.py
-msgid "sessions"
-msgstr "séances"
-
-#: templates\journal\review.html
-msgid "this week"
-msgstr "cette semaine"
-
-#: templates\challenges\detail.html
-msgid "to date"
-msgstr "à ce jour"
-
-#: templates\challenges\detail.html
-msgid "vs expected"
-msgstr "vs attendu"
-
-#: templates\accounts\categories.html
-msgid "Challenge categories"
-msgstr "Catégories de défis"
-
-#: templates\accounts\categories.html
-msgid "Planner categories"
-msgstr "Catégories du planner"
-
-#: templates\journal\list.html
-msgid "Untitled note"
-msgstr "Note sans titre"
-
-#: templates\accounts\categories.html
-msgid "Used to colour and organise your planned activities."
-msgstr "Pour colorer et organiser vos activités planifiées."
-
-#: templates\accounts\categories.html
-msgid "Used to group your challenges."
-msgstr "Pour regrouper vos défis."
-
-#: apps\core\management\commands\i18n.py
-msgid "…"
-msgstr "…"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
 
 #: apps\notifications\reminders.py
 msgid "%(n)s activity planned"
 msgid_plural "%(n)s activities planned"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: apps\notifications\reminders.py
 msgid "%(n)s challenge still open today"
 msgid_plural "%(n)s challenges still open today"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: apps\notifications\reminders.py
 msgid "%(n)s challenge to do"
 msgid_plural "%(n)s challenges to do"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: templates\reports\list.html
+msgid "%(n)s challenges"
+msgstr ""
+
+#: templates\challenges\templates.html
+msgid "%(n)s day"
+msgid_plural "%(n)s days"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: apps\core\templatetags\ui.py
+msgid "%(n)s month"
+msgid_plural "%(n)s months"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: templates\notifications\list.html
 msgid "%(n)s unread"
 msgid_plural "%(n)s unread"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: apps\core\templatetags\ui.py
+msgid "%(n)s week"
+msgid_plural "%(n)s weeks"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: apps\challenges\api.py
+msgid "%(name)s (copy)"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "%s activities added"
+msgstr ""
 
 #: apps\core\js_i18n.py
 msgid "%s offline item(s) synced"
+msgstr ""
+
+#: apps\analytics\services\progress\goals.py
+msgid "/ day"
+msgstr ""
+
+#: apps\analytics\services\progress\goals.py
+msgid "/ month"
+msgstr ""
+
+#: apps\analytics\services\progress\goals.py
+msgid "/ week"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "0 = Monday … 6 = Sunday"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "1 year"
+msgstr ""
+
+#: apps\accounts\forms.py
+msgid "3+ characters: letters, numbers and . @ + - _ only."
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "30 days"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "7 days"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "90 days"
+msgstr ""
+
+#: apps\challenges\api.py
+msgid "A challenge can have at most 12 fields."
+msgstr ""
+
+#: apps\challenges\serializers.py
+msgid "A challenge can last at most 5 years."
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid ""
+"A challenge is anything you want to do regularly: read, train, learn, pray, "
+"drink water…"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid ""
+"A change applies from the chosen date. Earlier days keep the previous goal: "
+"your history is never rewritten."
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "A choice field needs at least one option."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "A number"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid ""
+"A paused period is neither a success nor a failure. Archived challenges keep"
+" their full history."
+msgstr ""
+
+#: templates\dashboard\today.html
+msgid "A planned activity never counts as done until you confirm it."
+msgstr ""
+
+#: apps\planner\serializers.py
+msgid "A template can contain at most 60 activities."
+msgstr ""
+
+#: templates\403.html
+msgid "Access denied"
+msgstr ""
+
+#: apps\core\models.py
+msgid "Account event"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Achieved"
+msgstr ""
+
+#: templates\reports\detail.html
+msgid "Active"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Active days"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Activity"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Activity added"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Activity added (overlaps another activity)"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Activity completed"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Activity duplicated"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Activity moved"
+msgstr ""
+
+#: apps\tracking\api.py
+msgid "Activity not found."
+msgstr ""
+
+#: apps\notifications\models.py
+msgid "Activity reminder"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Activity rescheduled"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Activity updated"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Actual"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Actual time"
+msgstr ""
+
+#: templates\accounts\_category_manager.html
+msgid "Add"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Add a block"
+msgstr ""
+
+#: templates\dashboard\today.html
+msgid ""
+"Add a few activities, or apply one of your day templates from the planner."
+msgstr ""
+
+#: templates\dashboard\today.html
+msgid "Add activity"
+msgstr ""
+
+#: apps\challenges\serializers.py
+msgid "Add at least one option."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Add field"
+msgstr ""
+
+#: templates\partials\quick_add_menu.html
+msgid "Add note"
+msgstr ""
+
+#: templates\partials\quick_add_menu.html
+msgid "Add task"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Add up the values"
+msgstr ""
+
+#: apps\reports\generators\pdf.py
+msgid "Ahead"
+msgstr ""
+
+#: templates\challenges\list.html
+msgid "All"
+msgstr ""
+
+#: templates\challenges\list.html
+msgid "All categories"
+msgstr ""
+
+#: templates\journal\list.html
+msgid "All challenges"
+msgstr ""
+
+#: templates\accounts\register.html
+msgid "Already have an account?"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Amber"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Amount"
+msgstr ""
+
+#: apps\accounts\api.py
+msgid "An account already exists with this email."
 msgstr ""
 
 #: apps\core\js_i18n.py
 msgid "An offline entry could not be saved:"
 msgstr ""
 
+#: templates\analytics\overview.html
+msgid "Analytics"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Analyze"
+msgstr ""
+
+#: templates\layouts\auth.html
+msgid "Any challenge"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Anything you want to measure"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Applies from"
+msgstr ""
+
+#: templates\planner\planner.html
+msgid "Apply"
+msgstr ""
+
+#: templates\planner\planner.html
+msgid "Apply to"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Archive"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Archived"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Are you sure?"
+msgstr ""
+
+#: apps\accounts\forms.py
+msgid "At least 8 characters, not too common."
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Average"
+msgstr ""
+
+#: apps\reports\generators\pdf.py
+msgid "Average / active day"
+msgstr ""
+
+#: templates\reports\detail.html
+msgid "Avg / day"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Avg / entry"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Avg. challenge completion"
+msgstr ""
+
+#: templates\reports\detail.html
+msgid "Avg. completion"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Back"
+msgstr ""
+
+#: templates\403.html
+msgid "Back to LifeFlow"
+msgstr ""
+
+#: templates\accounts\password_reset.html
+msgid "Back to sign in"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Basics"
+msgstr ""
+
+#: apps\reports\generators\pdf.py
+msgid "Behind"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Best active streak"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Best day"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Best streak"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Blue"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Breakfast"
+msgstr ""
+
+#: templates\reports\list.html
+msgid "CSV — all entries"
+msgstr ""
+
+#: templates\reports\list.html
+msgid "CSV — challenge statistics"
+msgstr ""
+
+#: templates\dashboard\calendar.html
+msgid "Calendar"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Cancel"
+msgstr ""
+
+#: apps\planner\models.py
+msgid "Cancelled"
+msgstr ""
+
+#: templates\accounts\categories.html
+msgid "Categories"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Category"
+msgstr ""
+
+#: templates\accounts\_category_manager.html
+msgid "Category added"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Challenge"
+msgstr ""
+
+#: templates\accounts\categories.html
+msgid "Challenge categories"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Challenge created"
+msgstr ""
+
+#: apps\core\models.py
+msgid "Challenge deleted"
+msgstr ""
+
+#: templates\dashboard\calendar.html
+msgid "Challenge done"
+msgstr ""
+
+#: apps\tracking\services.py
+msgid "Challenge not found."
+msgstr ""
+
+#: apps\notifications\models.py
+msgid "Challenge reminder"
+msgstr ""
+
+#: apps\core\models.py
+msgid "Challenge status changed"
+msgstr ""
+
+#: templates\challenges\templates.html
+msgid "Challenge templates"
+msgstr ""
+
+#: apps\core\models.py
+msgid "Challenge updated"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Challenges"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Challenges in this period"
+msgstr ""
+
+#: templates\journal\review.html
+msgid "Challenges this week"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Challenges today"
+msgstr ""
+
+#: templates\accounts\security.html
+msgid "Change password"
+msgstr ""
+
 #: templates\accounts\notifications.html
 msgid "Channels"
+msgstr ""
+
+#: templates\accounts\password_reset_done.html
+msgid "Check your email"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Choice list"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Choices for select fields."
+msgstr ""
+
+#: apps\tracking\api.py
+msgid "Choose a challenge."
+msgstr ""
+
+#: apps\planner\api.py
+msgid "Choose a new date."
+msgstr ""
+
+#: templates\accounts\password_reset_confirm.html
+msgid "Choose a new password"
+msgstr ""
+
+#: templates\planner\planner.html
+msgid "Choose a template"
+msgstr ""
+
+#: apps\reports\views.py
+msgid "Choose a valid month."
+msgstr ""
+
+#: apps\journal\views.py
+msgid "Choose a value between 1 and 5."
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Choose at least one day."
+msgstr ""
+
+#: apps\planner\api.py
+msgid "Choose at least one valid day."
+msgstr ""
+
+#: apps\tracking\services.py
+msgid "Choose done or not done."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid ""
+"Choose how you'll record your progress. You can add extra details below."
+msgstr ""
+
+#: apps\challenges\serializers.py
+msgid "Choose one of the challenge's fields."
+msgstr ""
+
+#: apps\journal\api.py
+msgid "Choose the challenge this note is about."
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Choose what you want to measure."
+msgstr ""
+
+#: templates\journal\list.html
+msgid "Clear"
+msgstr ""
+
+#: templates\planner\planner.html
+msgid ""
+"Click an empty slot to add an activity. Drag to move (also to another day), "
+"drag the bottom edge to resize. Keyboard: Alt + arrows."
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Close"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Color"
+msgstr ""
+
+#: apps\notifications\reminders.py
+msgid "Coming up: %(t)s"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Complete"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Complete a day to start one"
+msgstr ""
+
+#: templates\dashboard\today.html
+msgid "Completed"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Completed days"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Completion"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Completion by challenge"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Completion rate"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Confirm"
+msgstr ""
+
+#: templates\accounts\security.html
+msgid "Confirm with your password"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Continue"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Continue setup"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Count sessions"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Counting"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Create a challenge"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Create a challenge and record a few entries to see your analytics."
+msgstr ""
+
+#: templates\planner\rules.html
+msgid "Create a routine"
+msgstr ""
+
+#: templates\planner\templates.html
+msgid "Create a template"
+msgstr ""
+
+#: templates\accounts\register.html
+msgid "Create account"
+msgstr ""
+
+#: templates\accounts\login.html
+msgid "Create an account"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Create challenge"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Create my routine & finish"
+msgstr ""
+
+#: templates\planner\templates.html
+msgid "Create one here, or save any day of your planner as a template."
+msgstr ""
+
+#: templates\accounts\register.html
+msgid "Create your account"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Create your first challenge"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Create your first challenge and sketch your typical day."
+msgstr ""
+
+#: apps\accounts\models.py
+msgid "Created by the demo seed command."
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Cumulative actual vs. expected pace"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Cumulative totals to celebrate along the way (e.g. 25h, 50h, 100h)."
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Current streak"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Custom"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Custom challenge"
+msgstr ""
+
+#: apps\notifications\models.py
+msgid "Daily goal"
 msgstr ""
 
 #: templates\challenges\settings.html
@@ -3285,20 +740,246 @@ msgstr ""
 msgid "Daily reminder on active days, if not done yet."
 msgstr ""
 
+#: templates\partials\topbar.html
+msgid "Dark"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Dashboard"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Date"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Date the challenge was completed/archived early."
+msgstr ""
+
+#: templates\planner\planner.html
+msgid "Day"
+msgstr ""
+
+#: templates\planner\templates.html
+msgid "Day template"
+msgstr ""
+
+#: apps\core\models.py
+msgid "Day template applied"
+msgstr ""
+
+#: templates\challenges\templates.html
+msgid "Day templates"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Days achieved"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Days outside the schedule are rest days."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Days outside the schedule are rest days: they never count against you."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Decimal number"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Decimal values with a unit"
+msgstr ""
+
+#: templates\accounts\_category_manager.html
+msgid "Delete"
+msgstr ""
+
+#: templates\accounts\security.html
+msgid "Delete account"
+msgstr ""
+
+#: templates\accounts\security.html
+msgid "Delete forever"
+msgstr ""
+
+#: templates\accounts\security.html
+msgid "Delete my account"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Delete the whole series? Past activities are kept."
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Delete this activity?"
+msgstr ""
+
+#: templates\accounts\_category_manager.html
+msgid "Delete this category? Items using it will simply have no category."
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid ""
+"Delete this challenge and all its entries? This cannot be undone. Archiving "
+"keeps your history."
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Delete this entry?"
+msgstr ""
+
+#: templates\reports\detail.html
+msgid "Delete this report"
+msgstr ""
+
+#: templates\reports\detail.html
+msgid "Delete this report?"
+msgstr ""
+
+#: templates\planner\rules.html
+msgid "Delete this routine? Activities already done are kept."
+msgstr ""
+
+#: templates\planner\templates.html
+msgid "Delete this template?"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Deleted"
+msgstr ""
+
 #: apps\core\js_i18n.py
 msgid "Describe your challenge first."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Description"
+msgstr ""
+
+#: templates\layouts\auth.html
+msgid "Design your days. Keep your promises to yourself."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Design your own fields"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Digital Wellbeing"
 msgstr ""
 
 #: templates\accounts\notifications.html
 msgid "Disable"
 msgstr ""
 
+#: templates\partials\modals.html
+msgid "Dismiss"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Distance"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Distance, weight, money…"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Do the work"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Done"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Done / Not done"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Done / not done"
+msgstr ""
+
+#: templates\challenges\_card.html
+msgid "Done for today"
+msgstr ""
+
+#: templates\reports\detail.html
+msgid "Download PDF"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Duplicate"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Duration"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Duration (minutes)"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Durations are entered in minutes (120 = 2 hours)."
+msgstr ""
+
 #: apps\accounts\forms.py
 msgid "E-mail notifications"
 msgstr ""
 
+#: templates\accounts\_category_manager.html
+msgid "Edit"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Edit challenge"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Edit entry"
+msgstr ""
+
+#: templates\planner\rules.html
+msgid "Edit routine"
+msgstr ""
+
+#: apps\planner\models.py
+msgid "Edited individually; no longer follows its rule."
+msgstr ""
+
+#: apps\accounts\forms.py
+msgid "Email"
+msgstr ""
+
+#: apps\accounts\forms.py
+msgid "Email or username"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Emerald"
+msgstr ""
+
 #: templates\accounts\notifications.html
 msgid "Enable"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "End"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "End date"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "End date must be on or after the start date."
+msgstr ""
+
+#: apps\notifications\models.py
+msgid "End of day"
 msgstr ""
 
 #: apps\planner\models.py
@@ -3309,8 +990,371 @@ msgstr ""
 msgid "End-of-day check at"
 msgstr ""
 
+#: apps\planner\services.py
+msgid "Enter a duration between 0 and 24 hours."
+msgstr ""
+
+#: apps\tracking\services.py
+msgid "Enter a number."
+msgstr ""
+
+#: apps\planner\serializers.py
+msgid "Enter a realistic date."
+msgstr ""
+
+#: apps\challenges\api.py
+msgid "Enter a valid date."
+msgstr ""
+
+#: apps\planner\api.py
+msgid "Enter a valid time (HH:MM)."
+msgstr ""
+
+#: apps\planner\api.py
+msgid "Enter a whole number of minutes."
+msgstr ""
+
+#: apps\tracking\services.py
+msgid "Enter a whole number."
+msgstr ""
+
+#: templates\accounts\password_reset.html
+msgid "Enter your email and we'll send you a link to choose a new password."
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Entries"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Entries (sessions)"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Entries per weekday"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Entries recorded"
+msgstr ""
+
+#: apps\core\models.py
+msgid "Entry created"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Entry deleted"
+msgstr ""
+
+#: apps\core\models.py
+msgid "Entry modified"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Entry updated"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Every"
+msgstr ""
+
+#: templates\planner\rules.html
+msgid "Every %s days"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Every N days"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Every day"
+msgstr ""
+
+#: apps\analytics\services\progress\goals.py
+msgid "Every scheduled day"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid ""
+"Everything can be changed later — goal changes never rewrite your history."
+msgstr ""
+
+#: templates\challenges\list.html
+msgid "Everything you want to do regularly — measured your way."
+msgstr ""
+
+#: templates\reports\list.html
+msgid "Excel (statistics + entries)"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Execute"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Expected"
+msgstr ""
+
+#: templates\accounts\_settings_layout.html
+msgid "Export data"
+msgstr ""
+
+#: templates\reports\list.html
+msgid "Export your data"
+msgstr ""
+
+#: apps\planner\defaults.py
+msgid "Family"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Field added"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Field name"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Field name (e.g. Pages, Surah, Type)"
+msgstr ""
+
+#: apps\challenges\api.py
+msgid "Field names must be unique."
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Field removed"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Field renamed"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Field that is measured. Empty = count entries (sessions)."
+msgstr ""
+
+#: apps\tracking\services.py
+msgid "Fill in at least one value."
+msgstr ""
+
+#: apps\challenges\defaults.py
+msgid "Finance"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Finish setting up LifeFlow"
+msgstr ""
+
+#: apps\accounts\models.py
+msgid "First hour shown in the planner."
+msgstr ""
+
+#: apps\accounts\forms.py
+msgid "First name"
+msgstr ""
+
+#: apps\planner\defaults.py
+msgid "Food"
+msgstr ""
+
+#: templates\planner\rules.html
+msgid "For example: Gym on Monday, Wednesday and Friday from 09:00 to 10:30."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "For how long?"
+msgstr ""
+
+#: templates\accounts\login.html
+msgid "Forgot password?"
+msgstr ""
+
+#: templates\accounts\register.html
+msgid "Free, private, and built around your own goals."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Frequency"
+msgstr ""
+
+#: templates\planner\rules.html
+msgid "From"
+msgstr ""
+
+#: templates\challenges\list.html
+msgid "From a template"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "From planner"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Gap"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "General"
+msgstr ""
+
+#: templates\reports\list.html
+msgid "Generate a monthly report"
+msgstr ""
+
+#: templates\reports\list.html
+msgid "Generate report"
+msgstr ""
+
+#: templates\reports\list.html
+msgid ""
+"Generate your first monthly report to keep a permanent record of your "
+"progress."
+msgstr ""
+
+#: apps\reports\generators\pdf.py
+msgid "Generated %(d)s"
+msgstr ""
+
+#: templates\reports\list.html
+msgid ""
+"Generating the same month again creates a new version; older versions are "
+"kept."
+msgstr ""
+
 #: templates\accounts\notifications.html
 msgid "Get reminders on this phone or computer, even when LifeFlow is closed."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Give it a clear, motivating name."
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Give the template a name."
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Give your challenge a name."
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Goal"
+msgstr ""
+
+#: apps\core\models.py
+msgid "Goal changed"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Goal counts entries (sessions) instead of a field"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Goal updated — earlier days keep the previous goal"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Goal:"
+msgstr ""
+
+#: templates\journal\review.html
+msgid "Goals achieved"
+msgstr ""
+
+#: apps\dashboard\services.py
+msgid "Good afternoon"
+msgstr ""
+
+#: apps\dashboard\services.py
+msgid "Good evening"
+msgstr ""
+
+#: apps\dashboard\services.py
+msgid "Good morning"
+msgstr ""
+
+#: apps\dashboard\services.py
+msgid "Good night"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Health & Fitness"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Here's your overview for today."
+msgstr ""
+
+#: templates\accounts\emails\password_reset.txt
+msgid "Hi %(name)s,"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "High"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "History"
+msgstr ""
+
+#: templates\partials\bottom_nav.html
+msgid "Home"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "How did it go?"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "How much, and over which period?"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "How should it count?"
+msgstr ""
+
+#: apps\journal\views.py
+msgid "How was your week? (1–5)"
+msgstr ""
+
+#: templates\accounts\settings.html
+msgid "How you appear in LifeFlow."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Icon"
+msgstr ""
+
+#: templates\accounts\password_reset_done.html
+msgid ""
+"If an account exists for this address, you'll receive a link to reset your "
+"password in a few minutes."
+msgstr ""
+
+#: templates\accounts\emails\password_reset.txt
+msgid "If you didn't ask for it, you can ignore this email."
+msgstr ""
+
+#: apps\planner\models.py
+msgid "In progress"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Inactive fields keep their history but are hidden from forms."
+msgstr ""
+
+#: apps\accounts\api.py
+msgid "Incorrect password."
+msgstr ""
+
+#: apps\accounts\views.py
+msgid "Incorrect password. Your account was not deleted."
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Indigo"
 msgstr ""
 
 #: templates\accounts\settings.html
@@ -3327,16 +1371,98 @@ msgstr ""
 msgid "Install the app"
 msgstr ""
 
+#: apps\accounts\api.py
+msgid "Invalid credentials."
+msgstr ""
+
+#: apps\reports\api.py
+msgid "Invalid month."
+msgstr ""
+
 #: apps\notifications\api.py
 msgid "Invalid push endpoint."
+msgstr ""
+
+#: apps\reports\api.py
+msgid "Invalid year."
+msgstr ""
+
+#: templates\404.html
+msgid "It may have been moved or deleted."
+msgstr ""
+
+#: templates\dashboard\calendar.html
+msgid "Journal"
+msgstr ""
+
+#: apps\journal\views.py
+msgid "Journal entry deleted."
+msgstr ""
+
+#: apps\journal\views.py
+msgid "Journal entry saved."
+msgstr ""
+
+#: apps\tracking\services.py
+msgid "Keep it under 500 characters."
+msgstr ""
+
+#: apps\accounts\forms.py
+msgid "Keep me signed in"
 msgstr ""
 
 #: templates\layouts\auth.html
 msgid "Language"
 msgstr ""
 
+#: templates\dashboard\home.html
+msgid "Last 7 days"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Last 7 days chart"
+msgstr ""
+
+#: apps\accounts\models.py
+msgid "Last hour shown in the planner."
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Learning"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Leave empty for an open-ended challenge."
+msgstr ""
+
+#: templates\dashboard\today.html
+msgid "Left"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Less"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Let's go"
+msgstr ""
+
 #: templates\accounts\settings.html
 msgid "LifeFlow app"
+msgstr ""
+
+#: templates\layouts\auth.html
+msgid ""
+"LifeFlow brings your planner, your personal challenges and your progress "
+"together — so you always know what you planned, what you did, and how you're"
+" improving."
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid ""
+"LifeFlow follows a simple loop: plan your days, do the work, record what you"
+" actually did, and see how you progress. Let's set up the basics in two "
+"minutes."
 msgstr ""
 
 #: apps\core\js_i18n.py
@@ -3351,8 +1477,169 @@ msgstr ""
 msgid "LifeFlow notifications work 🎉"
 msgstr ""
 
+#: apps\challenges\defaults.py
+msgid "Lifestyle"
+msgstr ""
+
+#: templates\partials\topbar.html
+msgid "Light"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Lime"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Linked challenge"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Low"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Lunch"
+msgstr ""
+
+#: templates\partials\sidebar.html
+msgid "Main navigation"
+msgstr ""
+
+#: templates\accounts\_settings_layout.html
+msgid "Manage your profile, preferences and account."
+msgstr ""
+
+#: apps\tracking\models.py
+msgid "Manual"
+msgstr ""
+
+#: templates\notifications\list.html
+msgid "Mark all read"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Mark as completed"
+msgstr ""
+
+#: templates\dashboard\today.html
+msgid "Mark as done"
+msgstr ""
+
+#: templates\dashboard\today.html
+msgid "Mark as missed"
+msgstr ""
+
+#: templates\dashboard\_day_detail.html
+msgid "Mark as rest day"
+msgstr ""
+
+#: apps\tracking\api.py
+msgid "Mark the activity as completed first."
+msgstr ""
+
+#: apps\tracking\services.py
+msgid "Maximum is %(v)s."
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Maximum must be greater than minimum."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Measure"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Measured"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Medium"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Milestone added"
+msgstr ""
+
+#: apps\notifications\models.py
+msgid "Milestone reached"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Milestones"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Min / max day"
+msgstr ""
+
+#: apps\tracking\services.py
+msgid "Minimum is %(v)s."
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Minimum per entry"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Minimum value for an entry to count (e.g. at least 30 minutes)."
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Missed"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Missed days"
+msgstr ""
+
 #: apps\notifications\api.py
 msgid "Missing subscription keys."
+msgstr ""
+
+#: templates\partials\bottom_nav.html
+msgid "Mobile navigation"
+msgstr ""
+
+#: apps\accounts\models.py
+msgid "Monday"
+msgstr ""
+
+#: templates\reports\list.html
+msgid "Month"
+msgstr ""
+
+#: templates\reports\detail.html
+msgid "Monthly report"
+msgstr ""
+
+#: apps\reports\generators\pdf.py
+msgid "Monthly report — %(period)s"
+msgstr ""
+
+#: templates\reports\list.html
+msgid ""
+"Monthly snapshots of your progress. A report never changes once generated."
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Months achieved"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Mood"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "More"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "More options"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Morning routine"
 msgstr ""
 
 #: apps\accounts\forms.py
@@ -3361,6 +1648,200 @@ msgstr ""
 
 #: apps\accounts\forms.py
 msgid "Morning summary at"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Moved — overlaps %s"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Name"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Name this field."
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Network error. Check your connection."
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "New activity"
+msgstr ""
+
+#: templates\accounts\_category_manager.html
+msgid "New category name"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "New challenge"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "New date"
+msgstr ""
+
+#: templates\journal\detail.html
+msgid "New entry"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "New note"
+msgstr ""
+
+#: templates\planner\rules.html
+msgid "New routine"
+msgstr ""
+
+#: templates\planner\templates.html
+msgid "New template"
+msgstr ""
+
+#: templates\accounts\login.html
+msgid "New to LifeFlow?"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Next"
+msgstr ""
+
+#: templates\dashboard\calendar.html
+msgid "Next month"
+msgstr ""
+
+#: templates\journal\review.html
+msgid "Next week"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "No active challenge yet"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "No category"
+msgstr ""
+
+#: templates\dashboard\today.html
+msgid "No challenge is scheduled today."
+msgstr ""
+
+#: templates\challenges\list.html
+msgid "No challenge matches this view."
+msgstr ""
+
+#: templates\dashboard\_day_detail.html
+msgid "No challenge on this day."
+msgstr ""
+
+#: templates\reports\detail.html
+msgid "No challenge was running during this month."
+msgstr ""
+
+#: templates\journal\review.html
+msgid "No challenge was running this week."
+msgstr ""
+
+#: templates\planner\templates.html
+msgid "No day template yet"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "No end"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "No entry yet. Record your first result to start seeing your progress."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid ""
+"No field needed: each recorded entry counts as one session. Add a field to "
+"note details (type, duration…)."
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "No field: each entry counts as one session."
+msgstr ""
+
+#: apps\analytics\services\progress\goals.py
+msgid "No goal defined"
+msgstr ""
+
+#: templates\reports\list.html
+msgid "No report yet"
+msgstr ""
+
+#: templates\planner\rules.html
+msgid "No routine yet"
+msgstr ""
+
+#: templates\challenges\templates.html
+msgid "No template available. Run `python manage.py seed_templates`."
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "None"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Not achieved"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Not done"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Not enough data yet"
+msgstr ""
+
+#: apps\core\api\exceptions.py
+msgid "Not found."
+msgstr ""
+
+#: templates\challenges\_card.html
+msgid "Not running today"
+msgstr ""
+
+#: apps\reports\generators\pdf.py
+msgid "Not started"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Note"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Note saved"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Notes"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Nothing else planned today. Well done!"
+msgstr ""
+
+#: templates\challenges\list.html
+msgid "Nothing here"
+msgstr ""
+
+#: templates\dashboard\today.html
+msgid "Nothing planned for today"
+msgstr ""
+
+#: templates\dashboard\_day_detail.html
+msgid "Nothing planned."
+msgstr ""
+
+#: apps\accounts\views.py
+msgid "Notification preferences saved."
+msgstr ""
+
+#: templates\accounts\notifications.html
+msgid "Notifications"
 msgstr ""
 
 #: apps\core\js_i18n.py
@@ -3379,12 +1860,32 @@ msgstr ""
 msgid "Notifications on this device"
 msgstr ""
 
+#: templates\dashboard\today.html
+msgid "Now"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Number of qualifying entries"
+msgstr ""
+
 #: templates\partials\topbar.html
 msgid "Offline"
 msgstr ""
 
 #: templates\accounts\settings.html
 msgid "On iPhone/iPad: tap Share, then “Add to Home Screen”."
+msgstr ""
+
+#: apps\reports\generators\pdf.py
+msgid "On track"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Once"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Only count entries of at least"
 msgstr ""
 
 #: templates\notifications\email.html
@@ -3395,14 +1896,244 @@ msgstr ""
 msgid "Open Today"
 msgstr ""
 
+#: templates\dashboard\home.html
+msgid "Open today"
+msgstr ""
+
+#: apps\challenges\serializers.py
+msgid "Options must be unique."
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Options separated by commas"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Options separated by commas — e.g. Gym, Football, Running"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Orange"
+msgstr ""
+
+#: apps\challenges\defaults.py
+msgid "Other"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Overall progress"
+msgstr ""
+
+#: apps\reports\generators\pdf.py
+msgid "Page %(n)s"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Page %(n)s of %(total)s"
+msgstr ""
+
+#: templates\404.html
+msgid "Page not found"
+msgstr ""
+
+#: templates\reports\detail.html
+msgid "Partial"
+msgstr ""
+
+#: templates\reports\detail.html
+msgid "Partial month — data up to %(d)s"
+msgstr ""
+
+#: apps\reports\generators\pdf.py
+msgid "Partial month: data up to %(d)s."
+msgstr ""
+
+#: apps\planner\models.py
+msgid "Partially completed"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Partly done"
+msgstr ""
+
+#: apps\accounts\forms.py
+msgid "Password"
+msgstr ""
+
+#: templates\accounts\password_reset_complete.html
+msgid "Password updated"
+msgstr ""
+
+#: apps\accounts\api.py
+msgid "Password updated."
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Past days are always evaluated with the rules in force at the time."
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Pause"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Paused"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Paused days"
+msgstr ""
+
 #: templates\accounts\notifications.html
 msgid ""
 "Per-challenge reminders are set in each challenge's settings (reminder "
 "time)."
 msgstr ""
 
+#: templates\challenges\create.html
+msgid "Period"
+msgstr ""
+
+#: templates\accounts\security.html
+msgid ""
+"Permanently delete your account, challenges, planner, journal and reports. "
+"This cannot be undone."
+msgstr ""
+
+#: apps\planner\defaults.py
+msgid "Personal"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Pick as many as you like — we'll suggest challenges to start with."
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Pink"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Plan"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Plan an activity"
+msgstr ""
+
+#: templates\layouts\auth.html
+msgid "Plan · Track · Analyze"
+msgstr ""
+
+#: templates\dashboard\today.html
+msgid "Planned"
+msgstr ""
+
+#: apps\reports\generators\pdf.py
+msgid "Planned time: %(p)s · Completed time: %(d)s"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Planned today"
+msgstr ""
+
+#: templates\accounts\settings.html
+msgid "Planner"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Planner %"
+msgstr ""
+
+#: apps\core\models.py
+msgid "Planner activity created"
+msgstr ""
+
+#: apps\core\models.py
+msgid "Planner activity deleted"
+msgstr ""
+
+#: apps\core\models.py
+msgid "Planner activity modified"
+msgstr ""
+
+#: apps\core\models.py
+msgid "Planner activity status changed"
+msgstr ""
+
+#: templates\accounts\categories.html
+msgid "Planner categories"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Planner completion"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Planner completion and recorded entries"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Planner completion per week"
+msgstr ""
+
+#: apps\accounts\api.py
+msgid "Please correct the errors below."
+msgstr ""
+
+#: apps\planner\defaults.py
+msgid "Prayer"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Pre-filled from your completed activity — check and confirm."
+msgstr ""
+
 #: templates\notifications\list.html
 msgid "Preferences"
+msgstr ""
+
+#: apps\notifications\models.py
+msgid "Prevents sending the same reminder twice."
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Previous"
+msgstr ""
+
+#: templates\dashboard\calendar.html
+msgid "Previous month"
+msgstr ""
+
+#: templates\journal\review.html
+msgid "Previous week"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Priority"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Productivity"
+msgstr ""
+
+#: templates\accounts\settings.html
+msgid "Profile"
+msgstr ""
+
+#: templates\accounts\_settings_layout.html
+msgid "Profile & preferences"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Progress"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Progress over time"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Progress recorded"
 msgstr ""
 
 #: templates\accounts\notifications.html
@@ -3427,16 +2158,316 @@ msgstr ""
 msgid "Push notifications are not configured on this server."
 msgstr ""
 
+#: templates\partials\bottom_nav.html
+msgid "Quick add"
+msgstr ""
+
+#: apps\planner\defaults.py
+msgid "Qur'an"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Reactivate"
+msgstr ""
+
+#: templates\layouts\auth.html
+msgid "Real progress"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Record"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Record in challenge"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Record progress"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Record results"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Record this activity in your challenge “%s”?"
+msgstr ""
+
+#: templates\dashboard\_day_detail.html
+msgid "Recorded"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Recorded fields"
+msgstr ""
+
+#: templates\dashboard\today.html
+msgid "Recurring"
+msgstr ""
+
+#: templates\planner\rules.html
+msgid ""
+"Recurring activities appear automatically in your planner. Editing a routine"
+" updates future days only."
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Recurring activity created"
+msgstr ""
+
+#: apps\core\models.py
+msgid "Recurring rule changed"
+msgstr ""
+
+#: templates\partials\sidebar.html
+msgid "Reflect"
+msgstr ""
+
+#: templates\journal\review.html
+msgid "Reflection"
+msgstr ""
+
+#: templates\accounts\settings.html
+msgid "Regional preferences"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Remaining"
+msgstr ""
+
 #: templates\notifications\list.html
 msgid "Reminders and report notifications will appear here."
+msgstr ""
+
+#: templates\accounts\notifications.html
+msgid "Reminders are optional. LifeFlow works perfectly without them."
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Remove"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Remove field"
+msgstr ""
+
+#: templates\dashboard\_day_detail.html
+msgid "Remove rest day"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Remove this field? Recorded values are kept in history."
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Removing a field keeps its recorded values in history."
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Repeat"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Repeat on"
+msgstr ""
+
+#: templates\planner\planner.html
+msgid "Replace the activities already planned on these days"
+msgstr ""
+
+#: templates\reports\detail.html
+msgid "Report"
+msgstr ""
+
+#: apps\reports\views.py
+msgid "Report deleted."
+msgstr ""
+
+#: apps\core\models.py
+msgid "Report generated"
+msgstr ""
+
+#: apps\reports\views.py
+msgid "Report generated."
+msgstr ""
+
+#: apps\notifications\models.py
+msgid "Report ready"
+msgstr ""
+
+#: templates\partials\sidebar.html
+msgid "Reports"
+msgstr ""
+
+#: templates\accounts\password_reset_confirm.html
+msgid "Request a new link"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Required"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Reschedule"
+msgstr ""
+
+#: apps\planner\models.py
+msgid "Rescheduled"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Reset"
+msgstr ""
+
+#: templates\accounts\password_reset.html
+msgid "Reset password"
+msgstr ""
+
+#: templates\accounts\emails\password_reset_subject.txt
+msgid "Reset your LifeFlow password"
+msgstr ""
+
+#: templates\accounts\password_reset.html
+msgid "Reset your password"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Rest"
+msgstr ""
+
+#: templates\challenges\_card.html
+msgid "Rest day"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Rest day — enjoy it."
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Rest days"
+msgstr ""
+
+#: templates\planner\rules.html
+msgid "Resume"
+msgstr ""
+
+#: templates\planner\planner.html
+msgid "Retry"
+msgstr ""
+
+#: templates\planner\templates.html
+msgid ""
+"Reusable day layouts — University day, Weekend, Ramadan day… Apply them from"
+" the planner."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Review"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Review & record"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Rose"
+msgstr ""
+
+#: templates\planner\rules.html
+msgid "Routine saved — future days are updated"
+msgstr ""
+
+#: templates\planner\rules.html
+msgid "Routines"
+msgstr ""
+
+#: apps\accounts\models.py
+msgid "Saturday"
+msgstr ""
+
+#: templates\accounts\notifications.html
+msgid "Save"
+msgstr ""
+
+#: templates\accounts\settings.html
+msgid "Save changes"
+msgstr ""
+
+#: templates\journal\review.html
+msgid "Save review"
+msgstr ""
+
+#: templates\planner\planner.html
+msgid "Save the selected day as a template"
+msgstr ""
+
+#: templates\accounts\_category_manager.html
+msgid "Saved"
 msgstr ""
 
 #: apps\core\js_i18n.py
 msgid "Saved offline — it will sync automatically"
 msgstr ""
 
+#: templates\challenges\create.html
+msgid "Schedule"
+msgstr ""
+
+#: apps\core\models.py
+msgid "Schedule changed"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Schedule updated"
+msgstr ""
+
+#: templates\challenges\list.html
+msgid "Search"
+msgstr ""
+
+#: templates\journal\list.html
+msgid "Search your notes"
+msgstr ""
+
+#: templates\accounts\security.html
+msgid "Security"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "See progress"
+msgstr ""
+
+#: apps\tracking\services.py
+msgid "Select a valid option."
+msgstr ""
+
+#: apps\challenges\serializers.py
+msgid "Select at least one day of the week."
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Select at least one day."
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Select at least one valid day of the week."
+msgstr ""
+
+#: apps\planner\models.py
+msgid "Selected days"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Selected days of the week"
+msgstr ""
+
 #: templates\accounts\notifications.html
 msgid "Send a test"
+msgstr ""
+
+#: templates\accounts\password_reset.html
+msgid "Send reset link"
 msgstr ""
 
 #: apps\accounts\models.py
@@ -3448,17 +2479,312 @@ msgid "Sent on active days only, if you haven't recorded progress yet."
 msgstr ""
 
 #: apps\core\js_i18n.py
+msgid "Series updated"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Sessions"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Sessions only"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Set your goal"
+msgstr ""
+
+#: templates\accounts\settings.html
+msgid "Settings"
+msgstr ""
+
+#: templates\accounts\_settings_layout.html
+msgid "Settings sections"
+msgstr ""
+
+#: templates\accounts\login.html
+msgid "Sign in"
+msgstr ""
+
+#: templates\accounts\login.html
+msgid "Sign in to continue planning and tracking."
+msgstr ""
+
+#: templates\partials\sidebar.html
+msgid "Sign out"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Sketch your typical day"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Skip"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Skip setup"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Skip this step"
+msgstr ""
+
+#: templates\base.html
+msgid "Skip to content"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Sky"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Slate"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Sleep"
+msgstr ""
+
+#: apps\challenges\defaults.py
+msgid "Social"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Some days"
+msgstr ""
+
+#: apps\challenges\serializers.py
+msgid "Some entries are recorded before this date."
+msgstr ""
+
+#: templates\accounts\emails\password_reset.txt
+msgid ""
+"Someone asked to reset the password of your LifeFlow account. If it was you,"
+" open this link:"
+msgstr ""
+
+#: apps\core\api\exceptions.py
+msgid "Something went wrong on our side. Please try again."
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Something went wrong. Please try again."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Specific days"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Spiritual"
+msgstr ""
+
+#: apps\planner\defaults.py
+msgid "Sport"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Start"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Start date"
+msgstr ""
+
+#: templates\challenges\templates.html
+msgid "Start from a proven setup, then make it yours."
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Start from a template and adjust it, or build your own from scratch."
+msgstr ""
+
+#: templates\challenges\list.html
+msgid "Start from a template or build your own in a few steps."
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Statistics"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Status"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Status updated"
+msgstr ""
+
+#: templates\reports\detail.html
+msgid "Streak"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Streaks"
+msgstr ""
+
+#: apps\planner\defaults.py
+msgid "Study"
+msgstr ""
+
+#: apps\core\js_i18n.py
 msgid "Suggestion applied — review each step before creating."
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Sum of the measured value"
+msgstr ""
+
+#: apps\accounts\models.py
+msgid "Sunday"
 msgstr ""
 
 #: templates\partials\topbar.html
 msgid "Sync now"
 msgstr ""
 
+#: templates\partials\topbar.html
+msgid "System"
+msgstr ""
+
+#: apps\notifications\reminders.py
+msgid "Take two minutes to reflect on your week."
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Target"
+msgstr ""
+
+#: apps\reports\generators\pdf.py
+msgid "Target (month)"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Teal"
+msgstr ""
+
+#: apps\challenges\serializers.py
+msgid "Template not found."
+msgstr ""
+
+#: templates\planner\templates.html
+msgid "Template saved"
+msgstr ""
+
+#: templates\challenges\templates.html
+msgid "Templates"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Text"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid ""
+"The current activity is kept as “rescheduled” and a new one is created."
+msgstr ""
+
+#: apps\accounts\views.py
+msgid "The email/username or password is incorrect."
+msgstr ""
+
+#: apps\accounts\forms.py
+msgid "The image must be smaller than 2 MB."
+msgstr ""
+
+#: apps\challenges\serializers.py
+msgid "The minimum cannot be negative."
+msgstr ""
+
+#: apps\accounts\api.py
+msgid "The planner must end after it starts (0–24h)."
+msgstr ""
+
+#: templates\accounts\password_reset_confirm.html
+msgid "The reset link is invalid or was already used. Request a new one."
+msgstr ""
+
+#: apps\challenges\serializers.py
+msgid "The target must be greater than zero."
+msgstr ""
+
+#: apps\challenges\serializers.py
+msgid "The type can't change once values were recorded."
+msgstr ""
+
+#: apps\tracking\services.py
+msgid "The value cannot be negative."
+msgstr ""
+
+#: templates\partials\topbar.html
+msgid "Theme"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid ""
+"These activities will repeat in your planner. You can change everything "
+"later."
+msgstr ""
+
 #: templates\accounts\notifications.html
 msgid ""
 "This browser doesn't support push notifications. Install LifeFlow as an app "
 "(or use Chrome, Edge, Firefox or Safari 16.4+)."
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "This challenge is paused."
+msgstr ""
+
+#: apps\core\api\exceptions.py
+msgid "This change conflicts with existing data (it may already exist)."
+msgstr ""
+
+#: apps\tracking\services.py
+msgid "This date is after the challenge ends."
+msgstr ""
+
+#: apps\challenges\serializers.py
+msgid "This date is before the challenge starts."
+msgstr ""
+
+#: apps\planner\services.py
+msgid "This day has no activities to save."
+msgstr ""
+
+#: apps\accounts\api.py
+msgid "This email is already used."
+msgstr ""
+
+#: apps\challenges\serializers.py
+msgid ""
+"This field can't be measured (choose a number, duration or done/not done "
+"field)."
+msgstr ""
+
+#: apps\challenges\serializers.py
+msgid "This field can't be measured."
+msgstr ""
+
+#: apps\tracking\services.py
+msgid "This field is required."
+msgstr ""
+
+#: templates\accounts\password_reset_confirm.html
+msgid "This link has expired"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "This month"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "This occurrence"
+msgstr ""
+
+#: templates\404.html
+msgid "This page doesn't exist"
 msgstr ""
 
 #: templates\pwa\offline.html
@@ -3468,12 +2794,375 @@ msgid ""
 "automatically when the connection comes back."
 msgstr ""
 
+#: templates\dashboard\today.html
+msgid "This period"
+msgstr ""
+
+#: templates\challenges\_card.html
+msgid "This period: %(a)s / %(t)s"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "This period: %(a)s / %(t)s %(u)s"
+msgstr ""
+
+#: apps\challenges\serializers.py
+msgid "This target is too large."
+msgstr ""
+
+#: apps\accounts\api.py
+msgid "This username is taken."
+msgstr ""
+
+#: apps\tracking\services.py
+msgid "This value is too large."
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Time by category"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Time completed"
+msgstr ""
+
 #: apps\notifications\reminders.py
 msgid "Time for %(name)s"
 msgstr ""
 
+#: apps\notifications\reminders.py
+msgid "Time for your weekly review"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Time of day"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Time spent"
+msgstr ""
+
+#: templates\dashboard\today.html
+msgid "Timeline view"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Title"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Title (optional)"
+msgstr ""
+
+#: templates\dashboard\today.html
+msgid "To confirm"
+msgstr ""
+
+#: templates\dashboard\calendar.html
+msgid "Today"
+msgstr ""
+
+#: templates\dashboard\today.html
+msgid "Today's plan"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Today's target is reached."
+msgstr ""
+
+#: templates\challenges\_card.html
+msgid "Today: %(a)s / %(t)s"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Today: %(a)s / %(t)s %(u)s"
+msgstr ""
+
+#: apps\accounts\views.py
+msgid "Too many attempts. Please wait a few minutes and try again."
+msgstr ""
+
+#: apps\accounts\api.py
+msgid "Too many attempts. Please wait a few minutes."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Total"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Track"
+msgstr ""
+
+#: apps\planner\defaults.py
+msgid "Travel"
+msgstr ""
+
+#: templates\journal\review.html
+msgid "Two minutes to learn from your week."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Unit"
+msgstr ""
+
+#: templates\planner\templates.html
+msgid "University day"
+msgstr ""
+
+#: apps\planner\serializers.py
+msgid "Unknown category."
+msgstr ""
+
+#: apps\planner\serializers.py
+msgid "Unknown challenge."
+msgstr ""
+
+#: apps\tracking\services.py
+msgid "Unknown field(s): %(f)s"
+msgstr ""
+
+#: apps\challenges\serializers.py
+msgid "Unknown icon."
+msgstr ""
+
+#: apps\challenges\api.py
+msgid "Unknown status."
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Until"
+msgstr ""
+
+#: templates\journal\list.html
+msgid "Untitled note"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Up next"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Update goal"
+msgstr ""
+
+#: templates\accounts\password_reset_confirm.html
+msgid "Update password"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "Update schedule"
+msgstr ""
+
+#: templates\challenges\templates.html
+msgid "Use"
+msgstr ""
+
+#: templates\dashboard\today.html
+msgid "Use a template"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Use for the goal"
+msgstr ""
+
+#: apps\planner\services.py
+msgid "Use the reschedule action to choose a new time."
+msgstr ""
+
+#: templates\accounts\categories.html
+msgid "Used to colour and organise your planned activities."
+msgstr ""
+
+#: templates\accounts\categories.html
+msgid "Used to group your challenges."
+msgstr ""
+
+#: apps\accounts\forms.py
+msgid "Username"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Value"
+msgstr ""
+
+#: templates\reports\list.html
+msgid "View"
+msgstr ""
+
+#: templates\reports\detail.html
+msgid "View PDF"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "View all"
+msgstr ""
+
+#: apps\challenges\models.py
+msgid "Violet"
+msgstr ""
+
+#: templates\accounts\settings.html
+msgid "Visible hours and default time slot of your planner."
+msgstr ""
+
+#: templates\planner\planner.html
+msgid "Week"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Weekly actual vs target"
+msgstr ""
+
+#: templates\layouts\auth.html
+msgid "Weekly planner"
+msgstr ""
+
+#: templates\journal\list.html
+msgid "Weekly review"
+msgstr ""
+
+#: apps\journal\views.py
+msgid "Weekly review saved."
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Weekly: actual vs target"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "Weeks achieved"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Welcome"
+msgstr ""
+
+#: templates\accounts\login.html
+msgid "Welcome back"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Welcome, %(name)s"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Wellness"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "What do you want to improve?"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "What do you want to measure?"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "What is your challenge?"
+msgstr ""
+
+#: apps\journal\views.py
+msgid "What should I improve?"
+msgstr ""
+
 #: templates\accounts\notifications.html
 msgid "What to be reminded of"
+msgstr ""
+
+#: apps\journal\views.py
+msgid "What was difficult?"
+msgstr ""
+
+#: apps\journal\views.py
+msgid "What went well?"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "What you fill in each time you record progress."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "When do you plan to do it?"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Whole number"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Whole series"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Why does it matter to you?"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid ""
+"With a weekly or monthly goal, the schedule tells LifeFlow on which days the"
+" work is expected — so it can tell you if you're on track."
+msgstr ""
+
+#: apps\planner\defaults.py
+msgid "Work"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Work / Study"
+msgstr ""
+
+#: templates\journal\list.html
+msgid "Write about your day, a challenge, or what you learned this week."
+msgstr ""
+
+#: apps\journal\api.py
+msgid "Write something first."
+msgstr ""
+
+#: templates\journal\list.html
+msgid "Write your first entry"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "Write your thoughts…"
+msgstr ""
+
+#: apps\challenges\serializers.py
+msgid "You already have a category with this name."
+msgstr ""
+
+#: apps\planner\serializers.py
+msgid "You already have a template with this name."
+msgstr ""
+
+#: apps\planner\services.py
+msgid "You can apply a template to at most 62 days at once."
+msgstr ""
+
+#: templates\accounts\password_reset_complete.html
+msgid "You can now sign in with your new password."
+msgstr ""
+
+#: apps\reports\services\monthly.py
+msgid "You can't generate a report for a future month."
+msgstr ""
+
+#: apps\tracking\services.py
+msgid "You can't record results in the future."
+msgstr ""
+
+#: templates\challenges\list.html
+msgid "You don't have any active challenges yet."
+msgstr ""
+
+#: apps\accounts\views.py
+msgid "You have been signed out."
+msgstr ""
+
+#: templates\planner\planner.html
+msgid ""
+"You have no template yet. Save a day below, or create one in Day templates."
 msgstr ""
 
 #: templates\notifications\email.html
@@ -3486,6 +3175,10 @@ msgstr ""
 msgid "You'll be reminded here."
 msgstr ""
 
+#: templates\notifications\list.html
+msgid "You're all caught up."
+msgstr ""
+
 #: templates\pwa\offline.html
 msgid "You're offline"
 msgstr ""
@@ -3494,24 +3187,282 @@ msgstr ""
 msgid "You're offline. This data isn't available on this device yet."
 msgstr ""
 
+#: apps\accounts\views.py
+msgid "Your account and all your data were deleted."
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "Your challenge"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Your challenges"
+msgstr ""
+
+#: templates\accounts\register.html
+msgid "Your data is yours: it is never shared with other users."
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Your day & week"
+msgstr ""
+
 #: apps\notifications\reminders.py
 msgid "Your day at a glance"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "Your day is empty."
+msgstr ""
+
+#: templates\journal\list.html
+msgid "Your journal is empty"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "Your most active days"
+msgstr ""
+
+#: apps\accounts\views.py
+msgid "Your password was changed."
+msgstr ""
+
+#: templates\journal\list.html
+msgid "Your private notes and reflections."
+msgstr ""
+
+#: apps\reports\services\monthly.py
+msgid "Your report for %(period)s is ready"
+msgstr ""
+
+#: templates\accounts\onboarding.html
+msgid "Your routine is in the planner"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "Your session expired. Please sign in again."
+msgstr ""
+
+#: templates\403.html
+msgid "Your session may have expired. Reload the page and try again."
+msgstr ""
+
+#: apps\accounts\views.py
+msgid "Your settings were saved."
+msgstr ""
+
+#: templates\accounts\settings.html
+msgid ""
+"Your timezone defines when a day starts and ends — it drives streaks, the "
+"calendar and reports."
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "across %(n)s challenge"
+msgid_plural "across %(n)s challenges"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: templates\challenges\detail.html
+msgid "active day"
+msgstr ""
+
+#: templates\planner\planner.html
+msgid "activities"
+msgstr ""
+
+#: templates\reports\list.html
+msgid "avg. completion"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "by yesterday"
+msgstr ""
+
+#: apps\analytics\services\progress\goals.py
+msgid "day"
+msgid_plural "days"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: templates\challenges\create.html
+msgid "days"
 msgstr ""
 
 #: templates\accounts\notifications.html
 msgid "devices"
 msgstr ""
 
+#: templates\dashboard\home.html
+msgid "done"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "e.g. 2 hours of coding per day"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "e.g. Fajr on time, no social media"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "e.g. Gym, Deep work, Fajr + Qur’an"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "e.g. Read 20 pages, Learn English, 10,000 steps"
+msgstr ""
+
+#: templates\planner\planner.html
+msgid "e.g. University day"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "e.g. gym 3 times a week"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "e.g. pages, steps, glasses of water"
+msgstr ""
+
+#: apps\accounts\models.py
+msgid "email address"
+msgstr ""
+
 #: templates\partials\modals.html
 msgid "ends the next day"
+msgstr ""
+
+#: templates\reports\detail.html
+msgid "generated"
+msgstr ""
+
+#: templates\challenges\settings.html
+msgid "goal"
+msgstr ""
+
+#: templates\reports\list.html
+msgid "in progress"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "in total"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "km"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "left"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "min."
+msgstr ""
+
+#: apps\analytics\services\progress\goals.py
+msgid "min. %(value)s per entry"
+msgstr ""
+
+#: templates\partials\modals.html
+msgid "minutes"
+msgstr ""
+
+#: templates\dashboard\home.html
+msgid "missed"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "no end"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "now"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "of"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "optional"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "pages"
+msgstr ""
+
+#: templates\reports\list.html
+msgid "partial"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "per day"
+msgstr ""
+
+#: apps\core\js_i18n.py
+msgid "per entry"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "per month"
+msgstr ""
+
+#: templates\challenges\create.html
+msgid "per week"
+msgstr ""
+
+#: templates\analytics\overview.html
+msgid "planned"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "reached"
+msgstr ""
+
+#: templates\planner\planner.html
+msgid "scheduled"
+msgstr ""
+
+#: apps\analytics\services\progress\goals.py
+msgid "session"
+msgid_plural "sessions"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: apps\challenges\models.py
+msgid "sessions"
+msgstr ""
+
+#: templates\journal\review.html
+msgid "this week"
+msgstr ""
+
+#: templates\challenges\detail.html
+msgid "to date"
 msgstr ""
 
 #: templates\partials\topbar.html
 msgid "to sync"
 msgstr ""
 
-#~ msgid "%(n)s challenge(s) still open today"
-#~ msgstr "%(n)s défi(s) encore à faire aujourd'hui"
+#: templates\challenges\detail.html
+msgid "vs expected"
+msgstr ""
 
-#~ msgid "End time must be after start time."
-#~ msgstr "L'heure de fin doit être après l'heure de début."
+#: apps\core\management\commands\i18n.py
+msgid "…"
+msgstr ""

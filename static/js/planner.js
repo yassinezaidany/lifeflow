@@ -131,7 +131,7 @@
         const top = (Math.max(it.s, this.dayStart) - this.dayStart) * PPM;
         const height = Math.max((Math.min(it.e, this.dayEnd) - Math.max(it.s, this.dayStart)) * PPM - 2, 18);
         const width = 100 / it.lanes;
-        return `top:${top}px;height:${height}px;left:calc(${it.lane * width}% + 2px);width:calc(${width}% - 4px)`;
+        return `top:${top}px;height:${height}px;inset-inline-start:calc(${it.lane * width}% + 2px);width:calc(${width}% - 4px)`;
       },
       visible(it) { return it.e > this.dayStart && it.s < this.dayEnd; },
       isCompact(it) { return (it.e - it.s) < 40; },

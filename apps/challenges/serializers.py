@@ -87,6 +87,8 @@ class GoalInputSerializer(serializers.Serializer):
     aggregation = serializers.ChoiceField(choices=Goal.Aggregation.choices, default=Goal.Aggregation.SUM)
     target = serializers.DecimalField(max_digits=12, decimal_places=2)
     min_per_entry = serializers.DecimalField(max_digits=12, decimal_places=2, required=False, allow_null=True)
+    time_comparison = serializers.ChoiceField(choices=["before", "after", ""], required=False, allow_blank=True, default="")
+    time_threshold = serializers.TimeField(required=False, allow_null=True, input_formats=["%H:%M", "%H:%M:%S"])
 
     def validate_target(self, value):
         if value <= 0:
@@ -123,7 +125,16 @@ class MilestoneInputSerializer(serializers.Serializer):
 
 def normalise_goal(goal: dict, metric_field_type: str | None) -> dict:
     """Make the goal consistent whatever the client sent:
-    no metric or boolean metric -> COUNT; min_per_entry only for numeric metrics."""
+    no metric or boolean metric -> COUNT; min_per_entry only for numeric metrics;
+    a time metric needs a before/after threshold and always counts qualifying days."""
+    if metric_field_type == TrackingField.FieldType.TIME:
+        if not goal.get("time_threshold"):
+            raise serializers.ValidationError({"time_threshold": _("Choose the time to beat (e.g. before 05:30).")})
+        goal["time_comparison"] = goal.get("time_comparison") or "before"
+        goal["aggregation"] = Goal.Aggregation.COUNT
+        goal["min_per_entry"] = None
+        return goal
+    goal["time_comparison"], goal["time_threshold"] = "", None
     if metric_field_type is None or metric_field_type == TrackingField.FieldType.BOOLEAN:
         goal["aggregation"] = Goal.Aggregation.COUNT
         goal["min_per_entry"] = None
@@ -174,7 +185,7 @@ class ChallengeCreateSerializer(serializers.Serializer):
             if match is None:
                 raise serializers.ValidationError({"goal": {"metric": _("Choose one of the challenge's fields.")}})
             if match["field_type"] not in TrackingField.MEASURABLE_TYPES:
-                raise serializers.ValidationError({"goal": {"metric": _("This field can't be measured (choose a number, duration or done/not done field).")}})
+                raise serializers.ValidationError({"goal": {"metric": _("This field can't be measured (choose a number, duration, time or done/not done field).")}})
             metric_type = match["field_type"]
         goal["metric"] = metric_ref
         attrs["goal"] = normalise_goal(goal, metric_type)
@@ -212,7 +223,7 @@ class GoalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Goal
-        fields = ["id", "metric", "metric_key", "period", "aggregation", "target", "min_per_entry", "effective_from", "effective_to"]
+        fields = ["id", "metric", "metric_key", "period", "aggregation", "target", "min_per_entry", "time_comparison", "time_threshold", "effective_from", "effective_to"]
 
 
 class ScheduleSerializer(serializers.ModelSerializer):

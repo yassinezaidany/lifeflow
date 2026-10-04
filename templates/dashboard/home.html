@@ -84,7 +84,7 @@
       <ol class="px-5 pb-5">
         {% for a in upcoming %}
         <li class="relative flex gap-3 pb-4 last:pb-0 tone-{{ a.effective_color }}">
-          {% if not forloop.last %}<span class="absolute left-[5px] top-4 h-full w-px bg-line" aria-hidden="true"></span>{% endif %}
+          {% if not forloop.last %}<span class="absolute start-[5px] top-4 h-full w-px bg-line" aria-hidden="true"></span>{% endif %}
           <span class="relative mt-1.5 h-[11px] w-[11px] shrink-0 rounded-full border-2 border-tone bg-surface"></span>
           <div class="min-w-0">
             <div class="text-xs font-medium text-muted tabular">{{ a.start_time|utime:user }} – {{ a.end_time|utime:user }}{% if a.overnight %} (+1){% endif %}</div>

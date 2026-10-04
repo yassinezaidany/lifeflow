@@ -44,8 +44,8 @@
         </div>
         <div class="min-w-0 flex-1">
           <a href="{% url 'reports:detail' r.pk %}" class="font-medium hover:underline">{{ r.period_start|date:"F Y" }}</a>
-          {% if r.version > 1 %}<span class="badge badge-neutral ml-1">v{{ r.version }}</span>{% endif %}
-          {% if r.summary.is_partial %}<span class="badge badge-warning ml-1">{% trans "partial" %}</span>{% endif %}
+          {% if r.version > 1 %}<span class="badge badge-neutral ms-1">v{{ r.version }}</span>{% endif %}
+          {% if r.summary.is_partial %}<span class="badge badge-warning ms-1">{% trans "partial" %}</span>{% endif %}
           <div class="text-xs text-muted">{% blocktrans with n=r.summary.challenges %}{{ n }} challenges{% endblocktrans %} · {% trans "avg. completion" %} {{ r.summary.average_completion|pct }} · {% trans "generated" %} {{ r.generated_at|date:"SHORT_DATETIME_FORMAT" }}</div>
         </div>
         <div class="flex gap-1">

@@ -12,7 +12,13 @@ from apps.core.audit import audit
 from apps.core.dates import parse_date
 from apps.core.models import AuditLog
 
-from . import services
+from rest_framework.throttling import ScopedRateThrottle
+
+from . import assistant, services
+
+
+class AssistantThrottle(ScopedRateThrottle):
+    scope = "assistant"
 from .models import Challenge, ChallengeCategory, ChallengeTemplate, Milestone, RestDay, TrackingField
 from .serializers import (
     ChallengeCategorySerializer,
@@ -182,6 +188,17 @@ class ChallengeViewSet(OwnedQuerysetMixin, viewsets.ModelViewSet):
             raise ValidationError({"date": _("Enter a valid date.")})
         is_rest = services.toggle_rest_day(request.user, day, challenge)
         return Response({"date": day.isoformat(), "rest": is_rest})
+
+    @action(detail=False, methods=["post"], throttle_classes=[AssistantThrottle])
+    def suggest(self, request):
+        """Turn a natural-language description into a *suggested* wizard payload.
+        Nothing is created: the wizard is pre-filled and the user confirms."""
+        text = (request.data.get("text") or "").strip()
+        if len(text) < 3:
+            raise ValidationError({"text": _("Describe your challenge first.")})
+        if len(text) > assistant.MAX_TEXT:
+            raise ValidationError({"text": _("Keep it under 500 characters.")})
+        return Response(assistant.suggest_challenge(text))
 
     @action(detail=True, methods=["post"])
     def duplicate(self, request, pk=None):

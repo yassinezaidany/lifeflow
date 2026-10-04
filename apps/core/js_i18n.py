@@ -23,7 +23,7 @@ JS_STRINGS = [
     N("%s offline item(s) synced"), N("Saved offline — it will sync automatically"), N("LifeFlow is installed"),
     N("Notifications enabled on this device"), N("Notifications are blocked in your browser settings."),
     N("Push notifications are not available on this browser."), N("Notifications disabled on this device"),
-    N("Describe your challenge first."), N("Suggestion applied — review each step before creating."),
+    N("Describe your challenge first."), N("before"), N("after"), N("Suggestion applied — review each step before creating."),
 ]
 
 

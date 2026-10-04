@@ -35,7 +35,7 @@
           <div class="font-semibold text-ink">{{ a.start_time|utime:user }}</div>{{ a.end_time|utime:user }}{% if a.overnight %}<sup class="ms-0.5 text-[9px] text-brand">+1</sup>{% endif %}
         </div>
         <span class="h-9 w-1 shrink-0 rounded-full bg-tone"></span>
-        <button type="button" class="min-w-0 flex-1 text-left" @click="edit()">
+        <button type="button" class="min-w-0 flex-1 text-start" @click="edit()">
           <div class="flex items-center gap-2">
             <span class="truncate text-sm font-medium {% if a.is_done %}text-muted line-through{% endif %}">{{ a.title }}</span>
             {% if a.recurring_rule_id %}<span class="text-faint" title="{% trans 'Recurring' %}">{% icon "repeat" "icon-xs" %}</span>{% endif %}

@@ -13,7 +13,7 @@
   </div>
 </div>
 <form method="get" class="mt-6 flex flex-wrap gap-2">
-  <div class="relative"><span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-faint">{% icon "search" "icon-sm" %}</span><input type="search" name="q" value="{{ q }}" class="input h-9 w-56 pl-9" placeholder="{% trans 'Search your notes' %}"></div>
+  <div class="relative"><span class="pointer-events-none absolute inset-y-0 start-3 flex items-center text-faint">{% icon "search" "icon-sm" %}</span><input type="search" name="q" value="{{ q }}" class="input h-9 w-56 ps-9" placeholder="{% trans 'Search your notes' %}"></div>
   <input type="date" name="date" value="{{ day|date:'Y-m-d' }}" class="input h-9 w-auto" onchange="this.form.submit()" aria-label="{% trans 'Date' %}">
   {% if challenges %}<select name="challenge" class="select h-9 w-48" onchange="this.form.submit()"><option value="">{% trans "All challenges" %}</option>{% for c in challenges %}<option value="{{ c.pk }}" {% if challenge == c.pk|stringformat:'s' %}selected{% endif %}>{{ c.name }}</option>{% endfor %}</select>{% endif %}
   {% if q or day or challenge %}<a href="{% url 'journal:list' %}" class="btn btn-ghost btn-sm h-9">{% trans "Clear" %}</a>{% endif %}

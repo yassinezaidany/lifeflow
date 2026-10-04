@@ -7,7 +7,7 @@
     <div class="hidden min-w-0 flex-1 lg:block">
       <div class="truncate text-sm text-muted">{{ today|date:"l j F Y" }}</div>
     </div>
-    <div class="ml-auto flex items-center gap-1">
+    <div class="ms-auto flex items-center gap-1">
       <div x-data="connectivity" x-cloak>
         <button type="button" x-show="!online || pending" @click="sync()" class="badge h-7 gap-1.5 px-2.5" :class="online ? 'badge-warning' : 'badge-neutral'"
                 :title="online ? '{% trans "Sync now" as s %}{{ s|escapejs }}' : ''" role="status">
@@ -21,19 +21,19 @@
           <button type="button" class="btn btn-ghost btn-icon" @click="open=!open" aria-label="{% trans 'Theme' %}" data-tip="{% trans 'Theme' %}">
             <span class="dark:hidden">{% icon "sun" %}</span><span class="hidden dark:inline">{% icon "moon" %}</span>
           </button>
-          <div x-show="open" x-cloak @click.outside="open=false" class="menu right-0 min-w-[10rem]">
-            <button class="menu-item" @click="set('light'); open=false">{% icon "sun" "icon-sm" %} {% trans "Light" %} <span x-show="theme==='light'" class="ml-auto text-brand">{% icon "check" "icon-sm" %}</span></button>
-            <button class="menu-item" @click="set('dark'); open=false">{% icon "moon" "icon-sm" %} {% trans "Dark" %} <span x-show="theme==='dark'" class="ml-auto text-brand">{% icon "check" "icon-sm" %}</span></button>
-            <button class="menu-item" @click="set('system'); open=false">{% icon "monitor" "icon-sm" %} {% trans "System" %} <span x-show="theme==='system'" class="ml-auto text-brand">{% icon "check" "icon-sm" %}</span></button>
+          <div x-show="open" x-cloak @click.outside="open=false" class="menu end-0 min-w-[10rem]">
+            <button class="menu-item" @click="set('light'); open=false">{% icon "sun" "icon-sm" %} {% trans "Light" %} <span x-show="theme==='light'" class="ms-auto text-brand">{% icon "check" "icon-sm" %}</span></button>
+            <button class="menu-item" @click="set('dark'); open=false">{% icon "moon" "icon-sm" %} {% trans "Dark" %} <span x-show="theme==='dark'" class="ms-auto text-brand">{% icon "check" "icon-sm" %}</span></button>
+            <button class="menu-item" @click="set('system'); open=false">{% icon "monitor" "icon-sm" %} {% trans "System" %} <span x-show="theme==='system'" class="ms-auto text-brand">{% icon "check" "icon-sm" %}</span></button>
           </div>
         </div>
       </div>
       <div x-data="notifications" class="relative" @keydown.escape="open=false">
         <button type="button" class="btn btn-ghost btn-icon relative" @click="toggle()" aria-label="{% trans 'Notifications' %}">
           {% icon "bell" %}
-          <span x-show="unread>0" x-cloak class="absolute right-2 top-2 h-2 w-2 rounded-full bg-danger ring-2 ring-canvas"></span>
+          <span x-show="unread>0" x-cloak class="absolute end-2 top-2 h-2 w-2 rounded-full bg-danger ring-2 ring-canvas"></span>
         </button>
-        <div x-show="open" x-cloak @click.outside="open=false" class="menu right-0 w-80 p-0">
+        <div x-show="open" x-cloak @click.outside="open=false" class="menu end-0 w-80 p-0">
           <div class="flex items-center justify-between border-b border-line px-4 py-3">
             <span class="text-sm font-semibold">{% trans "Notifications" %}</span>
             <button class="text-xs font-medium text-brand hover:underline" @click="readAll()" x-show="unread>0">{% trans "Mark all read" %}</button>
@@ -44,7 +44,7 @@
               <div class="px-4 py-10 text-center text-sm text-muted">{% icon "inbox" "icon-lg mb-2 mx-auto block" %}{% trans "You're all caught up." %}</div>
             </template>
             <template x-for="n in items" :key="n.id">
-              <button class="flex w-full gap-3 rounded-lg px-3 py-2.5 text-left hover:bg-subtle" @click="openItem(n)">
+              <button class="flex w-full gap-3 rounded-lg px-3 py-2.5 text-start hover:bg-subtle" @click="openItem(n)">
                 <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full" :class="n.is_read ? 'bg-transparent' : 'bg-brand'"></span>
                 <span class="min-w-0"><span class="block truncate text-sm font-medium" x-text="n.title"></span>
                   <span class="block truncate text-xs text-muted" x-text="n.body"></span>
@@ -55,7 +55,7 @@
           <a href="{% url 'notifications:list' %}" class="block border-t border-line px-4 py-2.5 text-center text-xs font-medium text-brand hover:bg-subtle">{% trans "View all" %}</a>
         </div>
       </div>
-      <a href="{% url 'accounts:settings' %}" class="ml-1 lg:hidden" aria-label="{% trans 'Profile' %}">{% include "partials/avatar.html" with size="h-8 w-8 text-xs" %}</a>
+      <a href="{% url 'accounts:settings' %}" class="ms-1 lg:hidden" aria-label="{% trans 'Profile' %}">{% include "partials/avatar.html" with size="h-8 w-8 text-xs" %}</a>
     </div>
   </div>
 </header>

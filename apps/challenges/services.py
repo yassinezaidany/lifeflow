@@ -65,6 +65,8 @@ def create_challenge(user, data: dict) -> Challenge:
         aggregation=goal_data.get("aggregation", Goal.Aggregation.SUM),
         target=goal_data["target"],
         min_per_entry=goal_data.get("min_per_entry"),
+        time_comparison=goal_data.get("time_comparison") or "",
+        time_threshold=goal_data.get("time_threshold"),
         effective_from=challenge.start_date,
     )
     sched = data.get("schedule") or {}
@@ -204,6 +206,8 @@ def challenge_definition(challenge: Challenge) -> dict:
             "aggregation": goal.aggregation if goal else Goal.Aggregation.COUNT,
             "target": float(goal.target) if goal else 1,
             "min_per_entry": float(goal.min_per_entry) if goal and goal.min_per_entry is not None else None,
+            "time_comparison": goal.time_comparison if goal else "",
+            "time_threshold": goal.time_threshold.strftime("%H:%M") if goal and goal.time_threshold else None,
         },
         "schedule": {
             "frequency": schedule.frequency if schedule else Schedule.Frequency.DAILY,

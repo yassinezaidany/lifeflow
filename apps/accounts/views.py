@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model, login, logout, update_session_au
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
@@ -65,7 +65,7 @@ def register(request):
         if d.get("timezone"):
             profile.timezone = d["timezone"]
         lang = getattr(request, "LANGUAGE_CODE", "en")
-        profile.language = "fr" if lang.startswith("fr") else "en"
+        profile.language = next((code for code in ("fr", "ar") if lang.startswith(code)), "en")
         profile.save()
         localize_default_categories(user, profile.language)
         login(request, user, backend="apps.accounts.backends.EmailOrUsernameBackend")
@@ -116,7 +116,8 @@ def settings_view(request):
             messages.success(request, _("Your settings were saved."))
             return redirect("accounts:settings")
         messages.error(request, _("Please correct the errors below."))
-    return render(request, "accounts/settings.html", {"account_form": account_form, "profile_form": profile_form, "tab": "profile"})
+    feed_url = request.build_absolute_uri(reverse("planner:feed", args=[request.user.profile.ensure_calendar_token()]))
+    return render(request, "accounts/settings.html", {"account_form": account_form, "profile_form": profile_form, "tab": "profile", "feed_url": feed_url})
 
 
 @login_required

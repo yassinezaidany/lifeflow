@@ -28,7 +28,7 @@
       form: {
         name: "", description: "", category: opts.categories.length ? opts.categories[0].id : null, icon: "target", color: "indigo",
         fields: [], metric: null,
-        goal: { period: "daily", aggregation: "sum", target: 1, min_per_entry: null },
+        goal: { period: "daily", aggregation: "sum", target: 1, min_per_entry: null, time_comparison: "before", time_threshold: "06:00" },
         schedule: { frequency: "daily", weekdays: [0, 2, 4], interval_days: 2 },
         start_date: opts.today, end_date: addDays(opts.today, 29), milestones: [], template: null,
       },
@@ -37,6 +37,20 @@
         if (tpl) this.applyTemplate(tpl);
         this.$watch("duration", () => this.syncEnd());
         this.$watch("form.start_date", () => this.syncEnd());
+      },
+      describeText: "",
+      suggesting: false,
+      suggestedBy: null,
+      async suggest() {
+        if (this.describeText.trim().length < 3) { toast(t("Describe your challenge first."), "error"); return; }
+        this.suggesting = true;
+        try {
+          const s = await api("/api/challenges/suggest/", { method: "POST", body: { text: this.describeText } });
+          this.applyTemplate({ ...s, id: null });
+          this.suggestedBy = s.source;
+          toast(t("Suggestion applied — review each step before creating."));
+        } catch (e) { toast(e.message, "error"); }
+        this.suggesting = false;
       },
       applyTemplate(tpl) {
         const def = tpl.definition || {};
@@ -65,11 +79,12 @@
         this.form.goal = { ...this.form.goal, ...m.goal, min_per_entry: null };
       },
       get primary() { return this.form.fields.find((f) => f.ref === this.form.metric) || null; },
-      get measurableFields() { return this.form.fields.filter((f) => ["boolean", "integer", "decimal", "duration"].includes(f.field_type) && f.label.trim()); },
+      get measurableFields() { return this.form.fields.filter((f) => ["boolean", "integer", "decimal", "duration", "time"].includes(f.field_type) && f.label.trim()); },
+      get isTimeGoal() { return !!(this.primary && this.primary.field_type === "time"); },
       get unitLabel() {
         const p = this.primary;
         if (!p) return t("sessions");
-        if (p.field_type === "boolean") return t("days");
+        if (p.field_type === "boolean" || p.field_type === "time") return t("days");
         if (this.form.goal.aggregation === "count") return t("sessions");
         if (p.field_type === "duration") return t("minutes");
         return p.unit || "";
@@ -80,6 +95,7 @@
         let target = this.form.goal.target;
         if (this.primary && this.primary.field_type === "duration" && this.form.goal.aggregation === "sum") target = LF.fmtMinutes(Number(target));
         else target = `${target} ${this.unitLabel}`;
+        if (this.isTimeGoal) return `${this.primary.label} ${this.form.goal.time_comparison === "after" ? t("after") : t("before")} ${this.form.goal.time_threshold} · ${this.form.goal.target} ${t("days")} ${per}`;
         let s = `${target} ${per}`;
         if (this.form.goal.min_per_entry && this.canUseMinimum) s += ` · ${t("min.")} ${this.form.goal.min_per_entry} ${this.primary.field_type === "duration" ? "min" : this.primary.unit} ${t("per entry")}`;
         return s;
@@ -130,7 +146,8 @@
             ref: x.ref, key: x.key || "", label: x.label, field_type: x.field_type, unit: x.field_type === "duration" ? "" : (x.unit || ""), required: !!x.required,
             options: x.field_type === "select" ? (x.optionsText || "").split(",").map((o) => o.trim()).filter(Boolean) : [],
           })),
-          goal: { metric: f.metric, period: f.goal.period, aggregation: f.goal.aggregation, target: f.goal.target, min_per_entry: this.canUseMinimum ? (f.goal.min_per_entry || null) : null },
+          goal: { metric: f.metric, period: f.goal.period, aggregation: f.goal.aggregation, target: f.goal.target, min_per_entry: this.canUseMinimum ? (f.goal.min_per_entry || null) : null,
+                  time_comparison: this.isTimeGoal ? f.goal.time_comparison : "", time_threshold: this.isTimeGoal ? f.goal.time_threshold : null },
           schedule: { frequency: f.schedule.frequency, weekdays: f.schedule.weekdays, interval_days: Number(f.schedule.interval_days) || 1 },
           milestones: f.milestones.filter((m) => m.title && Number(m.target_value) > 0),
         };
@@ -170,12 +187,13 @@
         const c = this.c;
         this.general = { name: c.name, description: c.description, category_id: c.category ? c.category.id : null, icon: c.icon, color: c.color, start_date: c.start_date, end_date: c.end_date, reminder_time: c.reminder_time ? c.reminder_time.slice(0, 5) : "" };
         const g = c.goal || {};
-        this.goal = { metric: g.metric_key || "", period: g.period || "daily", aggregation: g.aggregation || "count", target: g.target || 1, min_per_entry: g.min_per_entry, effective_from: this.today < c.start_date ? c.start_date : this.today };
+        this.goal = { metric: g.metric_key || "", period: g.period || "daily", aggregation: g.aggregation || "count", target: g.target || 1, min_per_entry: g.min_per_entry,
+          time_comparison: g.time_comparison || "before", time_threshold: g.time_threshold ? g.time_threshold.slice(0, 5) : "06:00", effective_from: this.today < c.start_date ? c.start_date : this.today };
         const s = c.schedule || {};
         this.schedule = { frequency: s.frequency || "daily", weekdays: s.weekdays || [], interval_days: s.interval_days || 2, effective_from: this.goal.effective_from };
       },
       get activeFields() { return this.c.tracking_fields.filter((f) => f.is_active); },
-      get measurable() { return this.activeFields.filter((f) => ["boolean", "integer", "decimal", "duration"].includes(f.field_type)); },
+      get measurable() { return this.activeFields.filter((f) => ["boolean", "integer", "decimal", "duration", "time"].includes(f.field_type)); },
       get metricField() { return this.activeFields.find((f) => f.key === this.goal.metric); },
       toggleWeekday(i) {
         const set = new Set(this.schedule.weekdays);
@@ -192,7 +210,8 @@
         return this.run("general", () => api(`/api/challenges/${this.c.id}/`, { method: "PATCH", body: { ...this.general, end_date: this.general.end_date || null, reminder_time: this.general.reminder_time || null } }));
       },
       saveGoal() {
-        return this.run("goal", () => api(`/api/challenges/${this.c.id}/goal/`, { method: "PUT", body: { ...this.goal, metric: this.goal.metric || null, min_per_entry: this.goal.min_per_entry || null } }),
+        return this.run("goal", () => api(`/api/challenges/${this.c.id}/goal/`, { method: "PUT", body: { ...this.goal, metric: this.goal.metric || null, min_per_entry: this.goal.min_per_entry || null,
+          time_comparison: this.metricField && this.metricField.field_type === "time" ? this.goal.time_comparison : "", time_threshold: this.metricField && this.metricField.field_type === "time" ? this.goal.time_threshold : null } }),
           t("Goal updated — earlier days keep the previous goal"));
       },
       saveSchedule() {

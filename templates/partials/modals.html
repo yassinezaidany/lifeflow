@@ -1,6 +1,6 @@
 {% load i18n ui %}
 {# ------------------------------------------------------------------ Toasts #}
-<div x-data="toaster" class="pointer-events-none fixed inset-x-0 bottom-20 z-[70] flex flex-col items-center gap-2 px-4 sm:bottom-6 sm:right-6 sm:items-end" aria-live="polite">
+<div x-data="toaster" class="pointer-events-none fixed inset-x-0 bottom-20 z-[70] flex flex-col items-center gap-2 px-4 sm:bottom-6 sm:end-6 sm:items-end" aria-live="polite">
   <template x-for="t in items" :key="t.id">
     <div class="toast max-w-sm">
       <span :class="{'text-success': t.type==='success', 'text-danger': t.type==='error', 'text-warning': t.type==='warning'}">
@@ -79,14 +79,14 @@
                 </template>
                 <template x-if="f.field_type==='integer' || f.field_type==='decimal'">
                   <div class="relative">
-                    <input :id="'f-'+f.id" type="number" inputmode="decimal" min="0" :step="f.field_type==='integer' ? 1 : 0.01" class="input pr-16 tabular" x-model="values[f.key]" :class="errors[f.key] && 'is-invalid'">
-                    <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-muted" x-text="f.unit"></span>
+                    <input :id="'f-'+f.id" type="number" inputmode="decimal" min="0" :step="f.field_type==='integer' ? 1 : 0.01" class="input pe-16 tabular" x-model="values[f.key]" :class="errors[f.key] && 'is-invalid'">
+                    <span class="pointer-events-none absolute inset-y-0 end-3 flex items-center text-sm text-muted" x-text="f.unit"></span>
                   </div>
                 </template>
                 <template x-if="f.field_type==='duration'">
                   <div class="flex items-center gap-2">
-                    <div class="relative flex-1"><input :id="'f-'+f.id" type="number" min="0" max="24" class="input pr-8 tabular" :value="durationParts(f.key).h || ''" @input="setDuration(f.key, $event.target.value, durationParts(f.key).m)" placeholder="0"><span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-muted">h</span></div>
-                    <div class="relative flex-1"><input type="number" min="0" max="59" class="input pr-12 tabular" :value="durationParts(f.key).m || ''" @input="setDuration(f.key, durationParts(f.key).h, $event.target.value)" placeholder="0" aria-label="{% trans 'minutes' %}"><span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-muted">min</span></div>
+                    <div class="relative flex-1"><input :id="'f-'+f.id" type="number" min="0" max="24" class="input pe-8 tabular" :value="durationParts(f.key).h || ''" @input="setDuration(f.key, $event.target.value, durationParts(f.key).m)" placeholder="0"><span class="pointer-events-none absolute inset-y-0 end-3 flex items-center text-sm text-muted">h</span></div>
+                    <div class="relative flex-1"><input type="number" min="0" max="59" class="input pe-12 tabular" :value="durationParts(f.key).m || ''" @input="setDuration(f.key, durationParts(f.key).h, $event.target.value)" placeholder="0" aria-label="{% trans 'minutes' %}"><span class="pointer-events-none absolute inset-y-0 end-3 flex items-center text-sm text-muted">min</span></div>
                   </div>
                 </template>
                 <template x-if="f.field_type==='time'"><input :id="'f-'+f.id" type="time" class="input" x-model="values[f.key]"></template>
@@ -175,9 +175,9 @@
           <label for="act-minutes">{% trans "Actual time" %}</label>
           <input id="act-minutes" type="number" min="0" max="1440" class="input input-sm w-20 tabular" x-model="completeMinutes"><span>min</span>
           <template x-if="activity.challenge && ['completed','partial'].includes(activity.status) && !activity.has_entry">
-            <button class="btn btn-soft btn-sm ml-auto" @click="recordEntry()">{% icon "circle-check" "icon-xs" %} {% trans "Record in challenge" %}</button>
+            <button class="btn btn-soft btn-sm ms-auto" @click="recordEntry()">{% icon "circle-check" "icon-xs" %} {% trans "Record in challenge" %}</button>
           </template>
-          <template x-if="activity.has_entry"><span class="ml-auto badge badge-success">{% icon "check" "icon-xs" %} {% trans "Recorded" %}</span></template>
+          <template x-if="activity.has_entry"><span class="ms-auto badge badge-success">{% icon "check" "icon-xs" %} {% trans "Recorded" %}</span></template>
         </div>
       </div>
     </template>
@@ -288,7 +288,7 @@
             <button type="button" class="btn btn-ghost btn-icon btn-sm" @click="duplicate()" data-tip="{% trans 'Duplicate' %}" aria-label="{% trans 'Duplicate' %}">{% icon "copy" "icon-sm" %}</button>
           </div>
         </template>
-        <div class="ml-auto flex gap-2">
+        <div class="ms-auto flex gap-2">
           <button type="button" class="btn btn-secondary" @click="open=false">{% trans "Cancel" %}</button>
           <button type="submit" class="btn btn-primary" :disabled="saving">{% trans "Save" %}</button>
         </div>

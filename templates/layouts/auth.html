@@ -10,6 +10,13 @@
       </a>
       {% include "partials/messages.html" %}
       {% block content %}{% endblock %}
+      <form action="{% url 'set_language' %}" method="post" class="mt-10 flex flex-wrap justify-center gap-1" aria-label="{% trans 'Language' %}">
+        {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+        {% get_current_language as CUR %}{% get_available_languages as LANGS %}
+        {% for code, name in LANGS %}
+        <button name="language" value="{{ code }}" lang="{{ code }}" class="btn btn-ghost btn-sm {% if code == CUR %}bg-subtle text-ink{% endif %}">{{ name }}</button>
+        {% endfor %}
+      </form>
     </div>
   </div>
   <div class="relative hidden flex-1 overflow-hidden lg:block">

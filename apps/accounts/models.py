@@ -81,6 +81,16 @@ class Profile(TimeStampedModel):
     planner_day_start = models.PositiveSmallIntegerField(default=5, help_text=_("First hour shown in the planner."))
     planner_day_end = models.PositiveSmallIntegerField(default=24, help_text=_("Last hour shown in the planner."))
     onboarding_completed = models.BooleanField(default=False)
+    # Secret for the read-only iCal feed of the planner (regenerating it revokes old links).
+    calendar_token = models.CharField(max_length=48, unique=True, null=True, blank=True, editable=False)
+
+    def ensure_calendar_token(self, regenerate: bool = False) -> str:
+        if regenerate or not self.calendar_token:
+            import secrets
+
+            self.calendar_token = secrets.token_urlsafe(32)
+            self.save(update_fields=["calendar_token", "updated_at"])
+        return self.calendar_token
 
     class Meta:
         constraints = [

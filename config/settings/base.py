@@ -131,7 +131,7 @@ PASSWORD_RESET_TIMEOUT = 60 * 60 * 3  # 3 hours
 # Internationalisation / time
 # ---------------------------------------------------------------------------
 LANGUAGE_CODE = "en"
-LANGUAGES = [("en", _("English")), ("fr", _("Français"))]
+LANGUAGES = [("en", _("English")), ("fr", _("Français")), ("ar", _("العربية"))]
 LOCALE_PATHS = [BASE_DIR / "locale"]
 TIME_ZONE = "UTC"
 USE_I18N = True
@@ -176,7 +176,7 @@ REST_FRAMEWORK = {
         "rest_framework.throttling.AnonRateThrottle",
         "rest_framework.throttling.UserRateThrottle",
     ],
-    "DEFAULT_THROTTLE_RATES": {"anon": "60/min", "user": "1200/min", "auth": "10/min"},
+    "DEFAULT_THROTTLE_RATES": {"anon": "60/min", "user": "1200/min", "auth": "10/min", "assistant": "30/hour"},
     "EXCEPTION_HANDLER": "apps.core.api.exceptions.api_exception_handler",
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
@@ -244,3 +244,7 @@ VAPID_PUBLIC_KEY = env("VAPID_PUBLIC_KEY", default="")
 VAPID_PRIVATE_KEY = env("VAPID_PRIVATE_KEY", default="")
 VAPID_SUBJECT = env("VAPID_SUBJECT", default="mailto:admin@lifeflow.local")
 SITE_URL = env("SITE_URL", default="http://127.0.0.1:8000")
+
+# Optional AI challenge assistant (falls back to a built-in rule-based parser).
+ANTHROPIC_API_KEY = env("ANTHROPIC_API_KEY", default="")
+ASSISTANT_MODEL = env("ASSISTANT_MODEL", default="claude-opus-5-5")

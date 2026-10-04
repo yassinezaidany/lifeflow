@@ -34,17 +34,17 @@
   <div class="px-5 py-4"><h2 class="card-title">{% trans "Challenges in this period" %}</h2></div>
   <div class="overflow-x-auto">
     <table class="table">
-      <thead><tr><th>{% trans "Challenge" %}</th><th>{% trans "Goal" %}</th><th class="text-right">{% trans "Actual" %}</th><th class="text-right">{% trans "Target" %}</th><th class="text-right">{% trans "Progress" %}</th><th class="text-right">{% trans "Completion" %}</th><th class="text-right">{% trans "Best streak" %}</th><th>{% trans "Status" %}</th></tr></thead>
+      <thead><tr><th>{% trans "Challenge" %}</th><th>{% trans "Goal" %}</th><th class="text-end">{% trans "Actual" %}</th><th class="text-end">{% trans "Target" %}</th><th class="text-end">{% trans "Progress" %}</th><th class="text-end">{% trans "Completion" %}</th><th class="text-end">{% trans "Best streak" %}</th><th>{% trans "Status" %}</th></tr></thead>
       <tbody>
         {% for r in rows %}{% with c=r.challenge p=r.progress %}
         <tr class="tone-{{ c.color }}">
           <td><a href="{% url 'challenges:detail' c.pk %}" class="flex items-center gap-2 font-medium hover:underline"><span class="h-2 w-2 rounded-full bg-tone"></span>{{ c.name }}</a></td>
           <td class="text-muted">{{ p.goal_description }}</td>
-          <td class="text-right tabular">{{ p.display.actual }}</td>
-          <td class="text-right tabular text-muted">{{ p.display.goal }}</td>
-          <td class="text-right tabular">{{ p.progress|pct }}</td>
-          <td class="text-right tabular">{{ p.completion_rate|pct }}</td>
-          <td class="text-right tabular">{% streak_text p.best_streak p.streak_unit %}</td>
+          <td class="text-end tabular">{{ p.display.actual }}</td>
+          <td class="text-end tabular text-muted">{{ p.display.goal }}</td>
+          <td class="text-end tabular">{{ p.progress|pct }}</td>
+          <td class="text-end tabular">{{ p.completion_rate|pct }}</td>
+          <td class="text-end tabular">{% streak_text p.best_streak p.streak_unit %}</td>
           <td>{% status_badge p.status %}</td>
         </tr>
         {% endwith %}{% endfor %}

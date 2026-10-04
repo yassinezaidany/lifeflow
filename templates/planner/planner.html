@@ -12,7 +12,7 @@
       <button class="btn btn-secondary btn-icon" @click="shift(-1)" aria-label="{% trans 'Previous' %}">{% icon "chevron-left" "icon-sm" %}</button>
       <button class="btn btn-secondary" @click="goToday()">{% trans "Today" %}</button>
       <button class="btn btn-secondary btn-icon" @click="shift(1)" aria-label="{% trans 'Next' %}">{% icon "chevron-right" "icon-sm" %}</button>
-      <h1 class="ml-2 text-lg font-semibold capitalize sm:text-xl" x-text="title"></h1>
+      <h1 class="ms-2 text-lg font-semibold capitalize sm:text-xl" x-text="title"></h1>
     </div>
     <div class="flex flex-wrap items-center gap-2">
       <div class="seg" role="tablist">
@@ -25,7 +25,10 @@
   </div>
 
   <div class="mt-3 flex flex-wrap items-center justify-between gap-2">
-    {% include "planner/_tabs.html" %}
+    <div class="flex flex-wrap items-center gap-2">
+      {% include "planner/_tabs.html" %}
+      <a href="{% url 'planner:export_ics' %}" class="btn btn-ghost btn-sm" data-tip="{% trans 'Export to your calendar' %}">{% icon "calendar-plus" "icon-xs" %} .ics</a>
+    </div>
     <template x-if="summary">
       <div class="flex gap-3 text-xs text-muted">
         <span><b class="text-ink tabular" x-text="summary.planned"></b> {% trans "planned" %}</span>
@@ -47,14 +50,14 @@
     </template>
   </div>
 
-  <template x-if="error"><div class="alert alert-error mt-4">{% icon "circle-alert" "icon-sm" %}<span x-text="error"></span><button class="ml-auto underline" @click="load()">{% trans "Retry" %}</button></div></template>
+  <template x-if="error"><div class="alert alert-error mt-4">{% icon "circle-alert" "icon-sm" %}<span x-text="error"></span><button class="ms-auto underline" @click="load()">{% trans "Retry" %}</button></div></template>
 
   <div class="card mt-4 overflow-hidden">
     {# day headers #}
     <div class="flex border-b border-line bg-surface">
       <div class="w-14 shrink-0"></div>
       <template x-for="day in days" :key="'h'+day.date">
-        <div class="flex-1 border-l border-line px-2 py-2 text-center" :class="mode==='week' && day.date!==selected ? 'hidden md:block' : ''">
+        <div class="flex-1 border-s border-line px-2 py-2 text-center" :class="mode==='week' && day.date!==selected ? 'hidden md:block' : ''">
           <div class="text-[11px] font-semibold uppercase tracking-wide" :class="day.date===today ? 'text-brand' : 'text-faint'" x-text="dayLabel(day).weekday"></div>
           <div class="mx-auto mt-0.5 flex h-7 w-7 items-center justify-center rounded-full text-sm font-semibold tabular" :class="day.date===today ? 'bg-brand text-white dark:text-zinc-950' : ''" x-text="dayLabel(day).num"></div>
           <div class="mt-1 h-1 overflow-hidden rounded-full bg-subtle" x-show="day.summary.planned" :title="day.summary.completed + '/' + day.summary.planned">
@@ -71,11 +74,11 @@
       <div class="flex" :style="'height:' + gridHeight + 'px'">
         <div class="relative w-14 shrink-0">
           <template x-for="m in hours" :key="m">
-            <div class="absolute right-2 -translate-y-1/2 text-[10px] font-medium text-faint tabular" :style="'top:' + ((m - dayStart) * hourPx / 60) + 'px'" x-text="m === dayStart ? '' : hourLabel(m)"></div>
+            <div class="absolute end-2 -translate-y-1/2 text-[10px] font-medium text-faint tabular" :style="'top:' + ((m - dayStart) * hourPx / 60) + 'px'" x-text="m === dayStart ? '' : hourLabel(m)"></div>
           </template>
         </div>
         <template x-for="day in days" :key="'c'+day.date">
-          <div class="relative flex-1 cursor-cell border-l border-line"
+          <div class="relative flex-1 cursor-cell border-s border-line"
                :class="[mode==='week' && day.date!==selected ? 'hidden md:block' : '', day.date===today ? 'bg-brand/[0.02]' : '']"
                :data-day-col="day.date"
                style="background-image: repeating-linear-gradient(to bottom, rgb(var(--c-line) / .8) 0 1px, transparent 1px 30px, rgb(var(--c-line) / .35) 30px 31px, transparent 31px 60px);"
@@ -102,7 +105,7 @@
             </template>
             <template x-if="showNow(day)">
               <div class="pointer-events-none absolute inset-x-0 z-10 flex items-center" :style="'top:' + nowTop() + 'px'">
-                <span class="-ml-1 h-2 w-2 rounded-full bg-danger"></span><span class="h-px flex-1 bg-danger"></span>
+                <span class="-ms-1 h-2 w-2 rounded-full bg-danger"></span><span class="h-px flex-1 bg-danger"></span>
               </div>
             </template>
           </div>

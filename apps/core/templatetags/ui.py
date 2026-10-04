@@ -41,8 +41,14 @@ STATUS_META = {
 }
 
 
+# Icons that point in a reading direction are mirrored in right-to-left languages.
+DIRECTIONAL_ICONS = {"chevron-left", "chevron-right", "arrow-left", "arrow-right", "arrow-up-right", "log-out", "undo-2", "external-link"}
+
+
 @register.simple_tag
 def icon(name: str, css: str = "") -> str:
+    if name in DIRECTIONAL_ICONS:
+        css = f"{css} rtl-flip"
     return format_html(
         '<svg class="icon {}" aria-hidden="true" focusable="false"><use href="{}#i-{}"></use></svg>',
         css, static("icons/sprite.svg"), name,

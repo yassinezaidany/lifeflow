@@ -29,6 +29,17 @@
   <div class="card mt-6">
     {# ---------- Step 1: basics #}
     <section x-show="step===1" class="card-pad space-y-5">
+      <div class="rounded-2xl border border-brand/20 bg-brand-soft/40 p-4">
+        <label class="flex items-center gap-2 text-sm font-semibold" for="w-describe">{% icon "sparkles" "icon-sm text-brand" %} {% trans "Describe it in your own words" %}</label>
+        <p class="mt-1 text-xs text-muted">{% trans "e.g. “I want to learn Python 2 hours a day for 30 days” or “Courir 3 fois par semaine, au moins 30 minutes”. You'll review everything before it's created." %}</p>
+        <div class="mt-3 flex flex-col gap-2 sm:flex-row">
+          <input id="w-describe" class="input flex-1" x-model="describeText" maxlength="500" @keydown.enter.prevent="suggest()" placeholder="{% trans 'What do you want to achieve?' %}">
+          <button type="button" class="btn btn-primary" @click="suggest()" :disabled="suggesting">
+            <span x-show="suggesting" class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>{% trans "Suggest" %}
+          </button>
+        </div>
+        <p class="mt-2 text-xs text-success" x-show="suggestedBy" x-cloak>{% icon "circle-check" "icon-xs" %} <span x-text="suggestedBy === 'ai' ? '{% trans "Suggested by the AI assistant." as s %}{{ s|escapejs }}' : '{% trans "Suggested by the built-in assistant." as s %}{{ s|escapejs }}'"></span> {% trans "Check the next steps." %}</p>
+      </div>
       <div><h2 class="card-title">{% trans "What is your challenge?" %}</h2><p class="card-subtitle">{% trans "Give it a clear, motivating name." %}</p></div>
       <div>
         <label class="label" for="w-name">{% trans "Name" %}</label>
@@ -105,7 +116,7 @@
             <input x-show="f.field_type==='select'" class="input input-sm mt-2" x-model="f.optionsText" placeholder="{% trans 'Options separated by commas — e.g. Gym, Football, Running' %}">
             <div class="mt-2 flex flex-wrap items-center gap-4 text-xs text-muted">
               <label class="flex items-center gap-1.5"><input type="checkbox" class="checkbox" x-model="f.required"> {% trans "Required" %}</label>
-              <template x-if="['boolean','integer','decimal','duration'].includes(f.field_type)">
+              <template x-if="['boolean','integer','decimal','duration','time'].includes(f.field_type)">
                 <label class="flex items-center gap-1.5"><input type="radio" class="radio" name="metric" :checked="form.metric===f.ref" @change="form.metric=f.ref"> {% trans "Use for the goal" %}</label>
               </template>
             </div>
@@ -133,6 +144,20 @@
         </div>
       </div>
       <p class="field-error" x-show="errors.target" x-text="errors.target"></p>
+      <template x-if="isTimeGoal">
+        <div class="space-y-2 rounded-xl bg-subtle p-4">
+          <div class="text-sm font-medium">{% trans "A day counts when the time is" %}</div>
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="seg">
+              <button type="button" class="seg-item" :aria-pressed="form.goal.time_comparison==='before'" @click="form.goal.time_comparison='before'">{% trans "before" %}</button>
+              <button type="button" class="seg-item" :aria-pressed="form.goal.time_comparison==='after'" @click="form.goal.time_comparison='after'">{% trans "after" %}</button>
+            </div>
+            <input type="time" class="input input-sm w-32" x-model="form.goal.time_threshold">
+          </div>
+          <p class="hint">{% trans "Example: wake-up time before 05:30, every day." %}</p>
+          <p class="field-error" x-show="errors.time_threshold" x-text="errors.time_threshold"></p>
+        </div>
+      </template>
       <template x-if="primary && primary.field_type==='duration' && form.goal.aggregation==='sum'"><p class="hint">{% trans "Durations are entered in minutes (120 = 2 hours)." %}</p></template>
       <template x-if="canUseMinimum">
         <div class="space-y-3 rounded-xl bg-subtle p-4">

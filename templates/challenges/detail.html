@@ -58,7 +58,7 @@
       {% else %}{% blocktrans with a=p.today.display.period_actual t=p.today.display.period_target u=p.unit %}This period: {{ a }} / {{ t }} {{ u }}{% endblocktrans %}{% endif %}
     {% elif p.today.type == "paused" %}{% trans "This challenge is paused." %}
     {% endif %}
-    <span class="ml-auto text-xs text-muted">{% trans "Average" %}: <b class="text-ink tabular">{{ p.display.average }}</b> {{ p.unit }} / {% trans "active day" %}</span>
+    <span class="ms-auto text-xs text-muted">{% trans "Average" %}: <b class="text-ink tabular">{{ p.display.average }}</b> {{ p.unit }} / {% trans "active day" %}</span>
   </div>
   {% endif %}
 
@@ -107,7 +107,7 @@
       <h2 class="card-title">{% trans "Activity" %}</h2>
       <div class="flex items-center gap-1.5 text-[11px] text-muted">{% trans "Less" %}
         <span class="hm-cell"></span><span class="hm-cell bg-tone/25"></span><span class="hm-cell bg-tone/50"></span><span class="hm-cell bg-tone/80"></span><span class="hm-cell bg-tone"></span>{% trans "More" %}
-        <span class="ml-3 hm-cell bg-red-500/40"></span>{% trans "Missed" %}<span class="ml-2 hm-cell border border-dashed border-sky-400 bg-transparent"></span>{% trans "Rest" %}
+        <span class="ms-3 hm-cell bg-red-500/40"></span>{% trans "Missed" %}<span class="ms-2 hm-cell border border-dashed border-sky-400 bg-transparent"></span>{% trans "Rest" %}
       </div>
     </div>
     <div class="mt-4 flex gap-[3px] overflow-x-auto pb-1 scrollbar-thin">
@@ -156,13 +156,13 @@
             <td class="whitespace-nowrap tabular">{% if v is None %}<span class="text-faint">—</span>{% elif v.value is True %}<span class="text-success">{% icon "check" "icon-sm" %}</span>{% elif v.value is False %}<span class="text-faint">{% icon "x" "icon-sm" %}</span>{% elif f.field_type == "duration" %}{{ v.value|minutes }}{% else %}{{ v.value }} <span class="text-xs text-muted">{{ f.unit }}</span>{% endif %}</td>
             {% endwith %}{% endfor %}
             <td class="max-w-xs truncate text-muted">{{ e.obj.note }}</td>
-            <td class="whitespace-nowrap text-right" x-data="entryActions({{ e.obj.pk }})">
+            <td class="whitespace-nowrap text-end" x-data="entryActions({{ e.obj.pk }})">
               <button class="btn btn-ghost btn-icon btn-sm" @click="open=true" aria-label="{% trans 'Edit' %}">{% icon "pencil" "icon-sm" %}</button>
               <button class="btn btn-ghost btn-icon btn-sm text-danger" @click="remove()" aria-label="{% trans 'Delete' %}">{% icon "trash-2" "icon-sm" %}</button>
               <template x-teleport="body">
                 <div x-show="open" x-cloak @keydown.escape.window="open=false">
                   <div class="modal-backdrop" @click="open=false"></div>
-                  <form class="modal-panel space-y-4 p-5 text-left sm:max-w-md" @submit.prevent="save()">
+                  <form class="modal-panel space-y-4 p-5 text-start sm:max-w-md" @submit.prevent="save()">
                     <h3 class="text-base font-semibold">{% trans "Edit entry" %}</h3>
                     <div><label class="label">{% trans "Date" %}</label><input type="date" class="input" x-model="date" :max="LF.cfg.today"><p class="field-error" x-show="errors.date" x-text="errors.date"></p></div>
                     <template x-for="f in fields" :key="f.key">

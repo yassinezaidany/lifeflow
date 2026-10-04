@@ -53,6 +53,25 @@
   <div class="flex justify-end"><button class="btn btn-primary">{% trans "Save changes" %}</button></div>
 </form>
 
+<section class="card" x-data="{copied: false}">
+  <div class="card-pad border-b border-line">
+    <h2 class="card-title">{% trans "Calendar sync" %}</h2>
+    <p class="card-subtitle">{% trans "Subscribe to your planner from Google Calendar, Apple Calendar or Outlook (read-only, updated automatically). Keep this link private." %}</p>
+  </div>
+  <div class="card-pad space-y-3">
+    <div class="flex flex-col gap-2 sm:flex-row">
+      <input class="input font-mono text-xs" readonly value="{{ feed_url }}" aria-label="{% trans 'Calendar link' %}" @focus="$el.select()">
+      <button type="button" class="btn btn-secondary" @click="navigator.clipboard.writeText('{{ feed_url|escapejs }}'); copied = true; setTimeout(() => copied = false, 2000)">
+        {% icon "copy" "icon-sm" %} <span x-text="copied ? '{% trans "Copied" as s %}{{ s|escapejs }}' : '{% trans "Copy" as s %}{{ s|escapejs }}'"></span>
+      </button>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <a href="{% url 'planner:export_ics' %}" class="btn btn-ghost btn-sm">{% icon "download" "icon-xs" %} {% trans "Download .ics" %}</a>
+      <form method="post" action="{% url 'planner:regenerate_feed' %}">{% csrf_token %}<button class="btn btn-ghost btn-sm text-danger">{% icon "refresh-cw" "icon-xs" %} {% trans "Generate a new link" %}</button></form>
+    </div>
+  </div>
+</section>
+
 <section class="card" x-data="installApp">
   <div class="card-pad flex flex-col gap-4 sm:flex-row sm:items-center">
     <img src="{% static 'img/icons/icon-192.png' %}" alt="" class="h-12 w-12 rounded-xl">

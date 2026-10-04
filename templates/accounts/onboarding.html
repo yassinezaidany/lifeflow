@@ -51,7 +51,7 @@
       <div class="tone-indigo mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-3xl bg-tone/10 text-tone-strong">{% icon "sparkles" "icon-xl" %}</div>
       <h1 class="text-3xl font-semibold sm:text-4xl">{% blocktrans with name=user.display_name %}Welcome, {{ name }}{% endblocktrans %}</h1>
       <p class="mx-auto mt-4 max-w-xl text-muted">{% trans "LifeFlow follows a simple loop: plan your days, do the work, record what you actually did, and see how you progress. Let's set up the basics in two minutes." %}</p>
-      <div class="mx-auto mt-10 grid max-w-2xl grid-cols-2 gap-3 text-left sm:grid-cols-4">
+      <div class="mx-auto mt-10 grid max-w-2xl grid-cols-2 gap-3 text-start sm:grid-cols-4">
         <div class="card p-4"><div class="tone-blue text-tone-strong">{% icon "calendar-days" %}</div><div class="mt-3 text-sm font-semibold">{% trans "Plan" %}</div><div class="text-xs text-muted">{% trans "Your day & week" %}</div></div>
         <div class="card p-4"><div class="tone-amber text-tone-strong">{% icon "zap" %}</div><div class="mt-3 text-sm font-semibold">{% trans "Execute" %}</div><div class="text-xs text-muted">{% trans "Do the work" %}</div></div>
         <div class="card p-4"><div class="tone-emerald text-tone-strong">{% icon "circle-check" %}</div><div class="mt-3 text-sm font-semibold">{% trans "Track" %}</div><div class="text-xs text-muted">{% trans "Record results" %}</div></div>

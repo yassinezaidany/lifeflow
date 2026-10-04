@@ -20,6 +20,10 @@ BLOCKTRANS = re.compile(r"{%\s*blocktrans(?:late)?\b(?P<args>[^%]*)%}(?P<body>.*
 PY_CALL = re.compile(r"""\b(?:_|gettext|gettext_lazy|gettext_noop|N|pgettext)\(\s*(?P<q>"|')(?P<s>(?:\\.|(?!(?P=q)).)*)(?P=q)\s*[,)]""")
 PY_NGETTEXT = re.compile(r"""\bngettext\(\s*(?P<q>"|')(?P<s>(?:\\.|(?!(?P=q)).)*)(?P=q)\s*,\s*(?P<q2>"|')(?P<p>(?:\\.|(?!(?P=q2)).)*)(?P=q2)""")
 VAR = re.compile(r"{{\s*(\w+)\s*}}")
+PLURAL_FORMS = {
+    "fr": "nplurals=2; plural=(n > 1);",
+    "ar": "nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);",
+}
 
 
 def _blocktrans_ids(args: str, body: str):
@@ -80,7 +84,7 @@ class Command(BaseCommand):
         po.metadata = {
             "Project-Id-Version": "LifeFlow", "Language": lang, "MIME-Version": "1.0",
             "Content-Type": "text/plain; charset=UTF-8", "Content-Transfer-Encoding": "8bit",
-            "Plural-Forms": "nplurals=2; plural=(n > 1);" if lang == "fr" else "nplurals=2; plural=(n != 1);",
+            "Plural-Forms": PLURAL_FORMS.get(lang, "nplurals=2; plural=(n != 1);"),
         }
         existing = {(e.msgid, e.msgid_plural or None): e for e in po}
         added = 0
@@ -90,7 +94,7 @@ class Command(BaseCommand):
             entry = polib.POEntry(msgid=msgid, msgstr="", occurrences=[(occ, "")])
             if plural:
                 entry.msgid_plural = plural
-                entry.msgstr_plural = {0: "", 1: ""}
+                entry.msgstr_plural = {i: "" for i in range(6 if lang == "ar" else 2)}
             po.append(entry)
             added += 1
         keys = set(messages)

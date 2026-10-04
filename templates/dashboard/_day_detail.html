@@ -65,7 +65,7 @@
   <div class="section-title mb-2">{% trans "Journal" %}</div>
   {% for j in detail.journal %}
   <a href="{% url 'journal:list' %}?date={{ j.date|date:'Y-m-d' }}" class="block rounded-lg border border-line px-3 py-2 text-sm hover:bg-subtle">
-    {% if j.mood %}<span class="mr-1">{{ j.get_mood_display }}</span>{% endif %}<span class="font-medium">{{ j.title|default:_("Note") }}</span>
+    {% if j.mood %}<span class="me-1">{{ j.get_mood_display }}</span>{% endif %}<span class="font-medium">{{ j.title|default:_("Note") }}</span>
     <p class="line-clamp-2 text-xs text-muted">{{ j.content|truncatechars:160 }}</p>
   </a>
   {% endfor %}

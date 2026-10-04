@@ -1,6 +1,6 @@
 {% load static i18n ui %}<!doctype html>
-{% get_current_language as LANG %}
-<html lang="{{ LANG }}" data-theme="{{ theme|default:'system' }}" class="h-full">
+{% get_current_language as LANG %}{% get_current_language_bidi as BIDI %}
+<html lang="{{ LANG }}" dir="{% if BIDI %}rtl{% else %}ltr{% endif %}" data-theme="{{ theme|default:'system' }}" class="h-full">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -28,7 +28,7 @@
   {% block head %}{% endblock %}
 </head>
 <body class="h-full {% block body_class %}{% endblock %}">
-  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] btn btn-primary">{% trans "Skip to content" %}</a>
+  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] btn btn-primary">{% trans "Skip to content" %}</a>
   {% block body %}{% endblock %}
 
   {% if lf_config %}{{ lf_config|json_script:"lf-config" }}{% else %}

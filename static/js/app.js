@@ -222,6 +222,11 @@
       Chart.defaults.font.size = 11;
       Chart.defaults.color = cssVar("--c-muted");
       Chart.defaults.borderColor = cssVarA("--c-line", 0.7);
+      if (cfg.rtl) {
+        Chart.defaults.plugins.legend.rtl = true;
+        Chart.defaults.plugins.tooltip.rtl = true;
+        Chart.defaults.plugins.tooltip.textDirection = "rtl";
+      }
       return new Chart(canvas, c);
     };
     let instance = build();

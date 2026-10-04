@@ -245,12 +245,13 @@ class ProgressEngine:
                 entry__date__gte=min_start,
                 entry__date__lte=self.as_of,
                 field_id__in=metric_ids,
-            ).values_list("entry_id", "field_id", "value_number", "value_bool")
-            for entry_id, field_id, number, boolean in values:
+            ).values_list("entry_id", "field_id", "value_number", "value_bool", "value_time")
+            for entry_id, field_id, number, boolean, at_time in values:
                 data = entries.get(entry_id)
                 if data is not None:
                     data.numbers[field_id] = float(number) if number is not None else None
                     data.bools[field_id] = boolean
+                    data.times[field_id] = at_time
         return by_challenge
 
     def _load_rest_days(self, challenges: list[Challenge]) -> dict[int | None, set[date]]:

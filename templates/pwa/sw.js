@@ -67,7 +67,7 @@ self.addEventListener("fetch", (event) => {
   if (request.method !== "GET") return;
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
-  if (url.pathname.startsWith("/admin/") || url.pathname.startsWith("/accounts/") || url.pathname.endsWith("/pdf/") || url.pathname.startsWith("/reports/export")) return;
+  if (url.pathname.startsWith("/admin/") || url.pathname.startsWith("/accounts/") || url.pathname.endsWith("/pdf/") || url.pathname.startsWith("/reports/export") || url.pathname.endsWith(".ics")) return;
 
   if (url.pathname.startsWith("/static/")) {
     event.respondWith(staleWhileRevalidate(request));

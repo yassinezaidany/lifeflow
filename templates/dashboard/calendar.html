@@ -25,7 +25,7 @@
     <div class="grid grid-cols-7">
       {% for week in weeks %}{% for d in week %}
       <a href="?month={{ year }}-{{ month|stringformat:'02d' }}&date={{ d.date|date:'Y-m-d' }}"
-         class="group relative min-h-[4.25rem] border-b border-r border-line p-1.5 text-left transition hover:bg-subtle/60 sm:min-h-[6.5rem] sm:p-2 [&:nth-child(7n)]:border-r-0 {% if not d.in_month %}bg-subtle/30 text-faint{% endif %} {% if d.date == selected %}ring-2 ring-inset ring-brand{% endif %} {% if d.rest %}bg-sky-500/5{% endif %}">
+         class="group relative min-h-[4.25rem] border-b border-e border-line p-1.5 text-start transition hover:bg-subtle/60 sm:min-h-[6.5rem] sm:p-2 [&:nth-child(7n)]:border-e-0 {% if not d.in_month %}bg-subtle/30 text-faint{% endif %} {% if d.date == selected %}ring-2 ring-inset ring-brand{% endif %} {% if d.rest %}bg-sky-500/5{% endif %}">
         <div class="flex items-center justify-between">
           <span class="inline-flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold tabular {% if d.is_today %}bg-brand text-white dark:text-zinc-950{% endif %}">{{ d.date.day }}</span>
           <span class="flex items-center gap-1 text-faint">

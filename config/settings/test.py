@@ -7,6 +7,7 @@ STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
 }
-REST_FRAMEWORK = {**REST_FRAMEWORK, "DEFAULT_THROTTLE_RATES": {"anon": "10000/min", "user": "10000/min", "auth": "10000/min"}}  # noqa: F405
+REST_FRAMEWORK = {**REST_FRAMEWORK, "DEFAULT_THROTTLE_RATES": {"anon": "10000/min", "user": "10000/min", "auth": "10000/min", "assistant": "10000/min"}}
+ANTHROPIC_API_KEY = ""  # tests never call the real API  # noqa: F405
 VAPID_PUBLIC_KEY = VAPID_PRIVATE_KEY = ""  # push off unless a test enables it (and mocks the network)
 LOGGING ={"version": 1, "disable_existing_loggers": False, "handlers": {"null": {"class": "logging.NullHandler"}}, "root": {"handlers": ["null"]}}

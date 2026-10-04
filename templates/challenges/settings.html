@@ -52,6 +52,14 @@
           <div><label class="label">{% trans "Minimum per entry" %}</label><input type="number" min="0" step="any" class="input" x-model="goal.min_per_entry" placeholder="—"></div>
         </div>
       </template>
+      <template x-if="metricField && metricField.field_type==='time'">
+        <div class="flex flex-wrap items-center gap-2 text-sm">
+          <span class="text-muted">{% trans "A day counts when the time is" %}</span>
+          <select class="select h-9 w-28" x-model="goal.time_comparison"><option value="before">{% trans "before" %}</option><option value="after">{% trans "after" %}</option></select>
+          <input type="time" class="input h-9 w-32" x-model="goal.time_threshold">
+          <p class="field-error w-full" x-show="errors.time_threshold" x-text="errors.time_threshold"></p>
+        </div>
+      </template>
       <div class="max-w-xs"><label class="label">{% trans "Applies from" %}</label><input type="date" class="input" x-model="goal.effective_from"><p class="field-error" x-show="errors.effective_from" x-text="errors.effective_from"></p></div>
     </div>
     <div class="flex justify-end border-t border-line px-6 py-4"><button class="btn btn-primary" @click="saveGoal()" :disabled="saving==='goal'">{% trans "Update goal" %}</button></div>
@@ -83,7 +91,7 @@
           <span class="badge badge-neutral" x-text="f.field_type"></span>
           <span class="text-xs text-muted" x-text="f.unit"></span>
           <span class="badge badge-brand" x-show="f.key===c.goal?.metric_key">{% trans "goal" %}</span>
-          <label class="ml-auto flex items-center gap-1.5 text-xs text-muted"><input type="checkbox" class="checkbox" :checked="f.required" @change="toggleRequired(f)"> {% trans "Required" %}</label>
+          <label class="ms-auto flex items-center gap-1.5 text-xs text-muted"><input type="checkbox" class="checkbox" :checked="f.required" @change="toggleRequired(f)"> {% trans "Required" %}</label>
           <button class="btn btn-ghost btn-icon btn-sm text-danger" @click="removeField(f)" :disabled="f.key===c.goal?.metric_key" aria-label="{% trans 'Remove' %}">{% icon "trash-2" "icon-sm" %}</button>
         </div>
       </template>
@@ -128,7 +136,7 @@
       <template x-if="c.status !== 'completed'"><button class="btn btn-secondary" @click="setStatus('completed')">{% icon "trophy" "icon-sm" %} {% trans "Mark as completed" %}</button></template>
       <template x-if="c.status !== 'archived'"><button class="btn btn-secondary" @click="setStatus('archived')">{% icon "archive" "icon-sm" %} {% trans "Archive" %}</button></template>
       <button class="btn btn-secondary" @click="duplicate()">{% icon "copy" "icon-sm" %} {% trans "Duplicate" %}</button>
-      <button class="btn btn-ghost ml-auto text-danger" @click="destroy()">{% icon "trash-2" "icon-sm" %} {% trans "Delete" %}</button>
+      <button class="btn btn-ghost ms-auto text-danger" @click="destroy()">{% icon "trash-2" "icon-sm" %} {% trans "Delete" %}</button>
     </div>
   </section>
 </div>

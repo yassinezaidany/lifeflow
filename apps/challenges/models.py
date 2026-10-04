@@ -165,7 +165,7 @@ class TrackingField(TimeStampedModel):
         SELECT = "select", _("Choice list")
 
     NUMERIC_TYPES = {FieldType.INTEGER, FieldType.DECIMAL, FieldType.DURATION}
-    MEASURABLE_TYPES = NUMERIC_TYPES | {FieldType.BOOLEAN}
+    MEASURABLE_TYPES = NUMERIC_TYPES | {FieldType.BOOLEAN, FieldType.TIME}  # time: with a before/after threshold
 
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE, related_name="fields")
     key = models.SlugField(max_length=40)
@@ -240,6 +240,10 @@ class Goal(VersionedConfig):
         max_digits=12, decimal_places=2, null=True, blank=True,
         help_text=_("Minimum value for an entry to count (e.g. at least 30 minutes)."),
     )
+    # Time-of-day goals (metric is a "time" field): an entry counts when the recorded
+    # time is before / after the threshold, e.g. "wake up before 05:30".
+    time_comparison = models.CharField(max_length=6, choices=[("before", _("before")), ("after", _("after"))], blank=True)
+    time_threshold = models.TimeField(null=True, blank=True)
 
     class Meta:
         ordering = ["effective_from", "id"]
@@ -257,10 +261,14 @@ class Goal(VersionedConfig):
         return f"Goal<{self.challenge_id} {self.target} {self.period}>"
 
     @property
+    def is_time_goal(self) -> bool:
+        return self.metric is not None and self.metric.field_type == TrackingField.FieldType.TIME
+
+    @property
     def unit_label(self) -> str:
         if self.metric is None:
             return str(_("sessions"))
-        if self.metric.field_type == TrackingField.FieldType.BOOLEAN:
+        if self.metric.field_type in (TrackingField.FieldType.BOOLEAN, TrackingField.FieldType.TIME):
             return str(_("days"))
         if self.aggregation == self.Aggregation.COUNT:
             return str(_("sessions"))
