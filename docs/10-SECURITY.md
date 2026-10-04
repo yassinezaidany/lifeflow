@@ -22,3 +22,13 @@
 
 Tests dédiés : `tests/test_isolation.py` (22 tentatives d'accès croisé API + pages web + exports),
 `tests/test_auth.py` (CSRF, rate limiting, open redirect, reset), `tests/test_reports_and_misc.py` (en-têtes, XSS, CSV).
+
+## Ajouts
+
+| Sujet | Mise en œuvre |
+|---|---|
+| Cache hors ligne | le service worker ne met jamais en cache admin, comptes, PDF, exports, `.ics` ni écritures ; pages et réponses API personnelles effacées dès qu'une page « déconnecté » s'affiche |
+| Saisie hors ligne | rejouée avec un jeton CSRF frais ; aucune écriture ne contourne la validation serveur |
+| Web Push | endpoints HTTPS uniquement, clés VAPID dans `.env`, abonnement lié au compte connecté (réattribué si l'appareil change de compte), abonnements expirés supprimés |
+| Flux iCal | jeton aléatoire de 256 bits, lecture seule, révocable ; un jeton inconnu renvoie 404 |
+| Assistant IA | clé dans `.env`, limite 30 requêtes/heure, seul le texte saisi est transmis, sortie toujours assainie puis revalidée à la création |

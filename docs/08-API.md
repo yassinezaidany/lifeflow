@@ -75,3 +75,16 @@ CRUD ; `?challenge=&start=&end=`. Création : `{challenge, date, values: {key|id
 | GET / PATCH / DELETE | `notifications/` · POST `notifications/read-all/` |
 
 Exports (pages web) : `/reports/export/?format=xlsx` · `?format=csv&kind=entries|statistics[&challenge=]`.
+
+## Ajouts
+
+| Méthode | Route | Description |
+|---|---|---|
+| POST | `challenges/suggest/` | `{text}` → suggestion de configuration (assistant IA ou analyseur intégré) — 30/heure |
+| — | `challenges/` | champ `reminder_time` (rappel quotidien) ; objectif : `time_comparison`, `time_threshold` |
+| GET | `planner/`, `planner/today/`, `planner/week/` | chaque jour contient aussi `carryover` (activités de la veille qui passent minuit) ; activités : champ `overnight` |
+| GET | `notifications/push/key/` | `{enabled, public_key, devices}` |
+| POST | `notifications/push/subscribe/` · `push/unsubscribe/` · `push/test/` | abonnement Web Push de l'appareil |
+
+Pages (hors `/api/`) : `/sw.js`, `/manifest.webmanifest`, `/offline/`, `/healthz`, `/notifications/`,
+`/planner/export.ics`, `/planner/feed/<jeton>.ics`, `/i18n/setlang/`.

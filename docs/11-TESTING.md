@@ -25,3 +25,11 @@ Résultat au moment de la livraison : **191 tests réussis**.
   confirmation → enregistrement pré-rempli → ajout rapide → page défi → calendrier → rapport → PDF → historique →
   déconnexion → isolation avec un autre compte), en collectant les erreurs JavaScript.
 - `scripts/ui_screenshots.py` : captures desktop/mobile, clair/sombre + erreurs console.
+
+## Ajouts (version actuelle : 231 tests)
+
+| Fichier | Couverture |
+|---|---|
+| `test_planner.py` (ajouts) | activités de nuit : durée, `carryover`, chevauchement avec le lendemain, retard, routine de nuit, plage nulle refusée |
+| `test_pwa_notifications.py` (18) | service worker (portée, en-têtes, contenu), manifest, page hors ligne, purge du cache à la déconnexion ; push (désactivé sans clés, abonnement idempotent, envoi simulé, abonnement expiré supprimé, préférence, validation, réattribution d'appareil) ; e-mail HTML ; rappels (résumé du matin + dédoublonnage, fenêtre horaire, rappel de défi seulement si non fait, rappel d'activité, désactivation globale), planificateur, page notifications, `reminder_time` |
+| `test_assistant_time_ical_rtl.py` (19) | analyseur FR/EN/AR (heures, séances + minimum, pages + jours, habitude oui/non, arabe, décimales), assainissement d'une sortie hostile, endpoint (moteur intégré, Claude simulé avec vérification du modèle / schéma / fallbacks, repli après refus, suggestion → création valide) ; objectifs horaires (moteur, validation API, modèle Lève-tôt) ; iCal (export, échappement, repli des lignes, isolation, flux par jeton, révocation, fin réelle des activités de nuit) ; arabe (`dir="rtl"`, sélecteur de langue, PDF arabe avec police embarquée) |

@@ -92,3 +92,10 @@ hors attendu, retard, aucune entrée, défi futur, défi sans fin, entrées hors
 (défi et global), série cassée/meilleure série, jour en cours, tous les N jours, cible partielle, pause, statut pause,
 hebdo proratisé, semaine partielle, minimum par entrée, mensuel en durée, total avec/sans fin, booléen, année
 bissextile, changement de mois, fenêtre mensuelle, versionnement d'objectif, paliers.
+
+## 10. Objectifs horaires
+
+Avec un champ de type **heure** comme métrique, l'objectif porte sur un seuil : `time_comparison` (`before` / `after`) et
+`time_threshold` (ex. réveil **avant 05:30**). Une entrée vaut 1 si l'heure enregistrée respecte le seuil, sinon 0 ;
+l'agrégation est toujours `count` (unité : jours). Tout le reste (attendu, séries, taux de réussite, versionnement) est
+identique. Modèle intégré : « Lève-tôt » (réveil avant 06:00).
