@@ -1,5 +1,5 @@
 {% extends "accounts/_settings_layout.html" %}
-{% load i18n ui %}
+{% load i18n static ui %}
 {% block title %}{% trans "Settings" %}{% endblock %}
 {% block settings %}
 <form method="post" enctype="multipart/form-data" novalidate class="space-y-6">
@@ -52,4 +52,17 @@
   </section>
   <div class="flex justify-end"><button class="btn btn-primary">{% trans "Save changes" %}</button></div>
 </form>
+
+<section class="card" x-data="installApp">
+  <div class="card-pad flex flex-col gap-4 sm:flex-row sm:items-center">
+    <img src="{% static 'img/icons/icon-192.png' %}" alt="" class="h-12 w-12 rounded-xl">
+    <div class="flex-1">
+      <h2 class="card-title">{% trans "LifeFlow app" %}</h2>
+      <p class="card-subtitle" x-show="installed">{% trans "LifeFlow is installed on this device." %}</p>
+      <p class="card-subtitle" x-show="!installed && !ios">{% trans "Install LifeFlow on your phone or computer: it opens like an app, starts on Today, and keeps working offline." %}</p>
+      <p class="card-subtitle" x-show="ios">{% trans "On iPhone/iPad: tap Share, then “Add to Home Screen”." %}</p>
+    </div>
+    <button type="button" class="btn btn-primary" x-show="available" @click="install()">{% icon "download" "icon-sm" %} {% trans "Install" %}</button>
+  </div>
+</section>
 {% endblock %}

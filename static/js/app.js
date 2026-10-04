@@ -34,11 +34,15 @@
     try {
       res = await fetch(url, opts);
     } catch (e) {
+      if (method === "POST" && isQueueable(url)) return enqueue(url, body);
       throw new ApiError(t("Network error. Check your connection."), 0);
     }
     if (res.status === 204) return null;
     let data = null;
     try { data = await res.json(); } catch (e) { /* non JSON */ }
+    if (res.status === 503 && data && data.offline) {
+      throw new ApiError(t("You're offline. This data isn't available on this device yet."), 0);
+    }
     if (!res.ok) {
       if (res.status === 403 && !data) throw new ApiError(t("Your session expired. Please sign in again."), 403);
       const message = (data && data.detail) || t("Something went wrong. Please try again.");
@@ -46,6 +50,72 @@
     }
     return data;
   }
+
+  // ---------------------------------------------------------------- offline outbox
+  // Creating entries / notes works offline: requests are queued locally and replayed
+  // (with a fresh CSRF token) as soon as the connection is back.
+  const OUTBOX_KEY = "lf-outbox";
+  const QUEUEABLE = [/^\/api\/entries\/$/, /^\/api\/journal\/$/];
+  const isQueueable = (url) => QUEUEABLE.some((re) => re.test(new URL(url, location.origin).pathname));
+  const readOutbox = () => { try { return JSON.parse(localStorage.getItem(OUTBOX_KEY) || "[]"); } catch (e) { return []; } };
+  const writeOutbox = (items) => {
+    try { localStorage.setItem(OUTBOX_KEY, JSON.stringify(items)); } catch (e) { /* storage unavailable */ }
+    window.dispatchEvent(new CustomEvent("lf:outbox", { detail: { count: items.length } }));
+  };
+  function enqueue(url, body) {
+    const items = readOutbox();
+    items.push({ id: Date.now() + "-" + Math.random().toString(36).slice(2, 7), url, body, at: new Date().toISOString() });
+    writeOutbox(items);
+    return { queued: true };
+  }
+  let flushing = false;
+  async function flushOutbox() {
+    if (flushing || !navigator.onLine) return;
+    const items = readOutbox();
+    if (!items.length) return;
+    flushing = true;
+    let synced = 0;
+    const remaining = [];
+    for (const item of items) {
+      try {
+        const res = await fetch(item.url, {
+          method: "POST", credentials: "same-origin",
+          headers: { "Content-Type": "application/json", Accept: "application/json", "X-CSRFToken": csrfToken() },
+          body: JSON.stringify(item.body),
+        });
+        if (res.ok) synced++;
+        else if (res.status >= 500 || res.status === 403) remaining.push(item); // retry later (server down / session to renew)
+        else {
+          const data = await res.json().catch(() => ({}));
+          toast(`${t("An offline entry could not be saved:")} ${data.detail || res.status}`, "error");
+        }
+      } catch (e) { remaining.push(item); }
+    }
+    writeOutbox(remaining);
+    flushing = false;
+    if (synced) {
+      toast(t("%s offline item(s) synced").replace("%s", synced));
+      window.dispatchEvent(new CustomEvent("lf:changed"));
+    }
+  }
+  window.addEventListener("online", flushOutbox);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") flushOutbox(); });
+
+  // ---------------------------------------------------------------- PWA
+  if ("serviceWorker" in navigator && window.isSecureContext) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => { /* PWA optional */ });
+      flushOutbox();
+    });
+  }
+  let deferredInstall = null;
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredInstall = e;
+    window.dispatchEvent(new CustomEvent("lf:installable"));
+  });
+  window.addEventListener("appinstalled", () => { deferredInstall = null; window.dispatchEvent(new CustomEvent("lf:installable")); });
+  const isStandalone = () => window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
 
   /** Flatten DRF errors into {field: "message"} for forms. */
   function fieldErrors(err) {
@@ -196,6 +266,84 @@
       answer(value) { this.open = false; if (this.resolve) this.resolve(value); this.resolve = null; },
     }));
 
+    Alpine.data("connectivity", () => ({
+      online: navigator.onLine,
+      pending: readOutbox().length,
+      init() {
+        window.addEventListener("online", () => (this.online = true));
+        window.addEventListener("offline", () => (this.online = false));
+        window.addEventListener("lf:outbox", (e) => (this.pending = e.detail.count));
+      },
+      sync() { flushOutbox(); },
+    }));
+
+    Alpine.data("installApp", () => ({
+      available: !!deferredInstall,
+      installed: isStandalone(),
+      ios: /iphone|ipad|ipod/i.test(navigator.userAgent) && !isStandalone(),
+      init() { window.addEventListener("lf:installable", () => { this.available = !!deferredInstall; this.installed = isStandalone(); }); },
+      async install() {
+        if (!deferredInstall) return;
+        deferredInstall.prompt();
+        const choice = await deferredInstall.userChoice;
+        if (choice.outcome === "accepted") toast(t("LifeFlow is installed"));
+        deferredInstall = null;
+        this.available = false;
+      },
+    }));
+
+    // Web Push on this device ------------------------------------------------------
+    Alpine.data("pushToggle", () => ({
+      supported: "serviceWorker" in navigator && "PushManager" in window && "Notification" in window,
+      serverEnabled: false, subscribed: false, busy: false, permission: ("Notification" in window) ? Notification.permission : "denied", devices: 0, key: null,
+      async init() {
+        if (!this.supported) return;
+        try {
+          const info = await api("/api/notifications/push/key/");
+          Object.assign(this, { serverEnabled: info.enabled, key: info.public_key, devices: info.devices });
+          const reg = await navigator.serviceWorker.ready;
+          this.subscribed = !!(await reg.pushManager.getSubscription());
+        } catch (e) { /* offline or SW not ready */ }
+      },
+      b64ToUint8(base64) {
+        const pad = "=".repeat((4 - (base64.length % 4)) % 4);
+        const raw = atob((base64 + pad).replace(/-/g, "+").replace(/_/g, "/"));
+        return Uint8Array.from([...raw].map((c) => c.charCodeAt(0)));
+      },
+      async enable() {
+        this.busy = true;
+        try {
+          this.permission = await Notification.requestPermission();
+          if (this.permission !== "granted") { toast(t("Notifications are blocked in your browser settings."), "error"); return; }
+          const reg = await navigator.serviceWorker.ready;
+          const sub = (await reg.pushManager.getSubscription()) || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.b64ToUint8(this.key) });
+          await api("/api/notifications/push/subscribe/", { method: "POST", body: sub.toJSON() });
+          this.subscribed = true;
+          this.devices += 1;
+          toast(t("Notifications enabled on this device"));
+        } catch (e) { toast(e.message || t("Push notifications are not available on this browser."), "error"); }
+        finally { this.busy = false; }
+      },
+      async disable() {
+        this.busy = true;
+        try {
+          const reg = await navigator.serviceWorker.ready;
+          const sub = await reg.pushManager.getSubscription();
+          if (sub) {
+            await api("/api/notifications/push/unsubscribe/", { method: "POST", body: { endpoint: sub.endpoint } });
+            await sub.unsubscribe();
+          }
+          this.subscribed = false;
+          toast(t("Notifications disabled on this device"));
+        } catch (e) { toast(e.message, "error"); }
+        finally { this.busy = false; }
+      },
+      async test() {
+        try { const r = await api("/api/notifications/push/test/", { method: "POST" }); if (!r.sent) toast(t("Push notifications are not available on this browser."), "error"); }
+        catch (e) { toast(e.message, "error"); }
+      },
+    }));
+
     Alpine.data("themeSwitch", (initial) => ({
       theme: initial || "system",
       async set(theme) {
@@ -303,14 +451,18 @@
         const values = {};
         Object.entries(this.values).forEach(([k, v]) => { if (v !== "" && v !== null && v !== undefined) values[k] = v; });
         try {
-          await api("/api/entries/", {
+          const result = await api("/api/entries/", {
             method: "POST",
             body: { challenge: this.challenge.id, date: this.date, values, note: this.note, planned_activity: this.plannedActivity,
                     source: this.fromPlanner ? "planner" : "quick_add" },
           });
           this.open = false;
-          toast(t("Progress recorded"));
-          window.dispatchEvent(new CustomEvent("lf:changed"));
+          if (result && result.queued) {
+            toast(t("Saved offline — it will sync automatically"), "warning");
+          } else {
+            toast(t("Progress recorded"));
+            window.dispatchEvent(new CustomEvent("lf:changed"));
+          }
         } catch (e) {
           this.errors = fieldErrors(e);
           if (!Object.keys(this.errors).length) toast(e.message, "error");
@@ -326,9 +478,9 @@
       async submit() {
         this.saving = true; this.errors = {};
         try {
-          await api("/api/journal/", { method: "POST", body: { date: this.date, title: this.title, content: this.content, mood: this.mood, scope: this.challenge ? "challenge" : "day", challenge: this.challenge } });
+          const result = await api("/api/journal/", { method: "POST", body: { date: this.date, title: this.title, content: this.content, mood: this.mood, scope: this.challenge ? "challenge" : "day", challenge: this.challenge } });
           this.open = false;
-          toast(t("Note saved"));
+          toast(result && result.queued ? t("Saved offline — it will sync automatically") : t("Note saved"), result && result.queued ? "warning" : "success");
           window.dispatchEvent(new CustomEvent("lf:changed"));
         } catch (e) { this.errors = fieldErrors(e); if (!Object.keys(this.errors).length) toast(e.message, "error"); }
         this.saving = false;
@@ -525,7 +677,7 @@
   window.addEventListener("lf:refreshed", runQueue);
 
   window.LF = {
-    cfg, t, api, ApiError, fieldErrors, toast, confirm: confirmDialog, refresh, applyTheme,
+    cfg, t, api, ApiError, fieldErrors, toast, confirm: confirmDialog, refresh, applyTheme, flushOutbox, isStandalone,
     chart, tone, cssVar, cssVarA, baseScales, tooltip,
     iso, parseISO, addDays, toMin, fromMin, endMin, isOvernight, fmtMinutes, fmtTime, fmtDate, escapeHtml, icon, pad,
   };

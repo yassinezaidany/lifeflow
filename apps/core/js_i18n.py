@@ -19,6 +19,11 @@ JS_STRINGS = [
     N("Remove this field? Recorded values are kept in history."), N("Remove"), N("Field removed"), N("Milestone added"),
     N("Delete this challenge and all its entries? This cannot be undone. Archiving keeps your history."),
     N("Delete forever"), N("Delete this entry?"), N("Entry deleted"), N("Entry updated"),
+    N("You're offline. This data isn't available on this device yet."), N("An offline entry could not be saved:"),
+    N("%s offline item(s) synced"), N("Saved offline — it will sync automatically"), N("LifeFlow is installed"),
+    N("Notifications enabled on this device"), N("Notifications are blocked in your browser settings."),
+    N("Push notifications are not available on this browser."), N("Notifications disabled on this device"),
+    N("Describe your challenge first."), N("Suggestion applied — review each step before creating."),
 ]
 
 

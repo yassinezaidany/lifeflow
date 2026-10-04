@@ -8,7 +8,12 @@
   <meta name="theme-color" content="#4F46E5">
   <title>{% block title %}{{ APP_NAME }}{% endblock %} · {{ APP_NAME }}</title>
   <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
-  <link rel="manifest" href="{% static 'manifest.webmanifest' %}">
+  <link rel="manifest" href="{% url 'manifest' %}">
+  <link rel="apple-touch-icon" href="{% static 'img/icons/apple-touch-icon.png' %}">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="LifeFlow">
   <link rel="preload" href="{% static 'fonts/inter-latin-wght-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
   <script>
     (function () {
@@ -26,7 +31,11 @@
   <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] btn btn-primary">{% trans "Skip to content" %}</a>
   {% block body %}{% endblock %}
 
-  {% if lf_config %}{{ lf_config|json_script:"lf-config" }}{% endif %}
+  {% if lf_config %}{{ lf_config|json_script:"lf-config" }}{% else %}
+  <script>
+    /* Signed-out page: drop any personal pages/API responses cached for offline use. */
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) navigator.serviceWorker.controller.postMessage({ type: "clear-user-data" });
+  </script>{% endif %}
   <script src="{% static 'js/app.js' %}" defer></script>
   {% block scripts %}{% endblock %}
   <script src="{% static 'vendor/alpine-focus.min.js' %}" defer></script>

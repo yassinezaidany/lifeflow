@@ -1,0 +1,45 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Notifications" %}{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-end justify-between gap-4">
+  <div>
+    <h1 class="text-2xl font-semibold">{% trans "Notifications" %}</h1>
+    <p class="mt-1 text-sm text-muted">{% blocktrans count n=unread_count %}{{ n }} unread{% plural %}{{ n }} unread{% endblocktrans %}</p>
+  </div>
+  <div class="flex gap-2">
+    <a href="{% url 'accounts:notifications' %}" class="btn btn-secondary">{% icon "settings" "icon-sm" %} {% trans "Preferences" %}</a>
+    {% if unread_count %}<form method="post" action="{% url 'notifications:read_all' %}">{% csrf_token %}<button class="btn btn-primary">{% icon "check-check" "icon-sm" %} {% trans "Mark all read" %}</button></form>{% endif %}
+  </div>
+</div>
+<div class="mt-6">
+  {% if page.object_list %}
+  <ul class="card divide-y divide-line">
+    {% for n in page %}
+    <li>
+      <a href="{{ n.url|default:'#' }}" class="flex gap-4 px-5 py-4 hover:bg-subtle/60" x-data @click="{% if not n.is_read %}LF.api('/api/notifications/{{ n.pk }}/', {method: 'PATCH', body: {is_read: true}}).catch(() => {}){% endif %}">
+        <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full {% if n.is_read %}bg-transparent{% else %}bg-brand{% endif %}"></span>
+        <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-subtle text-muted">
+          {% if n.kind == "activity_reminder" %}{% icon "alarm-clock" "icon-sm" %}{% elif n.kind == "report_ready" %}{% icon "file-text" "icon-sm" %}{% elif n.kind == "weekly_review" %}{% icon "list-checks" "icon-sm" %}{% elif n.kind == "challenge_reminder" or n.kind == "daily_goal" %}{% icon "target" "icon-sm" %}{% elif n.kind == "end_of_day" %}{% icon "moon" "icon-sm" %}{% else %}{% icon "bell" "icon-sm" %}{% endif %}
+        </span>
+        <span class="min-w-0 flex-1">
+          <span class="block text-sm {% if n.is_read %}font-medium{% else %}font-semibold{% endif %}">{{ n.title }}</span>
+          {% if n.body %}<span class="block text-sm text-muted">{{ n.body }}</span>{% endif %}
+        </span>
+        <span class="shrink-0 text-xs text-faint" title="{{ n.created_at|date:'DATETIME_FORMAT' }}">{{ n.created_at|timesince }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% if page.has_other_pages %}
+  <div class="mt-4 flex justify-center gap-2">
+    {% if page.has_previous %}<a href="?page={{ page.previous_page_number }}" class="btn btn-secondary btn-sm">{% trans "Previous" %}</a>{% endif %}
+    {% if page.has_next %}<a href="?page={{ page.next_page_number }}" class="btn btn-secondary btn-sm">{% trans "Next" %}</a>{% endif %}
+  </div>
+  {% endif %}
+  {% else %}
+  <div class="empty"><div class="empty-icon">{% icon "inbox" "icon-lg" %}</div><h3 class="text-sm font-semibold">{% trans "You're all caught up." %}</h3>
+    <p class="mt-1 text-sm text-muted">{% trans "Reminders and report notifications will appear here." %}</p></div>
+  {% endif %}
+</div>
+{% endblock %}

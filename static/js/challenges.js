@@ -168,7 +168,7 @@
       init() { this.reset(); },
       reset() {
         const c = this.c;
-        this.general = { name: c.name, description: c.description, category_id: c.category ? c.category.id : null, icon: c.icon, color: c.color, start_date: c.start_date, end_date: c.end_date };
+        this.general = { name: c.name, description: c.description, category_id: c.category ? c.category.id : null, icon: c.icon, color: c.color, start_date: c.start_date, end_date: c.end_date, reminder_time: c.reminder_time ? c.reminder_time.slice(0, 5) : "" };
         const g = c.goal || {};
         this.goal = { metric: g.metric_key || "", period: g.period || "daily", aggregation: g.aggregation || "count", target: g.target || 1, min_per_entry: g.min_per_entry, effective_from: this.today < c.start_date ? c.start_date : this.today };
         const s = c.schedule || {};
@@ -189,7 +189,7 @@
         this.saving = "";
       },
       saveGeneral() {
-        return this.run("general", () => api(`/api/challenges/${this.c.id}/`, { method: "PATCH", body: { ...this.general, end_date: this.general.end_date || null } }));
+        return this.run("general", () => api(`/api/challenges/${this.c.id}/`, { method: "PATCH", body: { ...this.general, end_date: this.general.end_date || null, reminder_time: this.general.reminder_time || null } }));
       },
       saveGoal() {
         return this.run("goal", () => api(`/api/challenges/${this.c.id}/goal/`, { method: "PUT", body: { ...this.goal, metric: this.goal.metric || null, min_per_entry: this.goal.min_per_entry || null } }),

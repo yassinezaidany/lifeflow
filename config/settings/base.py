@@ -235,3 +235,12 @@ LOGGING = {
 }
 
 APP_NAME = "LifeFlow"
+
+# ---------------------------------------------------------------------------
+# Web Push (VAPID). Generate keys with `python manage.py generate_vapid_keys`.
+# Push is simply disabled when the keys are not configured.
+# ---------------------------------------------------------------------------
+VAPID_PUBLIC_KEY = env("VAPID_PUBLIC_KEY", default="")
+VAPID_PRIVATE_KEY = env("VAPID_PRIVATE_KEY", default="")
+VAPID_SUBJECT = env("VAPID_SUBJECT", default="mailto:admin@lifeflow.local")
+SITE_URL = env("SITE_URL", default="http://127.0.0.1:8000")

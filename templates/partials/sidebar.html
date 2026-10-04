@@ -26,6 +26,9 @@
     <a href="{% url 'challenges:templates' %}" class="nav-link {% active 'challenges:templates' %}">{% icon "layout-template" %} {% trans "Templates" %}</a>
   </nav>
   <div class="border-t border-line p-3">
+    <div x-data="installApp" x-cloak>
+      <button type="button" x-show="available" @click="install()" class="nav-link w-full text-brand">{% icon "download" %} {% trans "Install the app" %}</button>
+    </div>
     <a href="{% url 'accounts:settings' %}" class="nav-link {% active 'accounts:settings' 'accounts:security' 'accounts:notifications' 'accounts:categories' %}">{% icon "settings" %} {% trans "Settings" %}</a>
     <div class="mt-2 flex items-center gap-3 rounded-xl px-2 py-2">
       {% include "partials/avatar.html" with size="h-8 w-8 text-xs" %}

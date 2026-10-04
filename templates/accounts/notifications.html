@@ -2,11 +2,29 @@
 {% load i18n ui %}
 {% block title %}{% trans "Notifications" %}{% endblock %}
 {% block settings %}
+<section class="card" x-data="pushToggle">
+  <div class="card-pad flex flex-col gap-4 sm:flex-row sm:items-center">
+    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand-strong">{% icon "bell" "icon-lg" %}</span>
+    <div class="flex-1">
+      <h2 class="card-title">{% trans "Notifications on this device" %}</h2>
+      <p class="card-subtitle" x-show="!supported">{% trans "This browser doesn't support push notifications. Install LifeFlow as an app (or use Chrome, Edge, Firefox or Safari 16.4+)." %}</p>
+      <p class="card-subtitle" x-show="supported && !serverEnabled">{% trans "Push isn't configured on this server yet (run “python manage.py generate_vapid_keys --write”). In-app notifications still work." %}</p>
+      <p class="card-subtitle" x-show="supported && serverEnabled && !subscribed">{% trans "Get reminders on this phone or computer, even when LifeFlow is closed." %}</p>
+      <p class="card-subtitle" x-show="supported && serverEnabled && subscribed">{% trans "Push notifications are active on this device." %} <span x-show="devices > 1" x-text="'(' + devices + ' {% trans "devices" as s %}{{ s|escapejs }})'"></span></p>
+    </div>
+    <div class="flex gap-2" x-show="supported && serverEnabled">
+      <button type="button" class="btn btn-primary" x-show="!subscribed" :disabled="busy" @click="enable()">{% trans "Enable" %}</button>
+      <button type="button" class="btn btn-secondary" x-show="subscribed" @click="test()">{% trans "Send a test" %}</button>
+      <button type="button" class="btn btn-ghost" x-show="subscribed" :disabled="busy" @click="disable()">{% trans "Disable" %}</button>
+    </div>
+  </div>
+</section>
+
 <form method="post" novalidate>
   {% csrf_token %}
   <section class="card">
     <div class="card-pad border-b border-line">
-      <h2 class="card-title">{% trans "Notifications" %}</h2>
+      <h2 class="card-title">{% trans "What to be reminded of" %}</h2>
       <p class="card-subtitle">{% trans "Reminders are optional. LifeFlow works perfectly without them." %}</p>
     </div>
     <div class="card-pad space-y-5">
@@ -18,9 +36,18 @@
         {% include "partials/field.html" with field=form.notify_end_of_day %}
         {% include "partials/field.html" with field=form.notify_weekly_review %}
         {% include "partials/field.html" with field=form.notify_report_ready %}
+      </div>
+      <div class="grid gap-5 sm:grid-cols-2">
+        {% include "partials/field.html" with field=form.morning_summary_time %}
+        {% include "partials/field.html" with field=form.end_of_day_time %}
+      </div>
+      <div class="divider"></div>
+      <div class="text-sm font-semibold">{% trans "Channels" %}</div>
+      <div class="grid gap-5 sm:grid-cols-2">
+        {% include "partials/field.html" with field=form.push_notifications %}
         {% include "partials/field.html" with field=form.email_notifications %}
       </div>
-      <div class="max-w-xs">{% include "partials/field.html" with field=form.end_of_day_time %}</div>
+      <p class="hint">{% icon "info" "icon-xs" %} {% trans "Per-challenge reminders are set in each challenge's settings (reminder time)." %}</p>
     </div>
     <div class="flex justify-end border-t border-line px-6 py-4"><button class="btn btn-primary">{% trans "Save" %}</button></div>
   </section>

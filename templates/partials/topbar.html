@@ -8,6 +8,14 @@
       <div class="truncate text-sm text-muted">{{ today|date:"l j F Y" }}</div>
     </div>
     <div class="ml-auto flex items-center gap-1">
+      <div x-data="connectivity" x-cloak>
+        <button type="button" x-show="!online || pending" @click="sync()" class="badge h-7 gap-1.5 px-2.5" :class="online ? 'badge-warning' : 'badge-neutral'"
+                :title="online ? '{% trans "Sync now" as s %}{{ s|escapejs }}' : ''" role="status">
+          <span class="h-1.5 w-1.5 rounded-full" :class="online ? 'bg-amber-500' : 'bg-zinc-400'"></span>
+          <span x-show="!online">{% trans "Offline" %}</span>
+          <span x-show="pending" x-text="pending + ' {% trans "to sync" as s %}{{ s|escapejs }}'"></span>
+        </button>
+      </div>
       <div x-data="themeSwitch('{{ theme }}')" class="relative">
         <div x-data="{open:false}" class="relative">
           <button type="button" class="btn btn-ghost btn-icon" @click="open=!open" aria-label="{% trans 'Theme' %}" data-tip="{% trans 'Theme' %}">
@@ -44,6 +52,7 @@
               </button>
             </template>
           </div>
+          <a href="{% url 'notifications:list' %}" class="block border-t border-line px-4 py-2.5 text-center text-xs font-medium text-brand hover:bg-subtle">{% trans "View all" %}</a>
         </div>
       </div>
       <a href="{% url 'accounts:settings' %}" class="ml-1 lg:hidden" aria-label="{% trans 'Profile' %}">{% include "partials/avatar.html" with size="h-8 w-8 text-xs" %}</a>

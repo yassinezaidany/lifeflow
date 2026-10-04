@@ -1,3 +1,5 @@
+import hashlib
+
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -31,3 +33,31 @@ class Notification(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+
+class PushSubscription(models.Model):
+    """A browser/device registered for Web Push (one user can have several devices)."""
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="push_subscriptions")
+    endpoint = models.TextField()
+    # Endpoints are long URLs: uniqueness is enforced on their SHA-256 (portable index size).
+    endpoint_hash = models.CharField(max_length=64, unique=True, editable=False)
+    p256dh = models.CharField(max_length=200)
+    auth = models.CharField(max_length=100)
+    user_agent = models.CharField(max_length=300, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_success_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self) -> str:
+        return f"Push<{self.user_id} {self.endpoint[:40]}…>"
+
+    @staticmethod
+    def hash_endpoint(endpoint: str) -> str:
+        return hashlib.sha256(endpoint.encode("utf-8")).hexdigest()
+
+    def save(self, *args, **kwargs):
+        self.endpoint_hash = self.hash_endpoint(self.endpoint)
+        super().save(*args, **kwargs)

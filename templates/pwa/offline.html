@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n static ui %}
+{% block title %}{% trans "Offline" %}{% endblock %}
+{% block body %}
+<div class="flex min-h-full flex-col items-center justify-center px-6 py-24 text-center">
+  <img src="{% static 'img/logo.svg' %}" alt="" class="h-12 w-12">
+  <h1 class="mt-8 text-2xl font-semibold">{% trans "You're offline" %}</h1>
+  <p class="mt-3 max-w-sm text-muted">{% trans "This page hasn't been saved on this device yet. Pages you visited recently (like Today) remain available, and progress you record offline is synced automatically when the connection comes back." %}</p>
+  <div class="mt-8 flex gap-2">
+    <a href="/today/" class="btn btn-primary">{% trans "Open Today" %}</a>
+    <button type="button" class="btn btn-secondary" onclick="location.reload()">{% trans "Retry" %}</button>
+  </div>
+</div>
+{% endblock %}

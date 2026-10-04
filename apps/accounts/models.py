@@ -1,4 +1,5 @@
 import zoneinfo
+from datetime import time
 
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
@@ -105,7 +106,9 @@ class UserSetting(TimeStampedModel):
     notify_weekly_review = models.BooleanField(default=True)
     notify_report_ready = models.BooleanField(default=True)
     email_notifications = models.BooleanField(default=False)
-    end_of_day_time = models.TimeField(default="21:00")
+    push_notifications = models.BooleanField(default=True, help_text=_("Send to devices where push is enabled."))
+    morning_summary_time = models.TimeField(default=time(8, 0))
+    end_of_day_time = models.TimeField(default=time(21, 0))
 
     def __str__(self) -> str:
         return f"Settings<{self.user}>"

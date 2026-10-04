@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+from apps.core import pwa
 from apps.dashboard.views import landing
 
 admin.site.site_header = "LifeFlow administration"
@@ -10,6 +11,11 @@ admin.site.site_title = "LifeFlow admin"
 
 urlpatterns = [
     path("", landing, name="landing"),
+    path("sw.js", pwa.service_worker, name="service-worker"),
+    path("manifest.webmanifest", pwa.manifest, name="manifest"),
+    path("offline/", pwa.offline, name="offline"),
+    path("healthz", pwa.health, name="health"),
+    path("i18n/", include("django.conf.urls.i18n")),
     path("", include("apps.dashboard.urls")),
     path("accounts/", include("apps.accounts.urls")),
     path("challenges/", include("apps.challenges.urls")),
@@ -17,6 +23,7 @@ urlpatterns = [
     path("analytics/", include("apps.analytics.urls")),
     path("reports/", include("apps.reports.urls")),
     path("journal/", include("apps.journal.urls")),
+    path("notifications/", include("apps.notifications.urls")),
     path("api/", include("config.api_urls")),
     path("admin/", admin.site.urls),
 ]

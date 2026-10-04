@@ -242,7 +242,7 @@ class ChallengeSerializer(serializers.ModelSerializer):
         model = Challenge
         fields = [
             "id", "name", "description", "category", "category_id", "icon", "color", "status",
-            "start_date", "end_date", "closed_on", "tracking_fields", "goal", "schedule", "goals_history",
+            "start_date", "end_date", "closed_on", "reminder_time", "tracking_fields", "goal", "schedule", "goals_history",
             "progress", "created_at", "updated_at",
         ]
         read_only_fields = ["status", "closed_on", "created_at", "updated_at"]

@@ -115,7 +115,13 @@ class NotificationSettingsForm(StyledFormMixin, forms.ModelForm):
     class Meta:
         model = UserSetting
         exclude = ["user", "created_at", "updated_at"]
-        widgets = {"end_of_day_time": forms.TimeInput(attrs={"type": "time"}, format="%H:%M")}
+        widgets = {
+            "end_of_day_time": forms.TimeInput(attrs={"type": "time"}, format="%H:%M"),
+            "morning_summary_time": forms.TimeInput(attrs={"type": "time"}, format="%H:%M"),
+        }
+        labels = {"notify_daily_goals": _("Morning summary & challenge reminders"), "morning_summary_time": _("Morning summary at"),
+                  "end_of_day_time": _("End-of-day check at"), "push_notifications": _("Push notifications"),
+                  "email_notifications": _("E-mail notifications")}
 
 
 class StyledPasswordChangeForm(StyledFormMixin, PasswordChangeForm):

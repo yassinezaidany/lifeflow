@@ -21,6 +21,11 @@
         <div><label class="label">{% trans "Start date" %}</label><input type="date" class="input" x-model="general.start_date"><p class="field-error" x-show="errors.start_date" x-text="errors.start_date"></p></div>
         <div><label class="label">{% trans "End date" %}</label><input type="date" class="input" x-model="general.end_date"><p class="field-error" x-show="errors.end_date" x-text="errors.end_date"></p></div>
       </div>
+      <div class="max-w-xs">
+        <label class="label">{% trans "Daily reminder" %} <span class="font-normal text-faint">({% trans "optional" %})</span></label>
+        <input type="time" class="input" x-model="general.reminder_time">
+        <p class="hint">{% trans "Sent on active days only, if you haven't recorded progress yet." %}</p>
+      </div>
       <div><label class="label">{% trans "Color" %}</label><div class="flex flex-wrap gap-2"><template x-for="c in colors" :key="c"><button type="button" class="h-7 w-7 rounded-full bg-tone" :class="['tone-'+c, general.color===c && 'ring-2 ring-offset-2 ring-tone ring-offset-surface']" @click="general.color=c" :aria-label="c"></button></template></div></div>
       <div><label class="label">{% trans "Icon" %}</label>
         <div class="flex flex-wrap gap-1" :class="'tone-' + general.color"><template x-for="ic in icons" :key="ic"><button type="button" class="flex h-8 w-8 items-center justify-center rounded-lg" :class="general.icon===ic ? 'bg-tone/15 text-tone-strong ring-1 ring-tone/40' : 'text-muted hover:bg-subtle'" @click="general.icon=ic" :aria-label="ic"><svg class="icon icon-sm"><use :href="LF.cfg.sprite + '#i-' + ic"></use></svg></button></template></div>

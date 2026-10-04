@@ -94,6 +94,7 @@ class Challenge(OwnedModel):
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True, help_text=_("Leave empty for an open-ended challenge."))
     closed_on = models.DateField(null=True, blank=True, help_text=_("Date the challenge was completed/archived early."))
+    reminder_time = models.TimeField(null=True, blank=True, help_text=_("Daily reminder on active days, if not done yet."))
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
