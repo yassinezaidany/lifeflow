@@ -218,6 +218,7 @@
         </div>
         <div class="-mt-1 flex flex-wrap items-center gap-1.5">
           <span class="text-xs text-muted" x-text="duration > 0 ? LF.fmtMinutes(duration) : ''"></span>
+          <span x-show="overnight" class="badge badge-info">{% icon "moon" "icon-xs" %} {% trans "ends the next day" %}</span>
           <template x-for="m in [15,30,60,90,120]" :key="m"><button type="button" class="badge badge-neutral hover:bg-line" @click="setDuration(m)" x-text="LF.fmtMinutes(m)"></button></template>
         </div>
         <p class="field-error" x-show="errors.end_time" x-text="errors.end_time"></p>

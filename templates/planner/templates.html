@@ -11,7 +11,7 @@
     this.errors = {};
     this.editing = t ? JSON.parse(JSON.stringify(t)) : {id: null, name: '', description: '', icon: 'layout-template', color: 'indigo', items: [{title: '', start_time: '08:00', end_time: '09:00', category_id: null}]};
   },
-  addItem() { const last = this.editing.items[this.editing.items.length - 1]; const s = last ? last.end_time : '08:00'; this.editing.items.push({title: '', start_time: s, end_time: LF.fromMin(Math.min(LF.endMin(s) + 60, 1440)), category_id: null}); },
+  addItem() { const last = this.editing.items[this.editing.items.length - 1]; const s = last ? last.end_time : '08:00'; this.editing.items.push({title: '', start_time: s, end_time: LF.fromMin(LF.toMin(s) + 60), category_id: null}); },
   sortItems() { this.editing.items.sort((a, b) => a.start_time.localeCompare(b.start_time)); },
   async save() {
     const e = this.editing; this.errors = {}; this.sortItems();
@@ -25,7 +25,7 @@
     if (!(await LF.confirm('{% trans "Delete this template?" as s %}{{ s|escapejs }}', {danger: true, confirm: '{% trans "Delete" as s %}{{ s|escapejs }}'}))) return;
     await LF.api('/api/planner/templates/' + t.id + '/', {method: 'DELETE'}); this.load();
   },
-  totalMinutes(t) { return t.items.reduce((s, i) => s + (LF.endMin(i.end_time) - LF.toMin(i.start_time)), 0); }
+  totalMinutes(t) { return t.items.reduce((s, i) => s + (LF.endMin(i.end_time, i.start_time) - LF.toMin(i.start_time)), 0); }
 }" x-init="load()">
   <div class="flex flex-wrap items-center justify-between gap-3">
     <div>

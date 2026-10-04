@@ -32,7 +32,7 @@
       {% for row in rows %}{% with a=row.activity %}
       <li x-data="activityRow({{ row.data|json_attr }})" class="group flex items-center gap-3 px-4 py-3 tone-{{ a.effective_color }} {% if a == current %}bg-tone/5{% endif %}">
         <div class="w-[4.5rem] shrink-0 text-xs tabular text-muted">
-          <div class="font-semibold text-ink">{{ a.start_time|utime:user }}</div>{{ a.end_time|utime:user }}
+          <div class="font-semibold text-ink">{{ a.start_time|utime:user }}</div>{{ a.end_time|utime:user }}{% if a.overnight %}<sup class="ms-0.5 text-[9px] text-brand">+1</sup>{% endif %}
         </div>
         <span class="h-9 w-1 shrink-0 rounded-full bg-tone"></span>
         <button type="button" class="min-w-0 flex-1 text-left" @click="edit()">

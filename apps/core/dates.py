@@ -60,12 +60,13 @@ def parse_date(value, default: date | None = None) -> date | None:
 
 
 def minutes_between(start, end) -> int:
-    """Minutes between two `time`s on the same day. 00:00 as end means midnight."""
+    """Duration of a time range. An end earlier than (or equal to) the start wraps to
+    the next day: 23:00 → 07:00 = 480, 09:00 → 00:00 = 900, 00:00 → 00:00 = 1440."""
     s = start.hour * 60 + start.minute
     e = end.hour * 60 + end.minute
-    if e == 0:
-        e = 24 * 60
-    return max(e - s, 0)
+    if e <= s:
+        e += 24 * 60
+    return e - s
 
 
 def format_minutes(total: float | int | None) -> str:

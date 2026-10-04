@@ -31,15 +31,22 @@ class Priority(models.TextChoices):
 
 
 def time_range_constraint(name: str) -> models.CheckConstraint:
-    # end must be after start; 00:00 as end time means "until midnight".
-    return models.CheckConstraint(condition=Q(end_time__gt=F("start_time")) | Q(end_time=MIDNIGHT), name=name)
+    # An end time earlier than the start time means the activity ends the next day
+    # (e.g. Sleep 23:00 → 07:00). Only a zero-length range is invalid, except
+    # 00:00 → 00:00 which means a full day.
+    return models.CheckConstraint(condition=~Q(end_time=F("start_time")) | Q(start_time=MIDNIGHT), name=name)
 
 
 def validate_time_range(start, end):
     if start is None or end is None:
         return
-    if not (end > start or end == MIDNIGHT):
-        raise ValidationError({"end_time": _("End time must be after start time.")})
+    if end == start and start != MIDNIGHT:
+        raise ValidationError({"end_time": _("End time must be different from start time.")})
+
+
+def ends_next_day(start, end) -> bool:
+    """True when the activity crosses midnight (an end at exactly 00:00 does not spill)."""
+    return end != MIDNIGHT and end <= start
 
 
 class ActivityCategory(OwnedModel):
@@ -73,6 +80,10 @@ class TimedItem(models.Model):
     def duration_minutes(self) -> int:
         return minutes_between(self.start_time, self.end_time)
 
+    @property
+    def overnight(self) -> bool:
+        return ends_next_day(self.start_time, self.end_time)
+
     def clean(self):
         validate_time_range(self.start_time, self.end_time)
 
@@ -98,7 +109,7 @@ class RecurringRule(OwnedModel, TimedItem):
         ordering = ["start_time"]
         indexes = [models.Index(fields=["user", "is_active"])]
         constraints = [
-            time_range_constraint("rule_time_range"),
+            time_range_constraint("rule_time_range_v2"),
             models.CheckConstraint(condition=Q(interval_days__gte=1), name="rule_interval_positive"),
             models.CheckConstraint(condition=Q(end_date__isnull=True) | Q(end_date__gte=F("start_date")), name="rule_date_range"),
         ]
@@ -160,7 +171,7 @@ class PlannedActivity(OwnedModel, TimedItem):
             models.Index(fields=["challenge", "date"]),
         ]
         constraints = [
-            time_range_constraint("activity_time_range"),
+            time_range_constraint("activity_time_range_v2"),
             models.UniqueConstraint(fields=["recurring_rule", "occurrence_date"], name="uniq_rule_occurrence"),
         ]
 
@@ -200,4 +211,4 @@ class PlannerTemplateItem(TimedItem, TimeStampedModel):
 
     class Meta:
         ordering = ["start_time"]
-        constraints = [time_range_constraint("template_item_time_range")]
+        constraints = [time_range_constraint("template_item_time_range_v2")]

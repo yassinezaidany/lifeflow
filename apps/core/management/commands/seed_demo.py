@@ -12,7 +12,7 @@ from decimal import Decimal
 
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
-from django.db import transaction
+from django.db import models, transaction
 from django.utils import timezone
 
 from apps.challenges.models import ChallengeCategory, RestDay
@@ -164,7 +164,7 @@ class Command(BaseCommand):
             ("Lunch", time(13, 0), time(14, 0), "daily", [], acats["Food"], None),
             ("University", time(14, 0), time(18, 0), "weekly", [1, 3], acats["Study"], None),
             ("Learning", time(19, 0), time(21, 0), "weekly", [0, 1, 2, 3, 4], acats["Study"], learning),
-            ("Sleep", time(23, 0), time(0, 0), "daily", [], acats["Sleep"], None),
+            ("Sleep", time(23, 0), time(4, 45), "daily", [], acats["Sleep"], None),
         ]
         for title, s, e, freq, wd, cat, ch in rules:
             RecurringRule.objects.create(user=user, title=title, start_time=s, end_time=e, frequency=freq, weekdays=wd,
@@ -179,7 +179,7 @@ class Command(BaseCommand):
                 a.completed_at = now
                 a.actual_minutes = a.duration_minutes
             a.save()
-        for a in PlannedActivity.objects.filter(user=user, date=today, end_time__lte=time(9, 0)).exclude(end_time=time(0, 0)):
+        for a in PlannedActivity.objects.filter(user=user, date=today, start_time__lt=time(9, 0), end_time__lte=time(9, 0), end_time__gt=models.F("start_time")):
             a.status, a.completed_at, a.is_detached = "completed", now, True
             a.save()
         PlannedActivity.objects.create(user=user, title="Dentist", date=today + timedelta(days=2), start_time=time(16, 0),
@@ -189,7 +189,7 @@ class Command(BaseCommand):
         for title, s, e, cat in [("Fajr + Qur'an", time(5), time(5, 30), "Qur'an"), ("Sleep", time(5, 30), time(8, 0), "Sleep"),
                                  ("University", time(8, 30), time(12, 0), "Study"), ("Lunch", time(12, 0), time(13, 0), "Food"),
                                  ("University", time(14), time(18), "Study"), ("Return", time(18), time(19), "Travel"),
-                                 ("Learning", time(19), time(21), "Study"), ("Sleep", time(23), time(0), "Sleep")]:
+                                 ("Learning", time(19), time(21), "Study"), ("Sleep", time(23), time(4, 45), "Sleep")]:
             PlannerTemplateItem.objects.create(template=tpl, title=title, start_time=s, end_time=e, category=acats[cat])
         tpl2 = PlannerTemplate.objects.create(user=user, name="Weekend", icon="sun", color="amber")
         for title, s, e, cat in [("Fajr + Qur'an", time(5), time(5, 30), "Qur'an"), ("Family breakfast", time(9), time(10), "Family"),

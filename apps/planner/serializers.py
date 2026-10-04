@@ -59,7 +59,7 @@ class TimedSerializerMixin(serializers.Serializer):
         try:
             validate_time_range(start, end)
         except Exception:
-            raise serializers.ValidationError({"end_time": _("End time must be after start time.")})
+            raise serializers.ValidationError({"end_time": _("End time must be different from start time.")})
         return attrs
 
 
@@ -69,6 +69,7 @@ class PlannedActivitySerializer(TimedSerializerMixin, serializers.ModelSerialize
     challenge = _MiniChallenge(read_only=True)
     challenge_id = UserScopedPK(Challenge, source="challenge", required=False, allow_null=True, write_only=True)
     duration_minutes = serializers.IntegerField(read_only=True)
+    overnight = serializers.BooleanField(read_only=True)
     effective_color = serializers.CharField(read_only=True)
     is_recurring = serializers.SerializerMethodField()
     has_entry = serializers.SerializerMethodField()
@@ -77,7 +78,7 @@ class PlannedActivitySerializer(TimedSerializerMixin, serializers.ModelSerialize
     class Meta:
         model = PlannedActivity
         fields = [
-            "id", "title", "description", "date", "start_time", "end_time", "duration_minutes",
+            "id", "title", "description", "date", "start_time", "end_time", "duration_minutes", "overnight",
             "category", "category_id", "priority", "status", "notes", "color", "effective_color",
             "challenge", "challenge_id", "recurring_rule", "is_recurring", "is_detached",
             "actual_minutes", "completed_at", "rescheduled_from", "has_entry", "created_at", "updated_at",

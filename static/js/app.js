@@ -68,8 +68,11 @@
   const parseISO = (s) => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
   const addDays = (s, n) => { const d = parseISO(s); d.setDate(d.getDate() + n); return iso(d); };
   const toMin = (hhmm) => { if (!hhmm) return 0; const [h, m] = hhmm.split(":").map(Number); return h * 60 + m; };
-  const fromMin = (m) => { m = Math.max(0, Math.min(m, 1440)); if (m === 1440) return "00:00"; return `${pad(Math.floor(m / 60))}:${pad(m % 60)}`; };
-  const endMin = (hhmm) => (hhmm === "00:00" ? 1440 : toMin(hhmm));
+  // Minutes → "HH:MM", wrapping around midnight (1440 → "00:00", 1500 → "01:00").
+  const fromMin = (m) => { m = ((Math.round(m) % 1440) + 1440) % 1440; return `${pad(Math.floor(m / 60))}:${pad(m % 60)}`; };
+  // End in minutes relative to the start day: an end <= start means the next day (23:00 → 07:00 = 1860).
+  const endMin = (hhmm, startHHMM) => { const e = toMin(hhmm), s = startHHMM ? toMin(startHHMM) : 0; return e <= s ? e + 1440 : e; };
+  const isOvernight = (start, end) => end !== "00:00" && toMin(end) <= toMin(start);
   const fmtMinutes = (total) => {
     if (total === null || total === undefined || isNaN(total)) return "—";
     total = Math.round(total);
@@ -384,8 +387,9 @@
         this.open = true;
         this.$nextTick(() => this.$refs.title && this.$refs.title.focus());
       },
-      get duration() { return endMin(this.form.end_time) - toMin(this.form.start_time); },
-      setDuration(mins) { this.form.end_time = fromMin(Math.min(toMin(this.form.start_time) + mins, 1440)); },
+      get duration() { return endMin(this.form.end_time, this.form.start_time) - toMin(this.form.start_time); },
+      get overnight() { return isOvernight(this.form.start_time, this.form.end_time); },
+      setDuration(mins) { this.form.end_time = fromMin(toMin(this.form.start_time) + mins); },
       toggleWeekday(i) {
         const set = new Set(this.rule.weekdays);
         set.has(i) ? set.delete(i) : set.add(i);
@@ -523,6 +527,6 @@
   window.LF = {
     cfg, t, api, ApiError, fieldErrors, toast, confirm: confirmDialog, refresh, applyTheme,
     chart, tone, cssVar, cssVarA, baseScales, tooltip,
-    iso, parseISO, addDays, toMin, fromMin, endMin, fmtMinutes, fmtTime, fmtDate, escapeHtml, icon, pad,
+    iso, parseISO, addDays, toMin, fromMin, endMin, isOvernight, fmtMinutes, fmtTime, fmtDate, escapeHtml, icon, pad,
   };
 })();

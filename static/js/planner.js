@@ -7,12 +7,14 @@
   const SNAP = 15;
   const DRAG_THRESHOLD = 4;
 
-  /** Assign side-by-side lanes to overlapping activities of one day. */
-  function layout(activities) {
-    const items = activities
-      .filter((a) => a.status !== "rescheduled" && !(a.status === "cancelled" && a.is_recurring))
-      .map((a) => ({ a, s: toMin(a.start_time), e: endMin(a.end_time) }))
-      .sort((x, y) => x.s - y.s || y.e - x.e);
+  /** Assign side-by-side lanes to overlapping activities of one day.
+   *  `carryover` = previous day's overnight activities, shown from 00:00 to their end. */
+  function layout(activities, carryover = []) {
+    const visible = (a) => a.status !== "rescheduled" && !(a.status === "cancelled" && a.is_recurring);
+    const items = [
+      ...carryover.filter(visible).map((a) => ({ a, s: 0, e: toMin(a.end_time), spill: true })),
+      ...activities.filter(visible).map((a) => ({ a, s: toMin(a.start_time), e: Math.min(endMin(a.end_time, a.start_time), 1440) })),
+    ].sort((x, y) => x.s - y.s || y.e - x.e);
     const out = [];
     let cluster = [], clusterEnd = -1;
     const flush = () => {
@@ -124,7 +126,7 @@
         url.searchParams.set("view", this.mode);
         history.replaceState(null, "", url);
       },
-      blocks(day) { return layout(day.activities); },
+      blocks(day) { return layout(day.activities, day.carryover || []); },
       blockStyle(it) {
         const top = (Math.max(it.s, this.dayStart) - this.dayStart) * PPM;
         const height = Math.max((Math.min(it.e, this.dayEnd) - Math.max(it.s, this.dayStart)) * PPM - 2, 18);
@@ -133,7 +135,10 @@
       },
       visible(it) { return it.e > this.dayStart && it.s < this.dayEnd; },
       isCompact(it) { return (it.e - it.s) < 40; },
-      label(it) { return `${fmtTime(it.a.start_time)} – ${fmtTime(it.a.end_time)}`; },
+      label(it) {
+        if (it.spill) return `→ ${fmtTime(it.a.end_time)}`;
+        return `${fmtTime(it.a.start_time)} – ${fmtTime(it.a.end_time)}${it.a.overnight ? " (+1)" : ""}`;
+      },
       dayLabel(day) {
         const d = parseISO(day.date);
         return { weekday: d.toLocaleDateString(LF.cfg.locale, { weekday: "short" }), num: d.getDate() };
@@ -161,24 +166,24 @@
         const columns = [...this.$root.querySelectorAll("[data-day-col]")];
         this.drag = {
           kind, it, a: it.a, moved: false, x0: event.clientX, y0: event.clientY,
-          s0: it.s, e0: it.e, date0: day.date, columns, pointerId: event.pointerId,
+          s0: it.s, e0: it.s + it.a.duration_minutes, spill: !!it.spill, date0: day.date, columns, pointerId: event.pointerId,
           origStart: it.a.start_time, origEnd: it.a.end_time, origDate: it.a.date,
         };
         event.currentTarget.setPointerCapture && event.currentTarget.setPointerCapture(event.pointerId);
       },
       onDrag(event) {
         const d = this.drag;
-        if (!d) return;
+        if (!d || d.spill) return; // the after-midnight part is edited from its start day
         const dx = event.clientX - d.x0, dy = event.clientY - d.y0;
         if (!d.moved && Math.abs(dx) < DRAG_THRESHOLD && Math.abs(dy) < DRAG_THRESHOLD) return;
         d.moved = true;
         const delta = Math.round(dy / PPM / SNAP) * SNAP;
         if (d.kind === "resize") {
-          const e = Math.min(Math.max(d.e0 + delta, d.s0 + SNAP), 1440);
+          const e = Math.min(Math.max(d.e0 + delta, d.s0 + SNAP), d.s0 + 1440 - SNAP);
           d.a.end_time = fromMin(e);
         } else {
           const len = d.e0 - d.s0;
-          const s = Math.min(Math.max(d.s0 + delta, 0), 1440 - len);
+          const s = Math.min(Math.max(d.s0 + delta, 0), 1440 - SNAP);
           d.a.start_time = fromMin(s);
           d.a.end_time = fromMin(s + len);
           const col = d.columns.find((c) => { const r = c.getBoundingClientRect(); return event.clientX >= r.left && event.clientX <= r.right; });

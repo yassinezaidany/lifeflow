@@ -14,7 +14,7 @@ from apps.core.audit import audit
 from apps.core.dates import daterange, minutes_between, user_now, user_today
 from apps.core.models import AuditLog
 
-from .models import MIDNIGHT, PlannedActivity, PlannerTemplate, PlannerTemplateItem, RecurringRule, validate_time_range
+from .models import PlannedActivity, PlannerTemplate, PlannerTemplateItem, RecurringRule, ends_next_day, validate_time_range
 
 MAX_MATERIALISE_DAYS = 120
 S = PlannedActivity.Status
@@ -86,15 +86,19 @@ def delete_rule(rule: RecurringRule) -> None:
 
 # --- Activities ------------------------------------------------------------------------------
 def find_overlaps(user, day: date, start: time, end: time, exclude_id: int | None = None) -> list[PlannedActivity]:
-    """Activities of the same day whose time range intersects [start, end)."""
+    """Activities whose time range intersects [start, end) on `day`, including
+    activities of the previous/next day that cross midnight."""
     s = start.hour * 60 + start.minute
     e = s + minutes_between(start, end)
-    qs = PlannedActivity.objects.filter(user=user, date=day).exclude(status__in=[S.CANCELLED, S.RESCHEDULED])
+    qs = PlannedActivity.objects.filter(user=user, date__range=(day - timedelta(days=1), day + timedelta(days=1))).exclude(
+        status__in=[S.CANCELLED, S.RESCHEDULED]
+    )
     if exclude_id:
         qs = qs.exclude(pk=exclude_id)
     result = []
     for a in qs:
-        a_s = a.start_time.hour * 60 + a.start_time.minute
+        offset = (a.date - day).days * 24 * 60
+        a_s = offset + a.start_time.hour * 60 + a.start_time.minute
         a_e = a_s + a.duration_minutes
         if a_s < e and s < a_e:
             result.append(a)
@@ -261,8 +265,7 @@ def template_from_day(user, day: date, name: str, description: str = "") -> Plan
 def is_overdue(activity: PlannedActivity, now: datetime) -> bool:
     if activity.status not in (S.PLANNED, S.IN_PROGRESS):
         return False
-    end_day = activity.date + timedelta(days=1) if activity.end_time == MIDNIGHT else activity.date
-    end_dt = datetime.combine(end_day, activity.end_time)
+    end_dt = datetime.combine(activity.date, activity.start_time) + timedelta(minutes=activity.duration_minutes)
     return end_dt <= now.replace(tzinfo=None)
 
 

@@ -195,6 +195,7 @@
   .tl-block.is-done { @apply opacity-60; }
   .tl-block.is-done .tl-title { @apply line-through; }
   .tl-block.is-cancelled { @apply opacity-40 border-dashed; }
+  .tl-block.is-spill { @apply rounded-t-none opacity-75; background-image: linear-gradient(to bottom, transparent, rgb(var(--tone) / 0.06)); }
   .tl-block.is-dragging { @apply shadow-pop ring-2 ring-tone/40 z-30 opacity-90; }
 
   /* Heatmap */

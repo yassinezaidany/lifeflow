@@ -80,9 +80,9 @@
                :data-day-col="day.date"
                style="background-image: repeating-linear-gradient(to bottom, rgb(var(--c-line) / .8) 0 1px, transparent 1px 30px, rgb(var(--c-line) / .35) 30px 31px, transparent 31px 60px);"
                @click.self="createAt(day, $event)">
-            <template x-for="it in blocks(day)" :key="it.a.id">
+            <template x-for="it in blocks(day)" :key="(it.spill ? 's' : '') + it.a.id">
               <div x-show="visible(it)" class="tl-block" tabindex="0" role="button"
-                   :class="['tone-' + it.a.effective_color, ['completed','partial'].includes(it.a.status) && 'is-done', it.a.status==='cancelled' && 'is-cancelled', drag && drag.a.id===it.a.id && drag.moved && 'is-dragging']"
+                   :class="['tone-' + it.a.effective_color, ['completed','partial'].includes(it.a.status) && 'is-done', it.a.status==='cancelled' && 'is-cancelled', it.spill && 'is-spill', drag && drag.a.id===it.a.id && drag.moved && 'is-dragging']"
                    :style="blockStyle(it)"
                    @pointerdown="startDrag($event, it, day, 'move')"
                    @keydown.enter.prevent="open(it.a)" @keydown="keyMove($event, it)"
@@ -97,7 +97,7 @@
                 <div x-show="!isCompact(it) && it.a.challenge" class="truncate text-[11px] leading-4 opacity-80">
                   <svg class="icon icon-xs"><use :href="LF.cfg.sprite + '#i-target'"></use></svg> <span x-text="it.a.challenge && it.a.challenge.name"></span>
                 </div>
-                <div class="absolute inset-x-0 bottom-0 h-2 cursor-ns-resize" @pointerdown.stop="startDrag($event, it, day, 'resize')" aria-hidden="true"></div>
+                <div x-show="!it.spill" class="absolute inset-x-0 bottom-0 h-2 cursor-ns-resize" @pointerdown.stop="startDrag($event, it, day, 'resize')" aria-hidden="true"></div>
               </div>
             </template>
             <template x-if="showNow(day)">

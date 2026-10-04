@@ -13,7 +13,7 @@ from apps.core.models import AuditLog
 from apps.tracking.models import ChallengeEntry
 
 from . import services
-from .models import ActivityCategory, PlannedActivity, PlannerTemplate, RecurringRule
+from .models import ActivityCategory, PlannedActivity, PlannerTemplate, RecurringRule, ends_next_day
 from .serializers import (
     ActivityCategorySerializer,
     HHMMField,
@@ -196,24 +196,39 @@ class PlannerTemplateViewSet(OwnedQuerysetMixin, viewsets.ModelViewSet):
 
 
 def _day_payload(request, day, activities):
+    """`activities` may include the previous day: its overnight activities are returned as
+    `carryover` (displayed from 00:00 on `day`), never counted in the day's summary."""
     items = [a for a in activities if a.date == day]
-    return {"date": day.isoformat(), "activities": serialize_activities(request, items), "summary": services.summarize(items, request.user)}
+    prev = day - timedelta(days=1)
+    carry = [
+        a for a in activities
+        if a.date == prev and ends_next_day(a.start_time, a.end_time)
+        and a.status not in (PlannedActivity.Status.CANCELLED, PlannedActivity.Status.RESCHEDULED)
+    ]
+    return {
+        "date": day.isoformat(),
+        "activities": serialize_activities(request, items),
+        "carryover": serialize_activities(request, carry),
+        "summary": services.summarize(items, request.user),
+    }
+
+
+def _activities_for(user, start, end):
+    """Activities from the day before `start` (for overnight carry-over) through `end`."""
+    services.ensure_occurrences(user, start - timedelta(days=1), end)
+    return list(ACTIVITY_QS.filter(user=user, date__range=(start - timedelta(days=1), end)))
 
 
 @api_view(["GET"])
 def planner_day(request):
     day = parse_date(request.query_params.get("date"), user_today(request.user))
-    services.ensure_occurrences(request.user, day, day)
-    activities = list(ACTIVITY_QS.filter(user=request.user, date=day))
-    return Response(_day_payload(request, day, activities))
+    return Response(_day_payload(request, day, _activities_for(request.user, day, day)))
 
 
 @api_view(["GET"])
 def planner_today(request):
     day = user_today(request.user)
-    services.ensure_occurrences(request.user, day, day)
-    activities = list(ACTIVITY_QS.filter(user=request.user, date=day))
-    payload = _day_payload(request, day, activities)
+    payload = _day_payload(request, day, _activities_for(request.user, day, day))
     now = user_now(request.user).time()
     payload["next"] = next(
         (a for a in payload["activities"] if a["status"] == "planned" and a["start_time"] >= now.strftime("%H:%M")), None
@@ -227,12 +242,12 @@ def planner_week(request):
     anchor = parse_date(request.query_params.get("start"), user_today(request.user))
     start = week_start_for(anchor, profile.week_start)
     end = start + timedelta(days=6)
-    services.ensure_occurrences(request.user, start, end)
-    activities = list(ACTIVITY_QS.filter(user=request.user, date__range=(start, end)))
+    activities = _activities_for(request.user, start, end)
     days = [_day_payload(request, start + timedelta(days=i), activities) for i in range(7)]
+    in_week = [a for a in activities if a.date >= start]
     return Response({
         "start": start.isoformat(),
         "end": end.isoformat(),
         "days": days,
-        "summary": services.summarize(activities, request.user),
+        "summary": services.summarize(in_week, request.user),
     })

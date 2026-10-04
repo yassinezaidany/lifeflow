@@ -30,8 +30,32 @@ class TestActivities:
         assert create(api, start_time="23:00", end_time="00:00").json()["duration_minutes"] == 60
 
     def test_invalid_time_range(self, api):
-        r = create(api, start_time="10:00", end_time="09:00")
+        r = create(api, start_time="10:00", end_time="10:00")
         assert r.status_code == 400 and "end_time" in r.json()["errors"]
+        assert create(api, start_time="00:00", end_time="00:00").json()["duration_minutes"] == 1440
+
+    def test_overnight_activity(self, api, user):
+        r = create(api, title="Sleep", start_time="23:00", end_time="07:00")
+        assert r.status_code == 201 and r.json()["duration_minutes"] == 480 and r.json()["overnight"] is True
+        # carried over to the next day, but not counted in that day's summary
+        nxt = api.get("/api/planner/", {"date": "2026-01-06"}).json()
+        assert [a["title"] for a in nxt["carryover"]] == ["Sleep"] and nxt["summary"]["planned"] == 0
+        week = api.get("/api/planner/week/", {"start": "2026-01-05"}).json()
+        assert week["days"][1]["carryover"][0]["title"] == "Sleep" and week["summary"]["planned"] == 1
+        # overlaps with an early activity of the next day
+        r = api.post("/api/planner/activities/", {"title": "Fajr", "date": "2026-01-06", "start_time": "05:00", "end_time": "05:30"}, format="json")
+        assert [o["title"] for o in r.json()["overlaps"]] == ["Sleep"]
+
+    def test_overnight_overdue_uses_real_end(self, user):
+        from datetime import datetime
+        a = PlannedActivity(user=user, title="Night", date=date(2026, 1, 5), start_time=time(23), end_time=time(7))
+        assert not services.is_overdue(a, datetime(2026, 1, 6, 6, 0))
+        assert services.is_overdue(a, datetime(2026, 1, 6, 7, 0))
+
+    def test_overnight_recurring_rule(self, api, user):
+        r = api.post("/api/planner/rules/", {"title": "Sleep", "start_time": "23:00", "end_time": "05:00", "frequency": "daily",
+                                             "start_date": MON.isoformat()}, format="json")
+        assert r.status_code == 201 and r.json()["duration_minutes"] == 360
 
     def test_overlap_detection(self, api, user):
         create(api)
@@ -46,7 +70,7 @@ class TestActivities:
         assert r.json()["title"] == "Gym session"
         r = api.post(f"/api/planner/activities/{a['id']}/move/", {"date": (MON + timedelta(days=1)).isoformat(), "start_time": "18:00", "end_time": "19:30"}, format="json")
         assert r.json()["date"] == "2026-01-06" and r.json()["start_time"] == "18:00"
-        r = api.post(f"/api/planner/activities/{a['id']}/move/", {"start_time": "20:00", "end_time": "19:00"}, format="json")
+        r = api.post(f"/api/planner/activities/{a['id']}/move/", {"start_time": "20:00", "end_time": "20:00"}, format="json")
         assert r.status_code == 400
         r = api.post(f"/api/planner/activities/{a['id']}/duplicate/", {"date": "2026-01-10"}, format="json")
         assert r.status_code == 201 and r.json()["id"] != a["id"]
