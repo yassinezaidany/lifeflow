@@ -9,24 +9,25 @@ paliers, statistiques avancées, notifications in-app (architecture + commande d
 
 Activités de nuit · PWA installable avec pages et saisie hors ligne · Web Push + e-mails HTML + résumé du matin + rappels par défi + planificateur · arabe complet avec mise en page RTL et PDF arabe · assistant de création en langage naturel (Claude optionnel + analyseur FR/EN/AR) · objectifs horaires (« avant 05:30 ») · export iCal et flux d'abonnement.
 
-## V2 — prochaines étapes (reste à faire)
+## Livré dans la troisième itération (« prêt à l'emploi »)
 
-- **Notifications** : file de tâches (Celery/RQ) si le volume d'utilisateurs l'exige.
-- **Planner** : vue mois, glisser depuis une liste de tâches, détection de conflits à l'application d'un modèle.
-- **Défis** : plusieurs objectifs par défi, objectifs décroissants (réduire), tags.
-- **Analytique** : corrélations (sommeil ↔ apprentissage), prévisions de fin, comparaison mois/mois.
-- Import CSV, synchronisation bidirectionnelle avec Google Agenda.
+- **Installation en une commande** : `setup.ps1` / `setup.sh`, lancement `start.ps1` / `start.sh` (dev ou prod),
+  pile Docker complète (`docker compose --profile app`), commande de diagnostic `doctor` — voir [13-DEPLOYMENT.md](13-DEPLOYMENT.md).
+- **Objectifs-limites** (« au plus ») : temps d'écran, dépenses, cigarettes… — voir [19](19-INSIGHTS-ACHIEVEMENTS-IMPORT.md).
+- **V3 social** : amis, défis de groupe avec classement privé par conception, modèles communautaires — voir [18-SOCIAL.md](18-SOCIAL.md).
+- **Constats automatiques** (règles explicables) sur le tableau de bord et les statistiques.
+- **Succès / badges** calculés à la volée à partir des données réelles (aucune gamification artificielle).
+- **Import CSV** de l'historique, compatible aller-retour avec l'export.
+- Lien vers la vue mois depuis le planner, menu mobile pour toutes les pages secondaires,
+  modèles intégrés traduits (FR / AR).
 
-## V3 — social
+## Pistes pour la suite
 
-Groupes, amis, défis partagés, défis publics, modèles publics (le modèle `ChallengeTemplate` possède déjà `owner` et `is_public`).
-
-## V4 — IA
-
-- ✅ **Livré** : assistant de création en langage naturel, toujours soumis à confirmation (voir [17-AI-ASSISTANT.md](17-AI-ASSISTANT.md)).
-- À venir : insights hebdomadaires générés à partir des résultats du moteur (« tes séances de sport tombent souvent le
-  mercredi : planifie-les le mardi ? »), suggestions de planning, résumé automatique du bilan hebdomadaire.
-
-## Gamification (optionnelle)
-
-Points/badges calculables à partir des séries et paliers existants, sans transformer l'application en jeu.
+- **Notifications** : file de tâches (Celery/RQ) et cache Redis si le volume d'utilisateurs l'exige.
+- **Planner** : glisser depuis une liste de tâches, détection de conflits à l'application d'un modèle.
+- **Défis** : plusieurs objectifs par défi, tags.
+- **Analytique** : corrélations (sommeil ↔ apprentissage), prévision de date de fin, comparaison mois/mois.
+- **Synchronisation** bidirectionnelle avec Google Agenda (l'export iCal / abonnement couvre déjà le sens LifeFlow → agenda).
+- **IA** : résumé automatique du bilan hebdomadaire et suggestions de planning à partir des constats
+  (toujours soumis à confirmation, comme l'assistant de création).
+- **Application mobile** native : l'API REST (JWT) et la PWA en posent déjà les bases.

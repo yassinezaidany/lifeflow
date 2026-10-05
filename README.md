@@ -17,8 +17,10 @@ un **journal** et des **rapports mensuels** figés (HTML + PDF).
 | Domaine | Contenu |
 |---|---|
 | Comptes | Inscription, connexion (e-mail ou nom d'utilisateur), déconnexion, mot de passe oublié / réinitialisation, changement de mot de passe, suppression du compte, profil (avatar, fuseau, langue, formats, début de semaine, thème), préférences de notification, onboarding facultatif |
-| Défis | Assistant en 6 étapes **+ description en langage naturel** (« Je veux apprendre Python 2 h par jour pendant 30 jours » → assistant pré-rempli, IA Claude optionnelle ou analyseur intégré FR/EN/AR), champs personnalisés (fait/non fait, entier, décimal, durée, heure, texte, liste), objectifs quotidiens / hebdo / mensuels / totaux, minimum par entrée, **objectifs horaires** (« réveil avant 05:30 »), rappel quotidien par défi, fréquences (tous les jours, jours choisis, tous les N jours), période, paliers, pause, archivage, duplication, **historisation des objectifs et plannings**, jours de repos, 11 modèles intégrés |
-| Suivi | Entrées multi-valeurs validées côté serveur, ajout rapide global (+), enregistrement depuis une activité terminée (pré-rempli, confirmé par l'utilisateur) |
+| Défis | Assistant en 6 étapes **+ description en langage naturel** (« Je veux apprendre Python 2 h par jour pendant 30 jours » → assistant pré-rempli, IA Claude optionnelle ou analyseur intégré FR/EN/AR), champs personnalisés (fait/non fait, entier, décimal, durée, heure, texte, liste), objectifs quotidiens / hebdo / mensuels / totaux, minimum par entrée, **objectifs horaires** (« réveil avant 05:30 »), **objectifs-limites** (« au plus 2 h d'écran par jour »), rappel quotidien par défi, fréquences (tous les jours, jours choisis, tous les N jours), période, paliers, pause, archivage, duplication, **historisation des objectifs et plannings**, jours de repos, 13 modèles intégrés traduits |
+| Suivi | Entrées multi-valeurs validées côté serveur, ajout rapide global (+), enregistrement depuis une activité terminée (pré-rempli, confirmé par l'utilisateur), **import CSV** de l'historique (compatible avec l'export, doublons ignorés) |
+| Communauté | Amis (demande / acceptation), **défis de groupe** (chacun suit sa copie, classement limité au taux de réussite et à la série, masquable), lien d'invitation, **modèles communautaires** (seule la structure est partagée) — *privé par conception* |
+| Motivation | **Constats automatiques** (série en danger, défi en retard → planifier une séance, limite dépassée, tendance du planner, meilleur jour, palier proche) et **succès / badges** calculés à partir des seules données réelles |
 | Planner | Vue jour & semaine en grille horaire, **activités de nuit** (23:00 → 07:00), glisser-déposer (y compris vers un autre jour), redimensionnement, clic pour créer, détection des chevauchements, statuts (prévu, en cours, fait, partiel, manqué, annulé, reporté), report, duplication, routines récurrentes (sans duplication des règles), modèles de journée (appliquer à plusieurs jours, enregistrer une journée comme modèle), **export iCal + flux d'abonnement** (Google/Apple/Outlook) |
 | Analyse | Tableau de bord, vue « Aujourd'hui », calendrier mensuel avec détail du jour, page par défi (anneau, KPIs, courbe réalisé/attendu, barres hebdo, donut de réussite, heatmap, statistiques, paliers, historique), page Statistiques multi-défis |
 | Réflexion | Journal (humeur, lien à un défi), bilan hebdomadaire (questions guidées) |
@@ -39,7 +41,39 @@ Choix d'architecture : un **monolithe Django modulaire** (pas de SPA séparée) 
 un seul routage, et une API REST propre qui prépare une future PWA / application mobile. Détails dans
 [docs/02-ARCHITECTURE.md](docs/02-ARCHITECTURE.md).
 
-## Installation
+## Démarrage rapide
+
+Prérequis : **Python 3.11+** et **Docker Desktop** (pour MySQL). Node.js n'est pas nécessaire (CSS compilé commité).
+
+**Windows (PowerShell)**
+
+```powershell
+.\setup.ps1 -Demo      # une seule fois : venv, dépendances, .env (SECRET_KEY aléatoire), MySQL, migrations,
+                       # modèles, traductions, clés Web Push, comptes de démo, puis diagnostic (doctor)
+.\start.ps1            # http://127.0.0.1:8000  (serveur + planificateur de rappels)
+.\start.ps1 -Prod      # mode production local : Waitress, DEBUG désactivé, fichiers statiques compressés
+```
+
+**Linux / macOS**
+
+```bash
+./setup.sh --demo
+./start.sh             # ou ./start.sh --prod (Gunicorn)
+```
+
+**Tout en Docker** (MySQL + application Gunicorn + planificateur) :
+
+```bash
+cp .env.example .env   # renseigner SECRET_KEY
+docker compose --profile app up -d --build      # http://localhost:8080 (APP_PORT pour changer)
+docker compose exec web python manage.py createsuperuser
+```
+
+Options : `setup.ps1 -Dev` (dépendances de test), `-NoDocker` (MySQL existant, `DB_*` dans `.env`) ;
+`start.ps1 -Port 8090 -Listen 0.0.0.0 -NoScheduler`. Vérifier une installation à tout moment :
+`python manage.py doctor` (base, migrations, statiques, polices PDF, traductions, e-mail, push, IA, planificateur).
+
+## Installation manuelle
 
 Prérequis : Python 3.11+, Docker (pour MySQL) **ou** un MySQL 8 local, Node.js 18+ (uniquement pour recompiler le CSS).
 
@@ -106,6 +140,9 @@ npm run watch:css    # recompilation à la volée pendant le développement
 | `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | clés Web Push (`generate_vapid_keys --write`) ; vides = push désactivé | — |
 | `SITE_URL` | URL publique (liens des e-mails) | `http://127.0.0.1:8000` |
 | `ANTHROPIC_API_KEY`, `ASSISTANT_MODEL` | assistant IA optionnel (sans clé : analyseur intégré) | —, `claude-opus-5-5` |
+| `USE_HTTPS` | (prod) redirection HTTPS, cookies `Secure`, HSTS — `False` pour un usage local en HTTP | `True` |
+| `SERVE_MEDIA` | (prod) Django sert `/media/` (avatars) quand aucun proxy ne le fait | `True` |
+| `APP_PORT` | port publié par `docker compose --profile app` | `8080` |
 
 ## Commandes utiles
 
@@ -118,12 +155,13 @@ npm run watch:css    # recompilation à la volée pendant le développement
 | `python manage.py generate_vapid_keys --write` | crée les clés Web Push dans `.env` |
 | `python manage.py i18n extract` / `compile` | met à jour / compile les traductions sans GNU gettext |
 | `python manage.py createsuperuser` | compte administrateur (`/admin/`) |
+| `python manage.py doctor` | diagnostic complet de l'installation (code de sortie 1 en cas d'échec) |
 
 ## Tests
 
 ```bash
 pip install -r requirements-dev.txt
-pytest                      # 231 tests : moteur de progression, API, planner, sécurité/isolation, rapports, pages
+pytest                      # 270 tests : moteur de progression, limites, API, planner, sécurité/isolation, social, import, rapports, pages
 pytest tests/test_progress_engine.py -q
 ```
 
@@ -142,19 +180,22 @@ config/              settings (base/dev/test/prod), urls, api_urls
 apps/
   core/              modèles de base, audit, dates/fuseaux, middleware, template tags (design system), commandes
   accounts/          utilisateur, profil, préférences, auth, onboarding
-  challenges/        défis, champs, objectifs & plannings versionnés, pauses, repos, paliers, modèles
+  challenges/        défis, champs, objectifs & plannings versionnés, pauses, repos, paliers, modèles, assistant IA
   tracking/          entrées et valeurs typées
   planner/           activités, routines récurrentes, modèles de journée, catégories
-  analytics/         services/progress (moteur de progression) + statistiques multi-défis
+  analytics/         services/progress (moteur de progression), statistiques, constats, succès
   dashboard/         tableau de bord, aujourd'hui, calendrier, bilan hebdo (read models)
   journal/           journal et bilans hebdomadaires
-  reports/           rapports mensuels (services/, generators/pdf.py), exports
-  notifications/     notifications in-app, rappels
+  reports/           rapports mensuels (services/, generators/pdf.py), exports, import CSV
+  notifications/     notifications in-app, Web Push, e-mails, rappels, planificateur
+  social/            amis, défis de groupe, classement, modèles communautaires
 templates/           pages et composants
 static/              CSS compilé, JS (app, planner, challenges), vendor, polices, sprite d'icônes
 frontend/            sources Tailwind + script de build des assets
-locale/fr/           traductions françaises
-docs/                documentation (14 chapitres)
+locale/fr/, ar/      traductions française et arabe
+docker/, Dockerfile  image de production (Gunicorn) + point d'entrée web / scheduler
+setup.*, start.*     installation et lancement en une commande (Windows / Linux)
+docs/                documentation (19 chapitres)
 tests/               suite de tests
 scripts/             QA navigateur (Playwright)
 ```
@@ -166,4 +207,5 @@ scripts/             QA navigateur (Playwright)
 7. [Moteur de progression](docs/07-PROGRESS-ENGINE.md) · 8. [API](docs/08-API.md) · 9. [UI/UX](docs/09-UI-UX.md) ·
 10. [Sécurité](docs/10-SECURITY.md) · 11. [Tests](docs/11-TESTING.md) · 12. [Rapports](docs/12-REPORTS.md) ·
 13. [Déploiement](docs/13-DEPLOYMENT.md) · 14. [Feuille de route](docs/14-ROADMAP.md) ·
-15. [PWA & notifications](docs/15-PWA-AND-NOTIFICATIONS.md) · 16. [Langues & RTL](docs/16-I18N-RTL.md) · 17. [Assistant IA](docs/17-AI-ASSISTANT.md)
+15. [PWA & notifications](docs/15-PWA-AND-NOTIFICATIONS.md) · 16. [Langues & RTL](docs/16-I18N-RTL.md) · 17. [Assistant IA](docs/17-AI-ASSISTANT.md) ·
+18. [Communauté](docs/18-SOCIAL.md) · 19. [Constats, succès, import & objectifs-limites](docs/19-INSIGHTS-ACHIEVEMENTS-IMPORT.md)

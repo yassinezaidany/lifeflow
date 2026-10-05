@@ -26,10 +26,19 @@ Résultat au moment de la livraison : **191 tests réussis**.
   déconnexion → isolation avec un autre compte), en collectant les erreurs JavaScript.
 - `scripts/ui_screenshots.py` : captures desktop/mobile, clair/sombre + erreurs console.
 
-## Ajouts (version actuelle : 231 tests)
+## Ajouts (deuxième itération)
 
 | Fichier | Couverture |
 |---|---|
 | `test_planner.py` (ajouts) | activités de nuit : durée, `carryover`, chevauchement avec le lendemain, retard, routine de nuit, plage nulle refusée |
 | `test_pwa_notifications.py` (18) | service worker (portée, en-têtes, contenu), manifest, page hors ligne, purge du cache à la déconnexion ; push (désactivé sans clés, abonnement idempotent, envoi simulé, abonnement expiré supprimé, préférence, validation, réattribution d'appareil) ; e-mail HTML ; rappels (résumé du matin + dédoublonnage, fenêtre horaire, rappel de défi seulement si non fait, rappel d'activité, désactivation globale), planificateur, page notifications, `reminder_time` |
 | `test_assistant_time_ical_rtl.py` (19) | analyseur FR/EN/AR (heures, séances + minimum, pages + jours, habitude oui/non, arabe, décimales), assainissement d'une sortie hostile, endpoint (moteur intégré, Claude simulé avec vérification du modèle / schéma / fallbacks, repli après refus, suggestion → création valide) ; objectifs horaires (moteur, validation API, modèle Lève-tôt) ; iCal (export, échappement, repli des lignes, isolation, flux par jeton, révocation, fin réelle des activités de nuit) ; arabe (`dir="rtl"`, sélecteur de langue, PDF arabe avec police embarquée) |
+
+## Ajouts (troisième itération — version actuelle : 270 tests)
+
+| Fichier | Couverture |
+|---|---|
+| `test_limit_goals.py` (6) | objectifs « au plus » : réussite / série / budget, dépassement immédiat, période hebdomadaire acquise seulement à la fin, limite en nombre de séances, validation (pas de limite sur un booléen), API, modèle Temps d'écran |
+| `test_social.py` (20) | amis (demande, acceptation automatique, limitation, retrait), groupes (invitation réservée aux amis, 404 pour les non-membres, copie personnelle, classement agrégé et masquable, départ, clôture), modèles communautaires, API, parcours web à deux comptes |
+| `test_import.py` (5) | import CSV : lignes valides / erreurs par ligne, aller-retour export → import sans doublon, séparateur `;`, colonnes manquantes, isolation, page web |
+| `test_insights_achievements.py` (8) | constats (série en danger, palier proche, retard → planner, limite dépassée, tendance du planner, affichage tableau de bord + statistiques), succès (données réelles uniquement, planification non comptée, isolation), modèles intégrés traduits (FR / AR) sans modifier la base |
