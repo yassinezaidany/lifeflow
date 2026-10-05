@@ -151,5 +151,8 @@ def challenge_settings(request, pk):
 
 @login_required
 def templates_gallery(request):
-    templates = ChallengeTemplate.objects.filter(Q(owner__isnull=True) | Q(owner=request.user))  # community ones live in /community/
+    templates = list(ChallengeTemplate.objects.filter(Q(owner__isnull=True) | Q(owner=request.user)))  # community ones live in /community/
+    for t in templates:
+        if t.owner_id is None:  # display only, never saved
+            t.name, t.description = _(t.name), _(t.description) if t.description else ""
     return render(request, "challenges/templates.html", {"templates": templates})

@@ -1,4 +1,4 @@
-﻿"""Rule-based insights and on-the-fly achievements."""
+"""Rule-based insights and on-the-fly achievements."""
 from datetime import timedelta
 
 import pytest
@@ -88,3 +88,19 @@ def test_achievements_are_per_user(user, other_user):
     add_entry(c, today - timedelta(days=1), amount=2)
     assert build_achievements(user)["earned"] == 0
     assert build_achievements(other_user)["earned"] >= 1
+
+
+def test_builtin_templates_are_localized(web, user):
+    user.profile.language = "fr"
+    user.profile.save()
+    from django.utils import translation
+    with translation.override("fr"):
+        page = web.get("/challenges/templates/", HTTP_ACCEPT_LANGUAGE="fr")
+    assert "Lecture du Coran".encode() in page.content
+    from apps.challenges.models import ChallengeTemplate
+    from apps.challenges.serializers import ChallengeTemplateSerializer
+    tpl = ChallengeTemplate.objects.get(owner=None, slug="quran-reading")
+    with translation.override("ar"):
+        data = ChallengeTemplateSerializer(tpl).data
+    assert data["name"] == "قراءة القرآن" and data["definition"]["fields"][1]["label"] == "السورة"
+    assert ChallengeTemplate.objects.get(pk=tpl.pk).name == "Qur'an Reading"   # stored in English

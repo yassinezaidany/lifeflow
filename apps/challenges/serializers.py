@@ -330,3 +330,10 @@ class ChallengeTemplateSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChallengeTemplate
         fields = ["id", "slug", "name", "description", "icon", "color", "category_name", "duration_days", "definition", "is_public"]
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if instance.owner_id is None:  # built-in: shown in the user's language
+            from .system_templates import localize_template
+            data = localize_template(data)
+        return data

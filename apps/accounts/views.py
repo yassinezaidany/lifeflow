@@ -170,7 +170,8 @@ def onboarding(request):
     templates = ChallengeTemplate.objects.filter(owner__isnull=True)
     return render(request, "accounts/onboarding.html", {
         "templates": [
-            {"slug": t.slug, "name": t.name, "description": t.description, "icon": t.icon, "color": t.color, "category": t.category_name}
+            {"slug": t.slug, "name": _(t.name), "description": _(t.description) if t.description else "", "icon": t.icon,
+             "color": t.color, "category": _(t.category_name) if t.category_name else ""}
             for t in templates
         ],
         "step": request.GET.get("step", "welcome"),

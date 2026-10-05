@@ -3611,6 +3611,1011 @@ msgstr ""
 msgid "every scheduled day"
 msgstr "كل يوم مُجدول"
 
+#: apps\reports\views.py
+msgid "%(n)s entries imported."
+msgstr "تم استيراد %(n)s إدخالات."
+
+#: templates\social\community.html
+msgid "%(n)s member"
+msgid_plural "%(n)s members"
+msgstr[0] "لا أعضاء"
+msgstr[1] "عضو واحد"
+msgstr[2] "عضوان"
+msgstr[3] "%(n)s أعضاء"
+msgstr[4] "%(n)s عضوًا"
+msgstr[5] "%(n)s عضو"
+
+#: templates\social\community.html
+msgid "%(n)s use"
+msgid_plural "%(n)s uses"
+msgstr[0] "لا استخدام"
+msgstr[1] "استخدام واحد"
+msgstr[2] "استخدامان"
+msgstr[3] "%(n)s استخدامات"
+msgstr[4] "%(n)s استخدامًا"
+msgstr[5] "%(n)s استخدام"
+
+#: apps\social\services.py
+msgid "%(name)s accepted your friend request"
+msgstr "قبل %(name)s طلب صداقتك"
+
+#: apps\social\services.py
+msgid "%(name)s invited you to the challenge “%(challenge)s”"
+msgstr "دعاك %(name)s إلى التحدي «%(challenge)s»"
+
+#: apps\analytics\services\insights.py
+msgid ""
+"%(name)s is %(amount)s behind. Planning a session in the planner makes it "
+"easier to catch up."
+msgstr "%(name)s متأخر بمقدار %(amount)s. تخطيط جلسة في المخطط يسهّل التدارك."
+
+#: apps\analytics\services\insights.py
+msgid "%(name)s is ahead of plan — nice work."
+msgstr "%(name)s متقدّم على الخطة — أحسنت."
+
+#: apps\analytics\services\insights.py
+msgid "%(name)s is over today's limit (%(actual)s / %(target)s)."
+msgstr "%(name)s تجاوز حدّ اليوم (%(actual)s / %(target)s)."
+
+#: apps\social\services.py
+msgid "%(name)s joined “%(challenge)s”"
+msgstr "انضم %(name)s إلى «%(challenge)s»"
+
+#: apps\social\services.py
+msgid "%(name)s wants to be your friend on LifeFlow"
+msgstr "يريد %(name)s أن يصبح صديقك على LifeFlow"
+
+#: apps\analytics\services\insights.py
+msgid "%(name)s: %(progress)s%% of the way to “%(title)s”."
+msgstr "%(name)s: أنجزت %(progress)s%% من الطريق نحو «%(title)s»."
+
+#: templates\social\join.html
+msgid "%(owner_name)s invites you to a group challenge"
+msgstr "يدعوك %(owner_name)s إلى تحدٍّ جماعي"
+
+#: apps\challenges\serializers.py
+msgid "A limit needs a number, a duration or counted sessions."
+msgstr "يحتاج الحدّ إلى رقم أو مدة أو عدد جلسات."
+
+#: apps\analytics\services\achievements.py
+msgid "A month of effort"
+msgstr "شهر من الجهد"
+
+#: templates\social\community.html
+msgid "Accept"
+msgstr "قبول"
+
+#: apps\social\models.py
+msgid "Accepted"
+msgstr "مقبول"
+
+#: templates\analytics\achievements.html
+msgid "Achievements"
+msgstr "الإنجازات"
+
+#: templates\social\community.html
+msgid "Add a friend"
+msgstr "إضافة صديق"
+
+#: templates\reports\import.html
+msgid ""
+"Add past results from a CSV file — for example the history you kept in "
+"Excel."
+msgstr "أضف نتائج سابقة من ملف CSV — مثل السجل الذي احتفظت به في Excel."
+
+#: apps\analytics\services\insights.py
+msgid "Ahead of schedule"
+msgstr "متقدّم على الموعد"
+
+#: templates\social\shared_detail.html
+msgid "All your friends are already in. Add friends from the Community page."
+msgstr "كل أصدقائك موجودون بالفعل. أضف أصدقاء من صفحة المجتمع."
+
+#: apps\social\services.py
+msgid "Already a member."
+msgstr "عضو بالفعل."
+
+#: templates\analytics\achievements.html
+msgid ""
+"Badges are computed from what you actually recorded — planning alone never "
+"earns one."
+msgstr "تُحتسب الشارات مما سجّلته فعلًا — التخطيط وحده لا يمنح أي شارة."
+
+#: templates\reports\import.html
+msgid "CSV file"
+msgstr "ملف CSV"
+
+#: apps\analytics\services\achievements.py
+msgid "Centurion"
+msgstr "المئوي"
+
+#: apps\reports\views.py
+msgid "Choose a CSV file."
+msgstr "اختر ملف CSV."
+
+#: templates\social\community.html
+msgid "Choose a challenge"
+msgstr "اختر تحديًا"
+
+#: templates\social\shared_detail.html
+msgid "Close the group"
+msgstr "إغلاق المجموعة"
+
+#: templates\social\shared_detail.html
+msgid ""
+"Close this group challenge? Everyone keeps their own challenge and entries."
+msgstr "إغلاق هذا التحدي الجماعي؟ يحتفظ كل واحد بتحديه وإدخالاته."
+
+#: templates\partials\sidebar.html
+msgid "Community"
+msgstr "المجتمع"
+
+#: templates\challenges\settings.html
+msgid "Community template"
+msgstr "قالب مجتمعي"
+
+#: templates\social\community.html
+msgid "Community templates"
+msgstr "قوالب المجتمع"
+
+#: apps\analytics\services\achievements.py
+msgid "Complete 10 planned activities."
+msgstr "أكمل 10 أنشطة مخططة."
+
+#: apps\analytics\services\achievements.py
+msgid "Complete 100 planned activities."
+msgstr "أكمل 100 نشاط مخطط."
+
+#: apps\analytics\services\achievements.py
+msgid "Complete 4 weekly reviews."
+msgstr "أكمل 4 مراجعات أسبوعية."
+
+#: apps\analytics\services\achievements.py
+msgid "Complete a challenge."
+msgstr "أكمل تحديًا."
+
+#: templates\social\shared_detail.html
+msgid "Completion · streak · today"
+msgstr "الإنجاز · السلسلة · اليوم"
+
+#: apps\analytics\services\achievements.py
+msgid "Consistency"
+msgstr "الانتظام"
+
+#: templates\social\community.html
+msgid "Decline"
+msgstr "رفض"
+
+#: apps\social\models.py
+msgid "Declined"
+msgstr "مرفوض"
+
+#: templates\challenges\settings.html
+msgid ""
+"Do it with friends: everyone tracks their own copy, and you compare "
+"completion and streaks."
+msgstr ""
+"افعلها مع أصدقائك: يتابع كل واحد نسخته الخاصة وتقارنون الإنجاز والسلاسل."
+
+#: templates\social\shared_detail.html
+msgid "Done today"
+msgstr "أُنجز اليوم"
+
+#: templates\challenges\create.html
+msgid ""
+"Each period succeeds when the total stays under the limit (e.g. at most 2 h "
+"of screen time a day). Days without entries count as 0."
+msgstr ""
+"تنجح كل فترة إذا بقي المجموع تحت الحدّ (مثلًا ساعتان كحدّ أقصى أمام الشاشة "
+"يوميًا). الأيام بلا إدخالات تُحسب 0."
+
+#: templates\analytics\achievements.html
+msgid "Earned"
+msgstr "مُكتسب"
+
+#: apps\social\services.py
+msgid "Enter a username or an e-mail address."
+msgstr "أدخل اسم مستخدم أو بريدًا إلكترونيًا."
+
+#: templates\social\community.html
+msgid "Enter their exact username or e-mail address."
+msgstr "أدخل اسم المستخدم أو البريد الإلكتروني بدقة."
+
+#: templates\reports\import.html
+msgid "Example (my entries)"
+msgstr "مثال (إدخالاتي)"
+
+#: templates\reports\import.html
+msgid "Expected format"
+msgstr "الصيغة المطلوبة"
+
+#: apps\analytics\services\achievements.py
+msgid "Explorer"
+msgstr "المستكشف"
+
+#: apps\analytics\services\achievements.py
+msgid "Finisher"
+msgstr "المُتمّ"
+
+#: apps\analytics\services\achievements.py
+msgid "First step"
+msgstr "الخطوة الأولى"
+
+#: apps\social\views.py
+msgid "Friend removed."
+msgstr "تمت إزالة الصديق."
+
+#: apps\social\views.py
+msgid "Friend request accepted."
+msgstr "تم قبول طلب الصداقة."
+
+#: apps\social\views.py
+msgid "Friend request declined."
+msgstr "تم رفض طلب الصداقة."
+
+#: apps\social\views.py
+msgid "Friend request sent."
+msgstr "تم إرسال طلب الصداقة."
+
+#: templates\social\community.html
+msgid "Friends"
+msgstr "الأصدقاء"
+
+#: templates\social\community.html
+msgid ""
+"Friends only see the group challenges you join together — never your "
+"entries, journal or planner."
+msgstr ""
+"لا يرى أصدقاؤك إلا التحديات الجماعية المشتركة — أبدًا إدخالاتك أو يومياتك أو"
+" مخططك."
+
+#: templates\social\community.html
+msgid ""
+"Friends, group challenges and shared templates. Your entries always stay "
+"private."
+msgstr "أصدقاء وتحديات جماعية وقوالب مشتركة. تبقى إدخالاتك خاصة دائمًا."
+
+#: templates\challenges\settings.html
+msgid "Group challenge"
+msgstr "تحدٍّ جماعي"
+
+#: apps\social\views.py
+msgid "Group challenge closed. Everyone keeps their own challenge."
+msgstr "أُغلق التحدي الجماعي. يحتفظ كل واحد بتحديه."
+
+#: apps\social\views.py
+msgid "Group challenge created — invite your friends."
+msgstr "تم إنشاء التحدي الجماعي — ادعُ أصدقاءك."
+
+#: templates\social\community.html
+msgid "Group challenges"
+msgstr "التحديات الجماعية"
+
+#: templates\reports\import.html
+msgid "Import"
+msgstr "استيراد"
+
+#: templates\reports\import.html
+msgid "Import entries"
+msgstr "استيراد الإدخالات"
+
+#: templates\reports\list.html
+msgid "Import entries from CSV"
+msgstr "استيراد الإدخالات من CSV"
+
+#: templates\reports\list.html
+msgid "Import past results"
+msgstr "استيراد نتائج سابقة"
+
+#: templates\analytics\overview.html
+msgid "Insights"
+msgstr "ملاحظات"
+
+#: apps\reports\imports.py
+msgid "Invalid date (expected YYYY-MM-DD)."
+msgstr "تاريخ غير صالح (الصيغة المطلوبة YYYY-MM-DD)."
+
+#: apps\social\views.py
+msgid "Invitation declined."
+msgstr "تم رفض الدعوة."
+
+#: apps\social\views.py
+msgid "Invitation sent to %(name)s."
+msgstr "تم إرسال الدعوة إلى %(name)s."
+
+#: templates\social\community.html
+msgid "Invitations"
+msgstr "الدعوات"
+
+#: templates\social\shared_detail.html
+msgid "Invite"
+msgstr "دعوة"
+
+#: apps\social\models.py
+msgid "Invited"
+msgstr "مدعو"
+
+#: templates\social\join.html
+msgid "Join the challenge"
+msgstr "الانضمام إلى التحدي"
+
+#: templates\social\join.html
+msgid ""
+"Joining adds a copy of this challenge to your challenges. The group only "
+"sees your completion and streak — you can hide them anytime."
+msgstr ""
+"الانضمام يضيف نسخة من هذا التحدي إلى تحدياتك. لا ترى المجموعة إلا نسبة "
+"إنجازك وسلسلتك — ويمكنك إخفاؤهما في أي وقت."
+
+#: apps\analytics\services\achievements.py
+msgid "Keep a weekly goal 8 weeks in a row."
+msgstr "حافظ على هدف أسبوعي 8 أسابيع متتالية."
+
+#: apps\analytics\services\insights.py
+msgid "Keep your streak alive"
+msgstr "حافظ على سلسلتك"
+
+#: templates\social\shared_detail.html
+msgid "Leaderboard"
+msgstr "الترتيب"
+
+#: templates\social\shared_detail.html
+msgid "Leave"
+msgstr "مغادرة"
+
+#: templates\social\shared_detail.html
+msgid "Leave the group"
+msgstr "مغادرة المجموعة"
+
+#: templates\social\shared_detail.html
+msgid "Leave this group? Your challenge and entries stay yours."
+msgstr "مغادرة هذه المجموعة؟ يبقى تحديك وإدخالاتك ملكك."
+
+#: templates\challenges\settings.html
+msgid "Let other LifeFlow users start from your setup."
+msgstr "اسمح لمستخدمي LifeFlow الآخرين بالانطلاق من إعداداتك."
+
+#: apps\analytics\services\insights.py
+msgid "Limit exceeded today"
+msgstr "تم تجاوز الحدّ اليوم"
+
+#: apps\analytics\services\achievements.py
+msgid "Looking back"
+msgstr "نظرة إلى الوراء"
+
+#: apps\analytics\services\achievements.py
+msgid "Master planner"
+msgstr "سيّد التخطيط"
+
+#: apps\social\models.py
+msgid "Member"
+msgstr "عضو"
+
+#: templates\social\join.html
+msgid "Members"
+msgstr "الأعضاء"
+
+#: templates\social\shared_detail.html
+msgid "Members only see these figures — never anyone's entries or notes."
+msgstr "لا يرى الأعضاء إلا هذه الأرقام — أبدًا إدخالات أحد أو ملاحظاته."
+
+#: apps\analytics\services\achievements.py
+msgid "Milestone"
+msgstr "مرحلة"
+
+#: apps\analytics\services\insights.py
+msgid "Milestone in sight"
+msgstr "المرحلة في الأفق"
+
+#: templates\social\shared_detail.html
+msgid "My challenge"
+msgstr "تحدّيي"
+
+#: templates\social\shared_detail.html
+msgid "My participation"
+msgstr "مشاركتي"
+
+#: templates\social\shared_detail.html
+msgid "My progress is hidden"
+msgstr "تقدّمي مخفي"
+
+#: templates\social\shared_detail.html
+msgid "My progress is visible to the group"
+msgstr "تقدّمي ظاهر للمجموعة"
+
+#: apps\analytics\services\insights.py
+msgid "Needs attention"
+msgstr "يحتاج إلى انتباه"
+
+#: apps\social\services.py
+msgid "No LifeFlow user with this username or e-mail."
+msgstr "لا يوجد مستخدم LifeFlow بهذا الاسم أو البريد."
+
+#: templates\social\community.html
+msgid ""
+"No community template yet. Publish one from a challenge's settings: only its"
+" structure is shared, never your entries."
+msgstr ""
+"لا توجد قوالب مجتمعية بعد. انشر قالبًا من إعدادات تحدٍّ: تُشارك بنيته فقط، "
+"أبدًا إدخالاتك."
+
+#: templates\social\community.html
+msgid "No friends yet. Add someone with their username."
+msgstr "لا أصدقاء بعد. أضف شخصًا باسم المستخدم الخاص به."
+
+#: templates\social\community.html
+msgid "No group challenge yet"
+msgstr "لا يوجد تحدٍّ جماعي بعد"
+
+#: apps\analytics\services\insights.py
+msgid ""
+"Nothing recorded for %(days)s days. One small entry today restarts the "
+"habit."
+msgstr "لا شيء مسجّل منذ %(days)s أيام. إدخال صغير اليوم يعيد إطلاق العادة."
+
+#: apps\analytics\services\achievements.py
+msgid "One week strong"
+msgstr "أسبوع من الثبات"
+
+#: templates\challenges\settings.html
+msgid ""
+"Only the challenge's structure is shared — your entries, notes and planner "
+"stay private."
+msgstr "تُشارك بنية التحدي فقط — تبقى إدخالاتك وملاحظاتك ومخططك خاصة."
+
+#: apps\analytics\services\insights.py
+msgid "Open"
+msgstr "فتح"
+
+#: templates\social\community.html
+msgid ""
+"Open one of your challenges, then “Share with friends” in its settings. "
+"Everyone tracks their own copy and you compare streaks and completion."
+msgstr ""
+"افتح أحد تحدياتك ثم «مشاركة مع الأصدقاء» في إعداداته. يتابع كل واحد نسخته "
+"وتقارنون السلاسل والإنجاز."
+
+#: templates\challenges\settings.html
+msgid "Open the group"
+msgstr "فتح المجموعة"
+
+#: templates\social\shared_detail.html
+msgid "Or share this invitation link"
+msgstr "أو شارك رابط الدعوة هذا"
+
+#: templates\reports\import.html
+msgid ""
+"Other columns are matched to the challenge's fields by name; durations in "
+"minutes, times as HH:MM, done/not done as yes/no."
+msgstr ""
+"تُطابق الأعمدة الأخرى حقول التحدي بالاسم؛ المدد بالدقائق، والأوقات بصيغة "
+"HH:MM، والإنجاز بـ yes/no."
+
+#: apps\social\models.py
+msgid "Pending"
+msgstr "قيد الانتظار"
+
+#: apps\analytics\services\insights.py
+msgid "Plan a session"
+msgstr "خطّط لجلسة"
+
+#: apps\analytics\services\insights.py
+msgid "Planner follow-through dropped"
+msgstr "تراجع الالتزام بالمخطط"
+
+#: templates\social\shared_detail.html
+msgid "Progress hidden"
+msgstr "التقدّم مخفي"
+
+#: templates\challenges\settings.html
+msgid "Publish as a template"
+msgstr "نشر كقالب"
+
+#: apps\social\views.py
+msgid ""
+"Published as a community template. Only the structure is shared — never your"
+" entries."
+msgstr "نُشر كقالب مجتمعي. تُشارك البنية فقط — أبدًا إدخالاتك."
+
+#: templates\social\community.html
+msgid "Published by you"
+msgstr "نشرته أنت"
+
+#: apps\analytics\services\achievements.py
+msgid "Reach a 30-day streak on a daily challenge."
+msgstr "حقّق سلسلة 30 يومًا في تحدٍّ يومي."
+
+#: apps\analytics\services\achievements.py
+msgid "Reach a 7-day streak on a daily challenge."
+msgstr "حقّق سلسلة 7 أيام في تحدٍّ يومي."
+
+#: apps\analytics\services\achievements.py
+msgid "Reach a challenge milestone."
+msgstr "بلّغ مرحلة في تحدٍّ."
+
+#: templates\challenges\create.html
+msgid "Reach a target"
+msgstr "بلوغ هدف"
+
+#: apps\analytics\services\achievements.py
+msgid "Record 250 results."
+msgstr "سجّل 250 نتيجة."
+
+#: apps\analytics\services\achievements.py
+msgid "Record 50 results."
+msgstr "سجّل 50 نتيجة."
+
+#: apps\analytics\services\achievements.py
+msgid "Record something on 30 different days."
+msgstr "سجّل شيئًا في 30 يومًا مختلفًا."
+
+#: apps\analytics\services\achievements.py
+msgid "Record your first result."
+msgstr "سجّل نتيجتك الأولى."
+
+#: apps\analytics\services\achievements.py
+msgid "Reflective"
+msgstr "متأمّل"
+
+#: apps\analytics\services\achievements.py
+msgid "Regular"
+msgstr "منتظم"
+
+#: templates\social\community.html
+msgid "Remove this friend?"
+msgstr "إزالة هذا الصديق؟"
+
+#: templates\social\community.html
+msgid "Requests received"
+msgstr "الطلبات الواردة"
+
+#: templates\social\community.html
+msgid "Requests sent"
+msgstr "الطلبات المرسلة"
+
+#: templates\reports\import.html
+msgid ""
+"Rows identical to an existing entry are skipped, so importing the same file "
+"twice is safe."
+msgstr ""
+"تُتجاهل الأسطر المطابقة لإدخال موجود، لذا فاستيراد الملف نفسه مرتين آمن."
+
+#: apps\analytics\services\achievements.py
+msgid "Run 3 challenges at the same time."
+msgstr "خض 3 تحديات في الوقت نفسه."
+
+#: templates\social\community.html
+msgid "See"
+msgstr "عرض"
+
+#: apps\analytics\services\achievements.py
+msgid "Self-control"
+msgstr "ضبط النفس"
+
+#: templates\challenges\settings.html
+msgid "Share"
+msgstr "مشاركة"
+
+#: templates\challenges\settings.html
+msgid "Share with friends"
+msgstr "مشاركة مع الأصدقاء"
+
+#: templates\social\community.html
+msgid "Shared by the community"
+msgstr "مشاركة من المجتمع"
+
+#: apps\social\models.py
+msgid "Show my progress in the group leaderboard."
+msgstr "إظهار تقدّمي في ترتيب المجموعة."
+
+#: templates\challenges\create.html
+msgid "Stay under a limit"
+msgstr "البقاء تحت حدّ"
+
+#: apps\analytics\services\achievements.py
+msgid "Stay under a limit 14 periods in a row."
+msgstr "ابقَ تحت حدّ 14 فترة متتالية."
+
+#: apps\analytics\services\achievements.py
+msgid "Steady rhythm"
+msgstr "إيقاع ثابت"
+
+#: apps\reports\imports.py
+msgid "Stopped: at most %(n)s rows per import."
+msgstr "توقّف: %(n)s سطر كحدّ أقصى لكل استيراد."
+
+#: apps\social\views.py
+msgid "Template removed from the community."
+msgstr "تمت إزالة القالب من المجتمع."
+
+#: templates\reports\import.html
+msgid "The challenge must already exist (matched by name)."
+msgstr "يجب أن يكون التحدي موجودًا مسبقًا (يُطابق بالاسم)."
+
+#: apps\reports\imports.py
+msgid "The file encoding is not supported (use UTF-8)."
+msgstr "ترميز الملف غير مدعوم (استخدم UTF-8)."
+
+#: apps\reports\imports.py
+msgid "The file is too large (2 MB maximum)."
+msgstr "الملف كبير جدًا (2 ميغابايت كحدّ أقصى)."
+
+#: apps\reports\imports.py
+msgid ""
+"The file must contain the columns “Challenge” and “Date” (export a CSV first"
+" to see the format)."
+msgstr ""
+"يجب أن يحتوي الملف على العمودين «Challenge» و«Date» (صدّر ملف CSV أولًا "
+"لرؤية الصيغة)."
+
+#: apps\social\models.py
+msgid "The member's personal copy (private entries)."
+msgstr "النسخة الشخصية للعضو (إدخالات خاصة)."
+
+#: apps\social\views.py
+msgid "This action is not allowed."
+msgstr "هذا الإجراء غير مسموح."
+
+#: apps\social\services.py
+msgid "This group challenge is already over."
+msgstr "انتهى هذا التحدي الجماعي بالفعل."
+
+#: apps\social\services.py
+msgid "This group challenge is closed."
+msgstr "هذا التحدي الجماعي مغلق."
+
+#: templates\reports\import.html
+msgid "Tip: export your entries as CSV to get a ready-made file."
+msgstr "نصيحة: صدّر إدخالاتك بصيغة CSV للحصول على ملف جاهز."
+
+#: apps\social\services.py
+msgid "Too many friend requests. Try again later."
+msgstr "طلبات صداقة كثيرة جدًا. حاول لاحقًا."
+
+#: templates\challenges\settings.html
+msgid "Type of goal"
+msgstr "نوع الهدف"
+
+#: apps\reports\imports.py
+msgid "Unknown challenge “%(name)s”."
+msgstr "تحدٍّ غير معروف «%(name)s»."
+
+#: templates\challenges\settings.html
+msgid "Unpublish"
+msgstr "إلغاء النشر"
+
+#: apps\analytics\services\achievements.py
+msgid "Unstoppable"
+msgstr "لا يُوقف"
+
+#: templates\social\shared_detail.html
+msgid "Waiting for"
+msgstr "بانتظار"
+
+#: apps\social\views.py
+msgid "Welcome to “%(name)s”! The challenge was added to your challenges."
+msgstr "مرحبًا بك في «%(name)s»! أُضيف التحدي إلى تحدياتك."
+
+#: templates\social\join.html
+msgid "What you'll track"
+msgstr "ما ستتابعه"
+
+#: apps\social\models.py
+msgid "Wizard payload: fields, goal, schedule."
+msgstr "بيانات المعالج: الحقول، الهدف، الجدول."
+
+#: apps\analytics\services\achievements.py
+msgid "Write 7 journal entries."
+msgstr "اكتب 7 تدوينات في اليوميات."
+
+#: apps\social\services.py
+msgid "You are already friends."
+msgstr "أنتما صديقان بالفعل."
+
+#: apps\social\views.py
+msgid "You are now friends."
+msgstr "أصبحتما صديقين."
+
+#: apps\social\services.py
+msgid "You can only invite your friends."
+msgstr "يمكنك دعوة أصدقائك فقط."
+
+#: apps\social\services.py
+msgid "You can't add yourself."
+msgstr "لا يمكنك إضافة نفسك."
+
+#: apps\analytics\services\insights.py
+msgid ""
+"You completed %(now)s%% of planned activities this week, down from "
+"%(before)s%%. Try planning fewer, shorter blocks."
+msgstr ""
+"أنجزت %(now)s%% من الأنشطة المخططة هذا الأسبوع، مقابل %(before)s%% سابقًا. "
+"جرّب كتلًا أقل وأقصر."
+
+#: apps\analytics\services\insights.py
+msgid ""
+"You completed %(now)s%% of planned activities this week, up from "
+"%(before)s%%."
+msgstr ""
+"أنجزت %(now)s%% من الأنشطة المخططة هذا الأسبوع، ارتفاعًا من %(before)s%%."
+
+#: apps\social\services.py
+msgid "You created this group challenge: close it instead of leaving."
+msgstr "أنت من أنشأ هذا التحدي الجماعي: أغلقه بدل مغادرته."
+
+#: apps\social\views.py
+msgid "You left the group. Your challenge and entries are still yours."
+msgstr "غادرت المجموعة. يبقى تحديك وإدخالاتك ملكك."
+
+#: apps\analytics\services\insights.py
+msgid "You record the most on %(day)s. Schedule your hardest sessions then."
+msgstr "يوم %(day)s هو الأكثر تسجيلًا لديك. خطّط فيه لأصعب جلساتك."
+
+#: templates\social\community.html
+msgid "You're invited"
+msgstr "أنت مدعو"
+
+#: apps\analytics\services\insights.py
+msgid "Your %(streak)s streak on %(name)s is waiting for today's result."
+msgstr "سلسلتك البالغة %(streak)s في %(name)s بانتظار نتيجة اليوم."
+
+#: templates\social\community.html
+msgid "Your group challenges"
+msgstr "تحدياتك الجماعية"
+
+#: apps\analytics\services\insights.py
+msgid "Your planning is paying off"
+msgstr "تخطيطك يؤتي ثماره"
+
+#: apps\analytics\services\insights.py
+msgid "Your strongest day"
+msgstr "أقوى أيامك"
+
+#: templates\reports\import.html
+msgid "already present"
+msgstr "موجودة مسبقًا"
+
+#: apps\challenges\models.py
+msgid "at least"
+msgstr "على الأقل"
+
+#: apps\challenges\models.py
+msgid "at most"
+msgstr "على الأكثر"
+
+#: templates\social\community.html
+msgid "by %(name)s"
+msgstr "بواسطة %(name)s"
+
+#: templates\social\shared_detail.html
+msgid "completion"
+msgstr "الإنجاز"
+
+#: templates\social\shared_detail.html
+msgid "creator"
+msgstr "المُنشئ"
+
+#: templates\analytics\achievements.html
+msgid "earned"
+msgstr "مُكتسبة"
+
+#: templates\reports\import.html
+msgid "errors"
+msgstr "أخطاء"
+
+#: templates\reports\import.html
+msgid "imported"
+msgstr "مستوردة"
+
+#: templates\reports\import.html
+msgid "line"
+msgstr "سطر"
+
+#: apps\analytics\services\progress\goals.py
+msgid "max. %(goal)s"
+msgstr "حدّ أقصى %(goal)s"
+
+#: templates\social\community.html
+msgid "username or e-mail"
+msgstr "اسم المستخدم أو البريد"
+
+#: templates\social\community.html
+msgid "waiting for an answer"
+msgstr "بانتظار الرد"
+
+#: templates\social\shared_detail.html
+msgid "you"
+msgstr "أنت"
+
+#: apps\challenges\system_templates.py
+msgid "10,000 steps a day."
+msgstr "10٬000 خطوة يوميًا."
+
+#: apps\challenges\system_templates.py
+msgid "30 Days Coding"
+msgstr "30 يومًا من البرمجة"
+
+#: apps\challenges\system_templates.py
+msgid "30 Days Fitness"
+msgstr "30 يومًا من الرياضة"
+
+#: apps\challenges\system_templates.py
+msgid "30 Days Reading"
+msgstr "30 يومًا من القراءة"
+
+#: apps\challenges\system_templates.py
+msgid "30 minutes of English practice per day, across all skills."
+msgstr "30 دقيقة من ممارسة الإنجليزية يوميًا في كل المهارات."
+
+#: apps\challenges\system_templates.py
+msgid "A day without social media counts as a win."
+msgstr "يوم بلا وسائل تواصل اجتماعي يُعدّ انتصارًا."
+
+#: apps\challenges\system_templates.py
+msgid "Activity type"
+msgstr "نوع النشاط"
+
+#: apps\challenges\system_templates.py
+msgid "Book"
+msgstr "الكتاب"
+
+#: apps\challenges\system_templates.py
+msgid "Daily Walking"
+msgstr "المشي اليومي"
+
+#: apps\challenges\system_templates.py
+msgid "Digital Detox"
+msgstr "التخلص الرقمي"
+
+#: apps\challenges\system_templates.py
+msgid "Drink 2 litres of water every day."
+msgstr "اشرب لترين من الماء يوميًا."
+
+#: apps\challenges\system_templates.py
+msgid "Early riser"
+msgstr "الاستيقاظ المبكر"
+
+#: apps\challenges\system_templates.py
+msgid "Fajr on time"
+msgstr "الفجر في وقته"
+
+#: apps\challenges\system_templates.py
+msgid "Football"
+msgstr "كرة القدم"
+
+#: apps\challenges\system_templates.py
+msgid "Grammar"
+msgstr "القواعد"
+
+#: apps\challenges\system_templates.py
+msgid "Gym"
+msgstr "النادي الرياضي"
+
+#: apps\challenges\system_templates.py
+msgid "Home workout"
+msgstr "تمرين في المنزل"
+
+#: apps\challenges\system_templates.py
+msgid "Juz"
+msgstr "الجزء"
+
+#: apps\challenges\system_templates.py
+msgid "Keep your recreational screen time under 2 hours a day."
+msgstr "أبقِ وقت الشاشة الترفيهي تحت ساعتين يوميًا."
+
+#: apps\challenges\system_templates.py
+msgid "Learn English"
+msgstr "تعلّم الإنجليزية"
+
+#: apps\challenges\system_templates.py
+msgid "Listening"
+msgstr "الاستماع"
+
+#: apps\challenges\system_templates.py
+msgid "No social media"
+msgstr "بلا وسائل تواصل"
+
+#: apps\challenges\system_templates.py
+msgid "One workout a day for 30 days — gym, running, football or at home."
+msgstr ""
+"تمرين واحد يوميًا لمدة 30 يومًا — نادٍ أو جري أو كرة قدم أو في المنزل."
+
+#: apps\challenges\system_templates.py
+msgid "Pages"
+msgstr "الصفحات"
+
+#: apps\challenges\system_templates.py
+msgid "Pray Fajr on time every day and track your wake-up time."
+msgstr "صلِّ الفجر في وقته كل يوم وتابع وقت استيقاظك."
+
+#: apps\challenges\system_templates.py
+msgid "Prayed on time"
+msgstr "صُلّيت في وقتها"
+
+#: apps\challenges\system_templates.py
+msgid "Qur'an Reading"
+msgstr "قراءة القرآن"
+
+#: apps\challenges\system_templates.py
+msgid "Read 20 pages every day and keep track of your books."
+msgstr "اقرأ 20 صفحة يوميًا وتابع كتبك."
+
+#: apps\challenges\system_templates.py
+msgid "Read a few pages of the Qur'an every day."
+msgstr "اقرأ بضع صفحات من القرآن كل يوم."
+
+#: apps\challenges\system_templates.py
+msgid "Reading"
+msgstr "القراءة"
+
+#: apps\challenges\system_templates.py
+msgid "Running"
+msgstr "الجري"
+
+#: apps\challenges\system_templates.py
+msgid "Running 3×/week"
+msgstr "الجري 3 مرات أسبوعيًا"
+
+#: apps\challenges\system_templates.py
+msgid "Screen time"
+msgstr "وقت الشاشة"
+
+#: apps\challenges\system_templates.py
+msgid "Screen time limit"
+msgstr "حدّ وقت الشاشة"
+
+#: apps\challenges\system_templates.py
+msgid "Skill"
+msgstr "المهارة"
+
+#: apps\challenges\system_templates.py
+msgid "Speaking"
+msgstr "التحدث"
+
+#: apps\challenges\system_templates.py
+msgid "Steps"
+msgstr "الخطوات"
+
+#: apps\challenges\system_templates.py
+msgid "Surah"
+msgstr "السورة"
+
+#: apps\challenges\system_templates.py
+msgid "Three runs a week, each one at least 30 minutes."
+msgstr "ثلاث جولات جري أسبوعيًا، كل منها 30 دقيقة على الأقل."
+
+#: apps\challenges\system_templates.py
+msgid "Topic"
+msgstr "الموضوع"
+
+#: apps\challenges\system_templates.py
+msgid "Two hours of focused coding a day."
+msgstr "ساعتان من البرمجة المركّزة يوميًا."
+
+#: apps\challenges\system_templates.py
+msgid "Vocabulary"
+msgstr "المفردات"
+
+#: apps\challenges\system_templates.py
+msgid "Wake up before 06:00 every day — log your wake-up time."
+msgstr "استيقظ قبل 06:00 كل يوم — سجّل وقت استيقاظك."
+
+#: apps\challenges\system_templates.py
+msgid "Wake-up time"
+msgstr "وقت الاستيقاظ"
+
+#: apps\challenges\system_templates.py
+msgid "Water"
+msgstr "الماء"
+
+#: apps\challenges\system_templates.py
+msgid "Water Challenge"
+msgstr "تحدي الماء"
+
+#: apps\challenges\system_templates.py
+msgid "Writing"
+msgstr "الكتابة"
+
 #~ msgid ""
 #~ "This field can't be measured (choose a number, duration or done/not done "
 #~ "field)."
