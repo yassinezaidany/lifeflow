@@ -6,7 +6,8 @@
   {% include "partials/sidebar.html" %}
   <div class="lg:ps-64">
     {% include "partials/topbar.html" %}
-    <main id="main" class="mx-auto w-full max-w-7xl px-4 pb-28 pt-6 sm:px-6 lg:px-8 lg:pb-12" {% block main_attrs %}{% endblock %}>
+    {# x-data: Alpine only binds @click/$dispatch inside a component — page buttons (Record…) need this scope, including after a refresh #}
+    <main id="main" x-data class="mx-auto w-full max-w-7xl px-4 pb-28 pt-6 sm:px-6 lg:px-8 lg:pb-12" {% block main_attrs %}{% endblock %}>
       {% include "partials/messages.html" %}
       {% block content %}{% endblock %}
     </main>
