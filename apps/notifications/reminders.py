@@ -102,6 +102,22 @@ def run_for_user(user, now: datetime | None = None) -> int:
     return sent
 
 
+HEARTBEAT = "scheduler.last"
+
+
 def run_all() -> int:
     users = get_user_model().objects.filter(is_active=True, settings__notifications_enabled=True).select_related("profile", "settings")
-    return sum(run_for_user(u) for u in users)
+    sent = sum(run_for_user(u) for u in users)
+    _heartbeat()
+    return sent
+
+
+def _heartbeat() -> None:
+    """Record the last successful run (checked by `manage.py doctor`)."""
+    from django.conf import settings
+    from django.utils import timezone
+
+    try:
+        (settings.LOG_DIR / HEARTBEAT).write_text(timezone.now().isoformat(), encoding="utf-8")
+    except OSError:  # pragma: no cover - read-only filesystem
+        pass

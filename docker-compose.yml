@@ -1,5 +1,11 @@
-# Local development database for LifeFlow.
-# Django runs natively (python manage.py runserver); only MySQL is containerised.
+# LifeFlow with Docker.
+#
+#   Development (Django runs natively, only MySQL in Docker):
+#       docker compose up -d
+#   Full stack (MySQL + web app + reminder scheduler):
+#       docker compose --profile app up -d --build
+#       → http://localhost:8080   (APP_PORT)
+#
 # Port 3307 on the host avoids clashing with a local XAMPP/WAMP MySQL on 3306.
 services:
   db:
@@ -25,5 +31,52 @@ services:
       timeout: 5s
       retries: 20
 
+  web:
+    profiles: ["app"]
+    build: .
+    image: lifeflow:latest
+    container_name: lifeflow-web
+    restart: unless-stopped
+    command: ["web"]
+    env_file: .env
+    environment: &app_env
+      DJANGO_SETTINGS_MODULE: config.settings.prod
+      DEBUG: "False"
+      DB_HOST: db
+      DB_PORT: "3306"
+      USE_HTTPS: ${USE_HTTPS:-False}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1}
+      CSRF_TRUSTED_ORIGINS: ${CSRF_TRUSTED_ORIGINS:-http://localhost:8080,http://127.0.0.1:8080}
+      SITE_URL: ${SITE_URL:-http://localhost:8080}
+    ports:
+      - "${APP_PORT:-8080}:8000"
+    volumes:
+      - lifeflow_media:/app/media
+      - lifeflow_logs:/app/logs
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz')"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  scheduler:
+    profiles: ["app"]
+    image: lifeflow:latest
+    container_name: lifeflow-scheduler
+    restart: unless-stopped
+    command: ["scheduler"]
+    env_file: .env
+    environment: *app_env
+    volumes:
+      - lifeflow_logs:/app/logs
+    depends_on:
+      web:
+        condition: service_started
+
 volumes:
   lifeflow_mysql:
+  lifeflow_media:
+  lifeflow_logs:

@@ -13,3 +13,5 @@ pywebpush>=2.0
 arabic-reshaper>=3.0
 python-bidi>=0.4
 anthropic>=1.0  # optional: AI challenge assistant (rule-based fallback without it)
+waitress>=3.0  # production server on Windows
+gunicorn>=22.0; sys_platform != "win32"  # production server on Linux / Docker

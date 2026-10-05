@@ -14,7 +14,14 @@ const out = (p) => path.join(root, "static", p);
 
 function copy(src, dest) {
   fs.mkdirSync(path.dirname(dest), { recursive: true });
-  fs.copyFileSync(src, dest);
+  if (dest.endsWith(".js")) {
+    // Source maps are not shipped: drop the reference so the hashed static storage
+    // (collectstatic) doesn't fail on a missing .map file.
+    const code = fs.readFileSync(src, "utf8").replace(/\n?\/\/# sourceMappingURL=.*$/gm, "");
+    fs.writeFileSync(dest, code);
+  } else {
+    fs.copyFileSync(src, dest);
+  }
   console.log("copied", path.relative(root, dest));
 }
 
