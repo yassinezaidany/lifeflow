@@ -9,6 +9,7 @@ from apps.journal import api as journal
 from apps.notifications import api as notifications
 from apps.planner import api as planner
 from apps.reports import api as reports
+from apps.social import api as social
 from apps.tracking import api as tracking
 
 router = DefaultRouter()
@@ -44,5 +45,8 @@ urlpatterns = [
     path("dashboard/", dashboard.dashboard, name="dashboard"),
     path("calendar/", dashboard.calendar, name="calendar"),
     path("calendar/day/", dashboard.calendar_day, name="calendar-day"),
+    path("social/friends/", social.friends, name="social-friends"),
+    path("social/shared/", social.shared_list, name="social-shared"),
+    path("social/shared/<int:pk>/leaderboard/", social.shared_leaderboard, name="social-leaderboard"),
     path("", include(router.urls)),
 ]

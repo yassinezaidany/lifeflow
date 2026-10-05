@@ -19,6 +19,7 @@
     <a href="{% url 'challenges:list' %}" class="nav-link {% active 'challenges:list' 'challenges:detail' 'challenges:create' 'challenges:settings' %}">{% icon "target" %} {% trans "Challenges" %}</a>
     <a href="{% url 'dashboard:calendar' %}" class="nav-link {% active 'dashboard:calendar' 'dashboard:day' %}">{% icon "calendar" %} {% trans "Calendar" %}</a>
     <a href="{% url 'analytics:overview' %}" class="nav-link {% active 'analytics:*' %}">{% icon "chart-column" %} {% trans "Analytics" %}</a>
+    <a href="{% url 'social:community' %}" class="nav-link {% active 'social:*' %}">{% icon "users" %} {% trans "Community" %}</a>
     <div class="px-3 pb-1 pt-5 section-title">{% trans "Reflect" %}</div>
     <a href="{% url 'reports:list' %}" class="nav-link {% active 'reports:*' %}">{% icon "file-text" %} {% trans "Reports" %}</a>
     <a href="{% url 'journal:list' %}" class="nav-link {% active 'journal:list' 'journal:detail' %}">{% icon "notebook-pen" %} {% trans "Journal" %}</a>

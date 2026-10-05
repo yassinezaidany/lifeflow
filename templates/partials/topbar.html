@@ -55,6 +55,7 @@
           <a href="{% url 'notifications:list' %}" class="block border-t border-line px-4 py-2.5 text-center text-xs font-medium text-brand hover:bg-subtle">{% trans "View all" %}</a>
         </div>
       </div>
+      <a href="{% url 'social:community' %}" class="btn btn-ghost btn-icon lg:hidden" aria-label="{% trans 'Community' %}">{% icon "users" %}</a>
       <a href="{% url 'accounts:settings' %}" class="ms-1 lg:hidden" aria-label="{% trans 'Profile' %}">{% include "partials/avatar.html" with size="h-8 w-8 text-xs" %}</a>
     </div>
   </div>

@@ -54,11 +54,14 @@ def challenge_list(request):
 @login_required
 def challenge_create(request):
     template = None
-    slug = request.GET.get("template")
-    if slug:
-        tpl = ChallengeTemplate.objects.filter(Q(owner__isnull=True) | Q(owner=request.user) | Q(is_public=True), slug=slug).first()
-        if tpl:
-            template = ChallengeTemplateSerializer(tpl).data
+    visible = ChallengeTemplate.objects.filter(Q(owner__isnull=True) | Q(owner=request.user) | Q(is_public=True))
+    tpl = None
+    if (request.GET.get("template_id") or "").isdigit():  # community templates (slugs are only unique per author)
+        tpl = visible.filter(pk=int(request.GET["template_id"])).first()
+    elif request.GET.get("template"):
+        tpl = visible.filter(slug=request.GET["template"]).order_by("owner_id").first()  # built-in first
+    if tpl:
+        template = ChallengeTemplateSerializer(tpl).data
     nxt = request.GET.get("next")
     if nxt and not url_has_allowed_host_and_scheme(nxt, allowed_hosts={request.get_host()}):
         nxt = None
@@ -141,10 +144,12 @@ def challenge_settings(request, pk):
             "today": user_today(request.user).isoformat(),
         },
         "milestones": list(challenge.milestones.all()),
+        "shared_group": challenge.shared_memberships.filter(status="active").select_related("shared").first(),
+        "published": ChallengeTemplate.objects.filter(owner=request.user, name=challenge.name, is_public=True).first(),
     })
 
 
 @login_required
 def templates_gallery(request):
-    templates = ChallengeTemplate.objects.filter(Q(owner__isnull=True) | Q(owner=request.user) | Q(is_public=True))
+    templates = ChallengeTemplate.objects.filter(Q(owner__isnull=True) | Q(owner=request.user))  # community ones live in /community/
     return render(request, "challenges/templates.html", {"templates": templates})

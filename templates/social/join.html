@@ -1,0 +1,25 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{{ shared.name }}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-xl tone-{{ shared.color }}">
+  <div class="card card-pad text-center">
+    <span class="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl bg-tone/15 text-tone-strong">{% icon shared.icon "icon-xl" %}</span>
+    <p class="mt-5 text-sm text-muted">{% blocktrans %}{{ owner_name }} invites you to a group challenge{% endblocktrans %}</p>
+    <h1 class="mt-1 text-2xl font-semibold">{{ shared.name }}</h1>
+    {% if shared.description %}<p class="mt-3 text-sm text-muted">{{ shared.description|linebreaksbr }}</p>{% endif %}
+    <dl class="mt-6 grid grid-cols-2 gap-3 text-start text-sm">
+      <div class="rounded-xl bg-subtle p-3"><dt class="stat-label">{% trans "Members" %}</dt><dd class="font-semibold tabular">{{ member_count }}</dd></div>
+      <div class="rounded-xl bg-subtle p-3"><dt class="stat-label">{% trans "Period" %}</dt><dd class="font-semibold">{{ shared.start_date|udate:user }} → {% if shared.end_date %}{{ shared.end_date|udate:user }}{% else %}{% trans "no end" %}{% endif %}</dd></div>
+      <div class="col-span-2 rounded-xl bg-subtle p-3"><dt class="stat-label">{% trans "What you'll track" %}</dt>
+        <dd class="font-semibold">{% for f in definition.fields %}{{ f.label }}{% if not forloop.last %}, {% endif %}{% empty %}{% trans "Sessions only" %}{% endfor %}</dd></div>
+    </dl>
+    <p class="mt-5 rounded-lg bg-brand-soft/50 px-3 py-2 text-xs text-muted">{% icon "shield-check" "icon-xs" %} {% trans "Joining adds a copy of this challenge to your challenges. The group only sees your completion and streak — you can hide them anytime." %}</p>
+    <form method="post" class="mt-6 flex justify-center gap-2">
+      {% csrf_token %}
+      {% if invited %}<button name="action" value="decline" class="btn btn-secondary">{% trans "Decline" %}</button>{% endif %}
+      <button name="action" value="join" class="btn btn-primary btn-lg">{% icon "check" "icon-sm" %} {% trans "Join the challenge" %}</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

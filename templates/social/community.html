@@ -1,0 +1,165 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Community" %}{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-end justify-between gap-4">
+  <div>
+    <h1 class="text-2xl font-semibold">{% trans "Community" %}</h1>
+    <p class="mt-1 text-sm text-muted">{% trans "Friends, group challenges and shared templates. Your entries always stay private." %}</p>
+  </div>
+</div>
+
+<div class="mt-6 no-scrollbar -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+  <div class="seg">
+    <a href="?tab=friends" class="seg-item {% if tab == 'friends' %}is-active{% endif %}">{% icon "users" "icon-xs" %} {% trans "Friends" %}{% if incoming %} <span class="badge badge-brand">{{ incoming|length }}</span>{% endif %}</a>
+    <a href="?tab=groups" class="seg-item {% if tab == 'groups' %}is-active{% endif %}">{% icon "trophy" "icon-xs" %} {% trans "Group challenges" %}{% if shared_invites %} <span class="badge badge-brand">{{ shared_invites|length }}</span>{% endif %}</a>
+    <a href="?tab=templates" class="seg-item {% if tab == 'templates' %}is-active{% endif %}">{% icon "layout-template" "icon-xs" %} {% trans "Community templates" %}</a>
+  </div>
+</div>
+
+{% if tab == "groups" %}
+<div class="mt-6 space-y-6">
+  {% if shared_invites %}
+  <section>
+    <h2 class="section-title mb-3">{% trans "Invitations" %}</h2>
+    <div class="grid gap-3 sm:grid-cols-2">
+      {% for s in shared_invites %}
+      <a href="{% url 'social:join' s.invite_code %}" class="card flex items-center gap-3 p-4 tone-{{ s.color }} border-tone/30 bg-tone/5">
+        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-tone/15 text-tone-strong">{% icon s.icon %}</span>
+        <span class="min-w-0 flex-1"><span class="block truncate font-semibold">{{ s.name }}</span><span class="text-xs text-muted">{% trans "You're invited" %}</span></span>
+        <span class="btn btn-primary btn-sm">{% trans "See" %}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+  <section>
+    <h2 class="section-title mb-3">{% trans "Your group challenges" %}</h2>
+    {% if shared_active %}
+    <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+      {% for s in shared_active %}
+      <a href="{% url 'social:shared' s.pk %}" class="card flex items-center gap-3 p-4 tone-{{ s.color }} transition hover:shadow-pop">
+        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-tone/15 text-tone-strong">{% icon s.icon %}</span>
+        <span class="min-w-0 flex-1">
+          <span class="block truncate font-semibold">{{ s.name }}</span>
+          <span class="text-xs text-muted">{% blocktrans count n=s.member_count %}{{ n }} member{% plural %}{{ n }} members{% endblocktrans %}</span>
+        </span>
+        {% icon "chevron-right" "icon-sm text-faint" %}
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty">
+      <div class="empty-icon">{% icon "trophy" "icon-lg" %}</div>
+      <h3 class="text-sm font-semibold">{% trans "No group challenge yet" %}</h3>
+      <p class="mt-1 max-w-md text-sm text-muted">{% trans "Open one of your challenges, then “Share with friends” in its settings. Everyone tracks their own copy and you compare streaks and completion." %}</p>
+      <a href="{% url 'challenges:list' %}" class="btn btn-primary mt-5">{% trans "Choose a challenge" %}</a>
+    </div>
+    {% endif %}
+  </section>
+</div>
+
+{% elif tab == "templates" %}
+<div class="mt-6 space-y-6">
+  {% if my_templates %}
+  <section>
+    <h2 class="section-title mb-3">{% trans "Published by you" %}</h2>
+    <ul class="card divide-y divide-line">
+      {% for t in my_templates %}
+      <li class="flex items-center gap-3 px-5 py-3 tone-{{ t.color }}">
+        <span class="text-tone-strong">{% icon t.icon "icon-sm" %}</span><span class="flex-1 text-sm font-medium">{{ t.name }}</span>
+        <form method="post" action="{% url 'social:template_unpublish' t.pk %}">{% csrf_token %}<button class="btn btn-ghost btn-sm text-danger">{% trans "Unpublish" %}</button></form>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+  <section>
+    <h2 class="section-title mb-3">{% trans "Shared by the community" %}</h2>
+    {% if templates %}
+    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      {% for t in templates %}
+      <a href="{% url 'challenges:create' %}?template_id={{ t.pk }}" class="card group flex flex-col p-5 transition hover:shadow-pop tone-{{ t.color }}">
+        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-tone/10 text-tone-strong">{% icon t.icon "icon-lg" %}</span>
+        <h3 class="mt-4 font-semibold">{{ t.name }}</h3>
+        <p class="mt-1 line-clamp-2 flex-1 text-sm text-muted">{{ t.description }}</p>
+        <div class="mt-4 flex items-center justify-between text-xs text-muted">
+          <span>{% blocktrans with name=t.owner.first_name|default:t.owner.username %}by {{ name }}{% endblocktrans %} · {% blocktrans count n=t.uses %}{{ n }} use{% plural %}{{ n }} uses{% endblocktrans %}</span>
+          <span class="font-medium text-brand">{% trans "Use" %} →</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty"><div class="empty-icon">{% icon "layout-template" "icon-lg" %}</div>
+      <p class="max-w-md text-sm text-muted">{% trans "No community template yet. Publish one from a challenge's settings: only its structure is shared, never your entries." %}</p></div>
+    {% endif %}
+  </section>
+</div>
+
+{% else %}
+<div class="mt-6 grid gap-6 lg:grid-cols-3">
+  <section class="card card-pad h-fit">
+    <h2 class="card-title">{% trans "Add a friend" %}</h2>
+    <p class="card-subtitle">{% trans "Enter their exact username or e-mail address." %}</p>
+    <form method="post" action="{% url 'social:friend_add' %}" class="mt-4 flex gap-2">
+      {% csrf_token %}
+      <input name="username" class="input" required maxlength="254" placeholder="{% trans 'username or e-mail' %}" autocomplete="off">
+      <button class="btn btn-primary">{% icon "send" "icon-sm" %}</button>
+    </form>
+    <p class="mt-4 rounded-lg bg-subtle px-3 py-2 text-xs text-muted">{% icon "shield-check" "icon-xs" %} {% trans "Friends only see the group challenges you join together — never your entries, journal or planner." %}</p>
+  </section>
+
+  <div class="space-y-6 lg:col-span-2">
+    {% if incoming %}
+    <section>
+      <h2 class="section-title mb-3">{% trans "Requests received" %}</h2>
+      <ul class="card divide-y divide-line">
+        {% for f in incoming %}
+        <li class="flex flex-wrap items-center gap-3 px-5 py-3">
+          {% include "partials/avatar.html" with user=f.from_user size="h-9 w-9 text-xs" %}
+          <span class="min-w-0 flex-1"><span class="block text-sm font-medium">{{ f.from_user.first_name|default:f.from_user.username }}</span><span class="text-xs text-muted">@{{ f.from_user.username }}</span></span>
+          <form method="post" action="{% url 'social:friend_respond' f.pk %}" class="flex gap-2">{% csrf_token %}
+            <button name="action" value="decline" class="btn btn-secondary btn-sm">{% trans "Decline" %}</button>
+            <button name="action" value="accept" class="btn btn-primary btn-sm">{% trans "Accept" %}</button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+    <section>
+      <h2 class="section-title mb-3">{% trans "Friends" %}</h2>
+      {% if friends %}
+      <ul class="card divide-y divide-line">
+        {% for f in friends %}
+        <li class="flex items-center gap-3 px-5 py-3" x-data>
+          {% include "partials/avatar.html" with user=f size="h-9 w-9 text-xs" %}
+          <span class="min-w-0 flex-1"><span class="block text-sm font-medium">{{ f.first_name|default:f.username }}</span><span class="text-xs text-muted">@{{ f.username }}</span></span>
+          <form method="post" action="{% url 'social:friend_remove' f.pk %}" @submit.prevent="LF.confirm('{% trans "Remove this friend?" as s %}{{ s|escapejs }}', {danger: true, confirm: '{% trans "Remove" as s %}{{ s|escapejs }}'}).then(ok => ok && $el.submit())">{% csrf_token %}
+            <button class="btn btn-ghost btn-icon btn-sm" aria-label="{% trans 'Remove' %}">{% icon "x" "icon-sm" %}</button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <div class="empty py-8"><div class="empty-icon">{% icon "users" "icon-lg" %}</div><p class="text-sm text-muted">{% trans "No friends yet. Add someone with their username." %}</p></div>
+      {% endif %}
+    </section>
+    {% if outgoing %}
+    <section>
+      <h2 class="section-title mb-3">{% trans "Requests sent" %}</h2>
+      <ul class="card divide-y divide-line">
+        {% for f in outgoing %}
+        <li class="flex items-center gap-3 px-5 py-3 text-sm">
+          <span class="flex-1">@{{ f.to_user.username }} <span class="text-xs text-muted">· {% trans "waiting for an answer" %}</span></span>
+          <form method="post" action="{% url 'social:friend_cancel' f.pk %}">{% csrf_token %}<button class="btn btn-ghost btn-sm">{% trans "Cancel" %}</button></form>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+{% endblock %}
