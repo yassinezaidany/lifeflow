@@ -7,11 +7,14 @@
     <h1 class="text-2xl font-semibold">{% trans "Analytics" %}</h1>
     <p class="mt-1 text-sm text-muted">{{ start|udate:user }} → {{ end|udate:user }}</p>
   </div>
+  <div class="flex flex-wrap items-center gap-2">
+  <a href="{% url 'analytics:achievements' %}" class="btn btn-secondary btn-sm">{% icon "award" "icon-sm" %} {% trans "Achievements" %}</a>
   <div class="seg">
     <a href="?period=30d" class="seg-item {% if key == '30d' %}is-active{% endif %}">{% trans "30 days" %}</a>
     <a href="?period=month" class="seg-item {% if key == 'month' %}is-active{% endif %}">{% trans "This month" %}</a>
     <a href="?period=90d" class="seg-item {% if key == '90d' %}is-active{% endif %}">{% trans "90 days" %}</a>
     <a href="?period=year" class="seg-item {% if key == 'year' %}is-active{% endif %}">{% trans "1 year" %}</a>
+  </div>
   </div>
 </div>
 
@@ -21,6 +24,11 @@
   <div class="card p-5"><div class="stat-label">{% trans "Planner completion" %}</div><div class="stat-value">{{ planner.completion_rate|pct }}</div><div class="mt-1 text-xs text-muted">{{ planner.completed }} / {{ planner.planned }}</div></div>
   <div class="card p-5"><div class="stat-label">{% trans "Time completed" %}</div><div class="stat-value">{{ planner.done_minutes|minutes }}</div><div class="mt-1 text-xs text-muted">{% trans "of" %} {{ planner.planned_minutes|minutes }} {% trans "planned" %}</div></div>
 </div>
+
+{% if insights %}
+<h2 class="mb-3 mt-6 text-base font-semibold">{% trans "Insights" %}</h2>
+{% include "analytics/_insights.html" %}
+{% endif %}
 
 {% if rows %}
 <div class="mt-6 grid gap-4 lg:grid-cols-2">

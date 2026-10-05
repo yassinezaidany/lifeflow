@@ -1,0 +1,36 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Achievements" %}{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-end justify-between gap-4">
+  <div>
+    <h1 class="text-2xl font-semibold">{% trans "Achievements" %}</h1>
+    <p class="mt-1 text-sm text-muted">{% trans "Badges are computed from what you actually recorded — planning alone never earns one." %}</p>
+  </div>
+  <div class="card flex items-center gap-3 px-4 py-3">
+    <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-300">{% icon "award" "icon-sm" %}</span>
+    <div><div class="text-lg font-semibold tabular leading-5">{{ earned }} / {{ total }}</div><div class="text-xs text-muted">{% trans "earned" %}</div></div>
+  </div>
+</div>
+
+{% for group in groups %}
+<section class="mt-8">
+  <h2 class="section-title mb-3">{{ group.label }}</h2>
+  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    {% for a in group.items %}
+    <div class="card flex gap-3 p-4 {% if not a.earned %}opacity-90{% endif %}" data-achievement="{{ a.key }}" data-earned="{{ a.earned|yesno:'1,0' }}">
+      <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl {% if a.earned %}bg-amber-500/15 text-amber-600 dark:text-amber-300{% else %}bg-subtle text-faint{% endif %}">{% icon a.icon %}</span>
+      <div class="min-w-0 flex-1">
+        <div class="flex items-center justify-between gap-2">
+          <span class="truncate text-sm font-semibold">{{ a.title }}</span>
+          {% if a.earned %}<span class="text-success" aria-label="{% trans 'Earned' %}">{% icon "circle-check" "icon-sm" %}</span>{% else %}<span class="text-xs text-muted tabular"><bdi>{{ a.value }} / {{ a.target }}</bdi></span>{% endif %}
+        </div>
+        <p class="mt-0.5 text-xs text-muted">{{ a.description }}</p>
+        {% if not a.earned %}<div class="tone-amber bar mt-2"><span style="width:{{ a.percent }}%"></span></div>{% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
+{% endblock %}

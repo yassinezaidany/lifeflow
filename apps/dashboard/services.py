@@ -7,6 +7,7 @@ from datetime import date, timedelta
 
 from django.utils.translation import gettext as _
 
+from apps.analytics.services.insights import build_insights
 from apps.analytics.services.progress import ProgressEngine, ProgressStatus
 from apps.challenges.models import Challenge, RestDay
 from apps.core.dates import month_bounds, user_now, user_today, week_start_for
@@ -90,6 +91,7 @@ def build_dashboard(user) -> dict:
         "streaks": streaks,
         "last7": last7,
         "status_counts": _status_counts(running),
+        "insights": build_insights(user, running, limit=3),
     }
 
 

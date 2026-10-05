@@ -18,12 +18,13 @@
     <a href="{% url 'planner:week' %}" class="nav-link {% active 'planner:*' %}">{% icon "calendar-days" %} {% trans "Planner" %}</a>
     <a href="{% url 'challenges:list' %}" class="nav-link {% active 'challenges:list' 'challenges:detail' 'challenges:create' 'challenges:settings' %}">{% icon "target" %} {% trans "Challenges" %}</a>
     <a href="{% url 'dashboard:calendar' %}" class="nav-link {% active 'dashboard:calendar' 'dashboard:day' %}">{% icon "calendar" %} {% trans "Calendar" %}</a>
-    <a href="{% url 'analytics:overview' %}" class="nav-link {% active 'analytics:*' %}">{% icon "chart-column" %} {% trans "Analytics" %}</a>
+    <a href="{% url 'analytics:overview' %}" class="nav-link {% active 'analytics:overview' %}">{% icon "chart-column" %} {% trans "Analytics" %}</a>
     <a href="{% url 'social:community' %}" class="nav-link {% active 'social:*' %}">{% icon "users" %} {% trans "Community" %}</a>
     <div class="px-3 pb-1 pt-5 section-title">{% trans "Reflect" %}</div>
     <a href="{% url 'reports:list' %}" class="nav-link {% active 'reports:*' %}">{% icon "file-text" %} {% trans "Reports" %}</a>
     <a href="{% url 'journal:list' %}" class="nav-link {% active 'journal:list' 'journal:detail' %}">{% icon "notebook-pen" %} {% trans "Journal" %}</a>
     <a href="{% url 'journal:review' %}" class="nav-link {% active 'journal:review' %}">{% icon "list-checks" %} {% trans "Weekly review" %}</a>
+    <a href="{% url 'analytics:achievements' %}" class="nav-link {% active 'analytics:achievements' %}">{% icon "award" %} {% trans "Achievements" %}</a>
     <a href="{% url 'challenges:templates' %}" class="nav-link {% active 'challenges:templates' %}">{% icon "layout-template" %} {% trans "Templates" %}</a>
   </nav>
   <div class="border-t border-line p-3">

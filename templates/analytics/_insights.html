@@ -1,0 +1,15 @@
+{% load i18n ui %}
+{% if insights %}
+<section aria-label="{% trans 'Insights' %}" class="grid gap-3 {{ insights_grid|default:'sm:grid-cols-2 lg:grid-cols-3' }}">
+  {% for i in insights %}
+  <div class="card flex gap-3 p-4 tone-{% if i.tone == 'success' %}emerald{% elif i.tone == 'warning' %}amber{% elif i.tone == 'danger' %}rose{% else %}indigo{% endif %}" data-insight="{{ i.kind }}">
+    <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-tone/10 text-tone-strong">{% icon i.icon "icon-sm" %}</span>
+    <div class="min-w-0 flex-1">
+      <div class="text-sm font-semibold">{{ i.title }}</div>
+      <p class="mt-0.5 text-xs leading-5 text-muted">{{ i.text }}</p>
+      {% if i.url %}<a href="{{ i.url }}" class="mt-2 inline-flex items-center gap-1 text-xs font-medium text-tone-strong hover:underline">{{ i.action }} {% icon "arrow-right" "icon-xs" %}</a>{% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
