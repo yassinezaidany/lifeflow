@@ -18,6 +18,7 @@
       <div class="seg" role="tablist">
         <button class="seg-item" role="tab" :aria-selected="mode==='day'" @click="setMode('day')">{% trans "Day" %}</button>
         <button class="seg-item" role="tab" :aria-selected="mode==='week'" @click="setMode('week')">{% trans "Week" %}</button>
+        <a class="seg-item" :href="'{% url 'dashboard:calendar' %}?month=' + selected.slice(0, 7) + '&date=' + selected">{% trans "Month" %}</a>
       </div>
       <button class="btn btn-secondary" @click="openTemplates()">{% icon "layout-template" "icon-sm" %} <span class="hidden sm:inline">{% trans "Templates" %}</span></button>
       <button class="btn btn-primary" @click="$dispatch('lf:activity', {date: selected})">{% icon "plus" "icon-sm" %} <span class="hidden sm:inline">{% trans "Add" %}</span></button>

@@ -1,0 +1,49 @@
+{% extends "layouts/app.html" %}
+{% load i18n ui %}
+{% block title %}{% trans "Import entries" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-2xl">
+  <a href="{% url 'reports:list' %}#export" class="mb-4 inline-flex items-center gap-1 text-sm text-muted hover:text-ink">{% icon "chevron-left" "icon-sm" %} {% trans "Reports" %}</a>
+  <h1 class="text-2xl font-semibold">{% trans "Import entries" %}</h1>
+  <p class="mt-1 text-sm text-muted">{% trans "Add past results from a CSV file — for example the history you kept in Excel." %}</p>
+
+  <form method="post" enctype="multipart/form-data" class="card card-pad mt-6 space-y-4">
+    {% csrf_token %}
+    <div>
+      <label class="label" for="file">{% trans "CSV file" %}</label>
+      <input id="file" type="file" name="file" accept=".csv,text/csv" required class="block w-full text-sm text-muted file:me-3 file:rounded-lg file:border-0 file:bg-subtle file:px-3 file:py-2 file:text-sm file:font-medium file:text-ink hover:file:bg-line">
+    </div>
+    <div class="rounded-xl bg-subtle p-4 text-xs text-muted">
+      <div class="mb-2 font-semibold text-ink">{% trans "Expected format" %}</div>
+      <code class="block overflow-x-auto whitespace-pre font-mono text-[11px] leading-5" dir="ltr">Challenge,Date,Pages,Surah,Note
+Qur'an,2026-09-01,4,Al-Baqara,
+Qur'an,2026-09-02,2,,Tired today</code>
+      <ul class="mt-3 list-disc space-y-1 ps-4">
+        <li>{% trans "The challenge must already exist (matched by name)." %}</li>
+        <li>{% trans "Other columns are matched to the challenge's fields by name; durations in minutes, times as HH:MM, done/not done as yes/no." %}</li>
+        <li>{% trans "Rows identical to an existing entry are skipped, so importing the same file twice is safe." %}</li>
+        <li>{% trans "Tip: export your entries as CSV to get a ready-made file." %}</li>
+      </ul>
+    </div>
+    <div class="flex justify-end gap-2">
+      <a href="{% url 'reports:export' %}?format=csv&kind=entries" class="btn btn-ghost">{% icon "download" "icon-sm" %} {% trans "Example (my entries)" %}</a>
+      <button class="btn btn-primary">{% icon "upload" "icon-sm" %} {% trans "Import" %}</button>
+    </div>
+  </form>
+
+  {% if report %}
+  <section class="card mt-6 overflow-hidden">
+    <div class="grid grid-cols-3 divide-x divide-line text-center rtl:divide-x-reverse">
+      <div class="p-4"><div class="stat-value text-success">{{ report.created }}</div><div class="stat-label">{% trans "imported" %}</div></div>
+      <div class="p-4"><div class="stat-value">{{ report.skipped }}</div><div class="stat-label">{% trans "already present" %}</div></div>
+      <div class="p-4"><div class="stat-value {% if report.failed %}text-danger{% endif %}">{{ report.failed }}</div><div class="stat-label">{% trans "errors" %}</div></div>
+    </div>
+    {% if report.errors %}
+    <ul class="max-h-80 divide-y divide-line overflow-y-auto border-t border-line text-sm">
+      {% for line, message in report.errors %}<li class="flex gap-3 px-5 py-2"><span class="w-16 shrink-0 text-muted tabular">{% trans "line" %} {{ line }}</span><span>{{ message }}</span></li>{% endfor %}
+    </ul>
+    {% endif %}
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

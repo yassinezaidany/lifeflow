@@ -74,6 +74,25 @@ def report_delete(request, pk):
 
 
 @login_required
+def import_entries(request):
+    from .imports import import_entries_csv
+
+    report = None
+    if request.method == "POST":
+        uploaded = request.FILES.get("file")
+        if not uploaded:
+            messages.error(request, _("Choose a CSV file."))
+        else:
+            try:
+                report = import_entries_csv(request.user, uploaded)
+                if report.created:
+                    messages.success(request, _("%(n)s entries imported.") % {"n": report.created})
+            except ValidationError as exc:
+                messages.error(request, " ".join(exc.messages))
+    return render(request, "reports/import.html", {"report": report})
+
+
+@login_required
 def export(request):
     fmt = request.GET.get("format", "csv")
     if fmt == "xlsx":

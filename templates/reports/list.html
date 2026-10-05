@@ -30,6 +30,8 @@
         <a href="{% url 'reports:export' %}?format=csv&kind=entries" class="btn btn-secondary justify-start">{% icon "download" "icon-sm" %} {% trans "CSV — all entries" %}</a>
         <a href="{% url 'reports:export' %}?format=csv&kind=statistics" class="btn btn-secondary justify-start">{% icon "download" "icon-sm" %} {% trans "CSV — challenge statistics" %}</a>
       </div>
+      <h3 class="mt-5 text-sm font-semibold">{% trans "Import past results" %}</h3>
+      <a href="{% url 'reports:import' %}" class="btn btn-ghost mt-2 w-full justify-start">{% icon "upload" "icon-sm" %} {% trans "Import entries from CSV" %}</a>
     </div>
   </section>
 
