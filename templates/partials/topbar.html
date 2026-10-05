@@ -55,8 +55,26 @@
           <a href="{% url 'notifications:list' %}" class="block border-t border-line px-4 py-2.5 text-center text-xs font-medium text-brand hover:bg-subtle">{% trans "View all" %}</a>
         </div>
       </div>
-      <a href="{% url 'social:community' %}" class="btn btn-ghost btn-icon lg:hidden" aria-label="{% trans 'Community' %}">{% icon "users" %}</a>
-      <a href="{% url 'accounts:settings' %}" class="ms-1 lg:hidden" aria-label="{% trans 'Profile' %}">{% include "partials/avatar.html" with size="h-8 w-8 text-xs" %}</a>
+      {# Mobile: everything the bottom bar doesn't hold #}
+      <div x-data="{open:false}" class="relative ms-1 lg:hidden" @keydown.escape="open=false">
+        <button type="button" @click="open=!open" :aria-expanded="open" aria-label="{% trans 'Menu' %}" data-mobile-menu>{% include "partials/avatar.html" with size="h-8 w-8 text-xs" %}</button>
+        <nav x-show="open" x-cloak @click.outside="open=false" class="menu end-0 max-h-[75vh] w-60 overflow-y-auto" aria-label="{% trans 'Menu' %}">
+          <a class="menu-item" href="{% url 'dashboard:calendar' %}">{% icon "calendar" "icon-sm" %} {% trans "Calendar" %}</a>
+          <a class="menu-item" href="{% url 'analytics:overview' %}">{% icon "chart-column" "icon-sm" %} {% trans "Analytics" %}</a>
+          <a class="menu-item" href="{% url 'analytics:achievements' %}">{% icon "award" "icon-sm" %} {% trans "Achievements" %}</a>
+          <a class="menu-item" href="{% url 'social:community' %}">{% icon "users" "icon-sm" %} {% trans "Community" %}</a>
+          <div class="my-1 border-t border-line"></div>
+          <a class="menu-item" href="{% url 'reports:list' %}">{% icon "file-text" "icon-sm" %} {% trans "Reports" %}</a>
+          <a class="menu-item" href="{% url 'journal:list' %}">{% icon "notebook-pen" "icon-sm" %} {% trans "Journal" %}</a>
+          <a class="menu-item" href="{% url 'journal:review' %}">{% icon "list-checks" "icon-sm" %} {% trans "Weekly review" %}</a>
+          <a class="menu-item" href="{% url 'challenges:templates' %}">{% icon "layout-template" "icon-sm" %} {% trans "Templates" %}</a>
+          <div class="my-1 border-t border-line"></div>
+          <a class="menu-item" href="{% url 'accounts:settings' %}">{% icon "settings" "icon-sm" %} {% trans "Settings" %}</a>
+          <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}
+            <button class="menu-item w-full">{% icon "log-out" "icon-sm" %} {% trans "Sign out" %}</button>
+          </form>
+        </nav>
+      </div>
     </div>
   </div>
 </header>

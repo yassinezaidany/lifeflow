@@ -4404,7 +4404,7 @@ msgid "You're invited"
 msgstr "Vous êtes invité"
 
 #: apps\analytics\services\insights.py
-msgid "Your %(streak)s streak on %(name)s is waiting for today's result."
+msgid "Your streak of %(streak)s on %(name)s is waiting for today's result."
 msgstr "Votre série de %(streak)s sur %(name)s attend le résultat du jour."
 
 #: templates\social\community.html
@@ -4664,6 +4664,10 @@ msgstr "Défi hydratation"
 #: apps\challenges\system_templates.py
 msgid "Writing"
 msgstr "Écriture"
+
+#: templates\partials\topbar.html
+msgid "Menu"
+msgstr "Menu"
 
 #~ msgid ""
 #~ "This field can't be measured (choose a number, duration or done/not done "

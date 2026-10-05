@@ -62,7 +62,7 @@ def _challenge_insights(cards) -> list[Insight]:
         elif (not limit and r.current_streak >= 3 and today.get("type") == "active"
               and not today.get("done") and r.streak_unit == "day"):
             out.append(Insight("streak_at_risk", "warning", "flame", _("Keep your streak alive"),
-                               _("Your %(streak)s streak on %(name)s is waiting for today's result.") % {
+                               _("Your streak of %(streak)s on %(name)s is waiting for today's result.") % {
                                    "streak": _streak_label(r.current_streak, r.streak_unit), "name": c.name},
                                90, url, _("Record")))
 
