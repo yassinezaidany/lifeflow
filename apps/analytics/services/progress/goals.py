@@ -121,6 +121,8 @@ def describe_goal(goal: Goal | None) -> str:
         Goal.Period.TOTAL: _("in total"),
     }[goal.period]
     text = f"{amount}{unit} {period}"
+    if goal.direction == Goal.Direction.AT_MOST:
+        return _("max. %(goal)s") % {"goal": text}
     if goal.min_per_entry:
         minimum = format_value(float(goal.min_per_entry), goal if goal.metric and goal.metric.field_type == TrackingField.FieldType.DURATION else None)
         metric_unit = "" if goal.metric and goal.metric.field_type == TrackingField.FieldType.DURATION else (f" {goal.metric.display_unit}" if goal.metric else "")

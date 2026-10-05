@@ -44,6 +44,7 @@
       <div class="grid gap-4 sm:grid-cols-3">
         <div><label class="label">{% trans "Measured" %}</label><select class="select" x-model="goal.metric"><option value="">{% trans "Entries (sessions)" %}</option><template x-for="f in measurable" :key="f.key"><option :value="f.key" x-text="f.label" :selected="f.key===goal.metric"></option></template></select></div>
         <div><label class="label">{% trans "Target" %}</label><input type="number" min="0.01" step="any" class="input" x-model="goal.target"><p class="field-error" x-show="errors.target" x-text="errors.target"></p></div>
+        <div><label class="label">{% trans "Type of goal" %}</label><select class="select" x-model="goal.direction"><option value="at_least">{% trans "Reach a target" %}</option><option value="at_most">{% trans "Stay under a limit" %}</option></select></div>
         <div><label class="label">{% trans "Period" %}</label><select class="select" x-model="goal.period"><option value="daily">{% trans "per day" %}</option><option value="weekly">{% trans "per week" %}</option><option value="monthly">{% trans "per month" %}</option><option value="total">{% trans "in total" %}</option></select></div>
       </div>
       <template x-if="metricField && ['integer','decimal','duration'].includes(metricField.field_type)">

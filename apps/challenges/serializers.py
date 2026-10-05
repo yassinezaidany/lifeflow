@@ -92,6 +92,7 @@ class GoalInputSerializer(serializers.Serializer):
     aggregation = serializers.ChoiceField(choices=Goal.Aggregation.choices, default=Goal.Aggregation.SUM)
     target = serializers.DecimalField(max_digits=12, decimal_places=2)
     min_per_entry = serializers.DecimalField(max_digits=12, decimal_places=2, required=False, allow_null=True)
+    direction = serializers.ChoiceField(choices=Goal.Direction.choices, required=False, default=Goal.Direction.AT_LEAST)
     time_comparison = serializers.ChoiceField(choices=["before", "after", ""], required=False, allow_blank=True, default="")
     time_threshold = serializers.TimeField(required=False, allow_null=True, input_formats=["%H:%M", "%H:%M:%S"])
 
@@ -133,6 +134,7 @@ def normalise_goal(goal: dict, metric_field_type: str | None) -> dict:
     no metric or boolean metric -> COUNT; min_per_entry only for numeric metrics;
     a time metric needs a before/after threshold and always counts qualifying days."""
     if metric_field_type == TrackingField.FieldType.TIME:
+        goal["direction"] = Goal.Direction.AT_LEAST
         if not goal.get("time_threshold"):
             raise serializers.ValidationError({"time_threshold": _("Choose the time to beat (e.g. before 05:30).")})
         goal["time_comparison"] = goal.get("time_comparison") or "before"
@@ -140,6 +142,12 @@ def normalise_goal(goal: dict, metric_field_type: str | None) -> dict:
         goal["min_per_entry"] = None
         return goal
     goal["time_comparison"], goal["time_threshold"] = "", None
+    if goal.get("direction") == Goal.Direction.AT_MOST:
+        if metric_field_type == TrackingField.FieldType.BOOLEAN:
+            raise serializers.ValidationError({"direction": _("A limit needs a number, a duration or counted sessions.")})
+        goal["min_per_entry"] = None
+        goal["aggregation"] = Goal.Aggregation.COUNT if metric_field_type is None else Goal.Aggregation.SUM
+        return goal
     if metric_field_type is None or metric_field_type == TrackingField.FieldType.BOOLEAN:
         goal["aggregation"] = Goal.Aggregation.COUNT
         goal["min_per_entry"] = None
@@ -228,7 +236,7 @@ class GoalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Goal
-        fields = ["id", "metric", "metric_key", "period", "aggregation", "target", "min_per_entry", "time_comparison", "time_threshold", "effective_from", "effective_to"]
+        fields = ["id", "metric", "metric_key", "period", "aggregation", "target", "min_per_entry", "direction", "time_comparison", "time_threshold", "effective_from", "effective_to"]
 
 
 class ScheduleSerializer(serializers.ModelSerializer):

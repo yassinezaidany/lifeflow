@@ -68,8 +68,26 @@ class Bucket:
     due: bool = False
 
     @property
+    def is_limit(self) -> bool:
+        return self.goal.direction == Goal.Direction.AT_MOST
+
+    @property
+    def over_limit(self) -> bool:
+        return self.is_limit and self.actual > self.target + EPSILON
+
+    @property
     def achieved(self) -> bool:
-        return self.target > EPSILON and self.actual >= self.target - EPSILON
+        if self.target <= EPSILON:
+            return False
+        if self.is_limit:
+            # A limit is only "kept" once the period is over (it can still be exceeded until then).
+            return self.due and not self.over_limit
+        return self.actual >= self.target - EPSILON
+
+    @property
+    def settled(self) -> bool:
+        """Outcome known: period over, or a limit already exceeded."""
+        return self.due or self.over_limit
 
     def as_dict(self) -> dict:
         return {
@@ -388,6 +406,9 @@ class ProgressEngine:
             goal_value = sum(v for d, v in day_share.items() if w_start <= d <= w_end)
             actual = sum(v for d, v in day_actual.items() if w_start <= d <= act_end)
             expected = sum(v for d, v in day_share.items() if w_start <= d <= exp_end)
+            if goal.is_limit:
+                # Limit: the allowance available so far includes today's budget.
+                expected = sum(v for d, v in day_share.items() if w_start <= d <= act_end)
 
         # 4. Completion rate & streaks -----------------------------------------------------
         if is_total:
@@ -401,8 +422,9 @@ class ProgressEngine:
         else:
             ordered = sorted(buckets.values(), key=lambda b: b.start)
             relevant = [b for b in ordered if b.target > EPSILON and b.days[0] <= eval_end]
-            in_window = [(b.achieved, b.due) for b in relevant if w_start <= b.days[-1] and b.days[0] <= act_end]
-            streak_units = [StreakUnit(b.achieved, b.due) for b in relevant if b.days[0] <= act_end]
+            # "settled" = outcome known (period over, or a limit already exceeded)
+            in_window = [(b.achieved, b.settled) for b in relevant if w_start <= b.days[-1] and b.days[0] <= act_end]
+            streak_units = [StreakUnit(b.achieved, b.settled) for b in relevant if b.days[0] <= act_end]
 
         # Day shares are fractions: normalise float noise (e.g. 12.000000000000004).
         goal_value, actual = round(goal_value, 6), round(actual, 6)
@@ -424,6 +446,7 @@ class ProgressEngine:
             goal=goal_value,
             expected=expected,
             goal_is_final=window is None and (end is not None or is_total),
+            limit=goal.is_limit,
         )
 
         # 6. Averages --------------------------------------------------------------------
@@ -443,7 +466,14 @@ class ProgressEngine:
             for d in daterange(w_start, min(w_end, max(eval_end, w_start))):
                 days.append(self._day_point(d, day_types, day_bucket, day_actual, day_share, is_total, as_of))
 
-        progress = (actual / goal_value * 100) if goal_value > EPSILON else None
+        if goal.is_limit:
+            # For a limit, "progress" is the share of periods kept under the limit.
+            current = day_bucket.get(min(as_of, horizon_end))
+            progress = completion_rate if completion_rate is not None else (0.0 if current is not None and current.over_limit else 100.0)
+            gap = (expected - actual) if expected is not None else None  # positive = under budget
+        else:
+            progress = (actual / goal_value * 100) if goal_value > EPSILON else None
+            gap = (actual - expected) if expected is not None else None
         result = ProgressResult(
             challenge_id=challenge.pk,
             goal_obj=goal,
@@ -452,7 +482,7 @@ class ProgressEngine:
             expected=expected,
             remaining=max(goal_value - actual, 0.0),
             progress=progress,
-            gap=(actual - expected) if expected is not None else None,
+            gap=gap,
             status=status,
             completion_rate=completion_rate,
             completed_periods=completed_periods,
@@ -511,8 +541,13 @@ class ProgressEngine:
                 info["period_target"] = round(bucket.target, 2)
                 info["remaining"] = round(max(bucket.target - bucket.actual, 0.0), 2)
                 info["target"] = round(bucket.target, 2) if bucket.goal.period == Goal.Period.DAILY else info["remaining"]
-                info["done"] = bucket.achieved
-        if info["done"]:
+                info["done"] = bucket.achieved and not bucket.is_limit
+                if bucket.is_limit:
+                    info["limit"] = True
+                    info["status"] = "over" if bucket.over_limit else ("within" if dtype == DayType.ACTIVE else dtype.value)
+        if info.get("limit"):
+            pass
+        elif info["done"]:
             info["status"] = "done"
         elif dtype == DayType.ACTIVE:
             info["status"] = "partial" if today_actual > EPSILON else "pending"
@@ -533,6 +568,19 @@ class ProgressEngine:
         bucket = day_bucket.get(d)
         daily = bucket is not None and bucket.goal.period == Goal.Period.DAILY
         achieved = bucket.achieved if daily else actual > EPSILON
+        if bucket is not None and bucket.is_limit and dtype != DayType.OUTSIDE:
+            closed = d < as_of or (d == as_of and self.day_closed)
+            if daily and bucket.over_limit:
+                status = "missed"
+            elif dtype in (DayType.PAUSED, DayType.REST):
+                status = dtype.value
+            elif d > as_of:
+                status = "future"
+            elif daily:
+                status = "done" if closed else "pending"
+            else:
+                status = "partial" if actual > EPSILON else "empty"
+            return DayPoint(date=d, type=dtype, actual=actual, target=share, status=status)
         if dtype == DayType.OUTSIDE:
             status = "outside"
         elif achieved:

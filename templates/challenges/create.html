@@ -130,6 +130,11 @@
     {# ---------- Step 3: goal #}
     <section x-show="step===3" x-cloak class="card-pad space-y-5">
       <div><h2 class="card-title">{% trans "Set your goal" %}</h2><p class="card-subtitle">{% trans "How much, and over which period?" %}</p></div>
+      <div class="seg" x-show="canBeLimit">
+        <button type="button" class="seg-item" :aria-pressed="form.goal.direction!=='at_most'" @click="form.goal.direction='at_least'">{% icon "arrow-up-right" "icon-xs" %} {% trans "Reach a target" %}</button>
+        <button type="button" class="seg-item" :aria-pressed="form.goal.direction==='at_most'" @click="form.goal.direction='at_most'">{% icon "ban" "icon-xs" %} {% trans "Stay under a limit" %}</button>
+      </div>
+      <p class="hint" x-show="form.goal.direction==='at_most'">{% trans "Each period succeeds when the total stays under the limit (e.g. at most 2 h of screen time a day). Days without entries count as 0." %}</p>
       <div class="flex flex-wrap items-end gap-3">
         <div class="w-36">
           <label class="label" for="w-target">{% trans "Target" %}</label>

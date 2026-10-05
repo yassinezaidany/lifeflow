@@ -106,6 +106,16 @@ SYSTEM_TEMPLATES = [
         },
     },
     {
+        "slug": "screen-time-limit", "name": "Screen time limit", "icon": "smartphone", "color": "violet",
+        "category_name": "Digital Wellbeing", "duration_days": 30,
+        "description": "Keep your recreational screen time under 2 hours a day.",
+        "definition": {
+            "fields": [{"key": "screen_time", "label": "Screen time", "field_type": "duration", "required": True}],
+            "goal": {"metric": "screen_time", "period": "daily", "aggregation": "sum", "target": 120, "direction": "at_most"},
+            "schedule": {"frequency": "daily"},
+        },
+    },
+    {
         "slug": "digital-detox", "name": "Digital Detox", "icon": "smartphone", "color": "sky",
         "category_name": "Digital Wellbeing", "duration_days": 30,
         "description": "A day without social media counts as a win.",

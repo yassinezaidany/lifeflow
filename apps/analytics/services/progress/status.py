@@ -28,6 +28,7 @@ def compute_status(
     goal: float,
     expected: float | None,
     goal_is_final: bool,
+    limit: bool = False,
 ) -> ProgressStatus:
     """
     Order of precedence:
@@ -39,6 +40,8 @@ def compute_status(
     """
     if not_started:
         return ProgressStatus.NOT_STARTED
+    if limit:
+        return _limit_status(paused, manually_completed, ended, actual, goal, expected)
     if manually_completed or (goal_is_final and goal > 0 and actual >= goal - 1e-9):
         return ProgressStatus.COMPLETED
     if paused:
@@ -53,5 +56,25 @@ def compute_status(
     if ratio >= AHEAD_RATIO:
         return ProgressStatus.AHEAD
     if ratio >= BEHIND_RATIO:
+        return ProgressStatus.ON_TRACK
+    return ProgressStatus.BEHIND
+
+
+def _limit_status(paused, manually_completed, ended, actual, goal, expected) -> ProgressStatus:
+    """Limit goals ("at most"): being under the consumed budget is good."""
+    if manually_completed:
+        return ProgressStatus.COMPLETED
+    if paused:
+        return ProgressStatus.PAUSED
+    if ended:
+        return ProgressStatus.COMPLETED if actual <= goal + 1e-9 else ProgressStatus.MISSED
+    if expected is None:
+        return ProgressStatus.ON_TRACK
+    if expected <= 1e-9:
+        return ProgressStatus.BEHIND if actual > 1e-9 else ProgressStatus.ON_TRACK
+    ratio = actual / expected
+    if ratio <= 2 - AHEAD_RATIO:      # ≤ 90 % of the budget used so far
+        return ProgressStatus.AHEAD
+    if ratio <= 2 - BEHIND_RATIO:     # ≤ 110 %
         return ProgressStatus.ON_TRACK
     return ProgressStatus.BEHIND

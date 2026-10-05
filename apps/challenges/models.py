@@ -240,6 +240,13 @@ class Goal(VersionedConfig):
         max_digits=12, decimal_places=2, null=True, blank=True,
         help_text=_("Minimum value for an entry to count (e.g. at least 30 minutes)."),
     )
+    class Direction(models.TextChoices):
+        AT_LEAST = "at_least", _("at least")
+        AT_MOST = "at_most", _("at most")
+
+    # AT_MOST = limit goal ("at most 2 h of screen time per day"): a period succeeds
+    # while its total stays under the target.
+    direction = models.CharField(max_length=8, choices=Direction.choices, default=Direction.AT_LEAST)
     # Time-of-day goals (metric is a "time" field): an entry counts when the recorded
     # time is before / after the threshold, e.g. "wake up before 05:30".
     time_comparison = models.CharField(max_length=6, choices=[("before", _("before")), ("after", _("after"))], blank=True)
@@ -259,6 +266,10 @@ class Goal(VersionedConfig):
 
     def __str__(self) -> str:
         return f"Goal<{self.challenge_id} {self.target} {self.period}>"
+
+    @property
+    def is_limit(self) -> bool:
+        return self.direction == self.Direction.AT_MOST
 
     @property
     def is_time_goal(self) -> bool:

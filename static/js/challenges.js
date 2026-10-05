@@ -28,7 +28,7 @@
       form: {
         name: "", description: "", category: opts.categories.length ? opts.categories[0].id : null, icon: "target", color: "indigo",
         fields: [], metric: null,
-        goal: { period: "daily", aggregation: "sum", target: 1, min_per_entry: null, time_comparison: "before", time_threshold: "06:00" },
+        goal: { period: "daily", aggregation: "sum", target: 1, min_per_entry: null, direction: "at_least", time_comparison: "before", time_threshold: "06:00" },
         schedule: { frequency: "daily", weekdays: [0, 2, 4], interval_days: 2 },
         start_date: opts.today, end_date: addDays(opts.today, 29), milestones: [], template: null,
       },
@@ -89,7 +89,8 @@
         if (p.field_type === "duration") return t("minutes");
         return p.unit || "";
       },
-      get canUseMinimum() { const p = this.primary; return p && ["integer", "decimal", "duration"].includes(p.field_type); },
+      get canUseMinimum() { const p = this.primary; return p && ["integer", "decimal", "duration"].includes(p.field_type) && this.form.goal.direction !== "at_most"; },
+      get canBeLimit() { return !this.primary || ["integer", "decimal", "duration"].includes(this.primary.field_type); },
       get goalSentence() {
         const per = { daily: t("per day"), weekly: t("per week"), monthly: t("per month"), total: t("in total") }[this.form.goal.period];
         let target = this.form.goal.target;
@@ -97,6 +98,7 @@
         else target = `${target} ${this.unitLabel}`;
         if (this.isTimeGoal) return `${this.primary.label} ${this.form.goal.time_comparison === "after" ? t("after") : t("before")} ${this.form.goal.time_threshold} · ${this.form.goal.target} ${t("days")} ${per}`;
         let s = `${target} ${per}`;
+        if (this.form.goal.direction === "at_most") return `${t("max.")} ${s}`;
         if (this.form.goal.min_per_entry && this.canUseMinimum) s += ` · ${t("min.")} ${this.form.goal.min_per_entry} ${this.primary.field_type === "duration" ? "min" : this.primary.unit} ${t("per entry")}`;
         return s;
       },
@@ -147,6 +149,7 @@
             options: x.field_type === "select" ? (x.optionsText || "").split(",").map((o) => o.trim()).filter(Boolean) : [],
           })),
           goal: { metric: f.metric, period: f.goal.period, aggregation: f.goal.aggregation, target: f.goal.target, min_per_entry: this.canUseMinimum ? (f.goal.min_per_entry || null) : null,
+                  direction: this.canBeLimit ? (f.goal.direction || "at_least") : "at_least",
                   time_comparison: this.isTimeGoal ? f.goal.time_comparison : "", time_threshold: this.isTimeGoal ? f.goal.time_threshold : null },
           schedule: { frequency: f.schedule.frequency, weekdays: f.schedule.weekdays, interval_days: Number(f.schedule.interval_days) || 1 },
           milestones: f.milestones.filter((m) => m.title && Number(m.target_value) > 0),
@@ -187,7 +190,7 @@
         const c = this.c;
         this.general = { name: c.name, description: c.description, category_id: c.category ? c.category.id : null, icon: c.icon, color: c.color, start_date: c.start_date, end_date: c.end_date, reminder_time: c.reminder_time ? c.reminder_time.slice(0, 5) : "" };
         const g = c.goal || {};
-        this.goal = { metric: g.metric_key || "", period: g.period || "daily", aggregation: g.aggregation || "count", target: g.target || 1, min_per_entry: g.min_per_entry,
+        this.goal = { metric: g.metric_key || "", period: g.period || "daily", aggregation: g.aggregation || "count", target: g.target || 1, min_per_entry: g.min_per_entry, direction: g.direction || "at_least",
           time_comparison: g.time_comparison || "before", time_threshold: g.time_threshold ? g.time_threshold.slice(0, 5) : "06:00", effective_from: this.today < c.start_date ? c.start_date : this.today };
         const s = c.schedule || {};
         this.schedule = { frequency: s.frequency || "daily", weekdays: s.weekdays || [], interval_days: s.interval_days || 2, effective_from: this.goal.effective_from };
