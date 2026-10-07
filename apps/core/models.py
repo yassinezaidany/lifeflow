@@ -61,3 +61,20 @@ class AuditLog(models.Model):
 
     def __str__(self) -> str:
         return f"{self.user_id} {self.action} {self.object_type}#{self.object_id}"
+
+
+class StoredFile(models.Model):
+    """Uploaded file kept in the database (see apps.core.storage.DatabaseStorage).
+
+    Used on hosts without a persistent disk (e.g. free container plans), where files written
+    to the local filesystem disappear at every deploy. Only small uploads (avatars, ≤ 2 MB).
+    """
+
+    name = models.CharField(max_length=255, unique=True)
+    content = models.BinaryField()
+    size = models.PositiveIntegerField(default=0)
+    content_type = models.CharField(max_length=100, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.name

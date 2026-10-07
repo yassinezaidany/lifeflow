@@ -20,9 +20,6 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_REDIRECT_EXEMPT = [r"^healthz$"]  # container health checks run over plain HTTP
 
 STORAGES = {
-    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "default": {"BACKEND": DEFAULT_FILE_STORAGE_BACKEND},  # noqa: F405
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
-
-# Uploaded avatars are served by Django in this simple deployment (no separate media server).
-SERVE_MEDIA = env.bool("SERVE_MEDIA", default=True)  # noqa: F405

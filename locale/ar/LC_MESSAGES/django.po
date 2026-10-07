@@ -4620,6 +4620,69 @@ msgstr "الكتابة"
 msgid "Menu"
 msgstr "القائمة"
 
+#: templates\accounts\privacy.html
+msgid ""
+"Export all your data at any time (Reports → Export, CSV or Excel) and delete"
+" your account from Settings → Security: everything is erased permanently."
+msgstr ""
+"صدّر كل بياناتك في أي وقت (التقارير ← تصدير، CSV أو Excel) واحذف حسابك من "
+"الإعدادات ← الأمان: يُمحى كل شيء نهائيًا."
+
+#: templates\accounts\privacy.html
+msgid ""
+"If the operator enabled them: e-mails are sent through an e-mail provider, "
+"push notifications go through your browser's push service, and the challenge"
+" assistant sends the sentence you type (and nothing else) to an AI provider."
+msgstr ""
+"إذا فعّلها المشغّل: تُرسل الرسائل الإلكترونية عبر مزوّد بريد، والإشعارات عبر"
+" خدمة الإشعارات في متصفحك، ويرسل مساعد التحديات الجملة التي تكتبها (ولا شيء "
+"غيرها) إلى مزوّد ذكاء اصطناعي."
+
+#: templates\accounts\privacy.html
+msgid "LifeFlow is a personal tool. Your data is yours."
+msgstr "LifeFlow أداة شخصية. بياناتك ملكك."
+
+#: templates\accounts\privacy.html
+msgid ""
+"Only you. Friends in a group challenge see only your completion rate and "
+"streak for that challenge, and you can hide them. Administrators manage "
+"accounts but the application does not show them your entries, journal or "
+"planner."
+msgstr ""
+"أنت فقط. في التحدي الجماعي لا يرى أصدقاؤك إلا نسبة إنجازك وسلسلتك في ذلك "
+"التحدي، ويمكنك إخفاؤهما. يدير المشرفون الحسابات لكن التطبيق لا يعرض عليهم "
+"إدخالاتك ولا يومياتك ولا مخططك."
+
+#: templates\accounts\privacy.html
+msgid "Optional services"
+msgstr "خدمات اختيارية"
+
+#: templates\accounts\privacy.html
+msgid "Privacy"
+msgstr "الخصوصية"
+
+#: templates\accounts\privacy.html
+msgid "What is stored"
+msgstr "ما الذي يُخزَّن"
+
+#: templates\accounts\privacy.html
+msgid "Who can see it"
+msgstr "من يمكنه رؤيته"
+
+#: templates\accounts\privacy.html
+msgid ""
+"Your account (username, e-mail, hashed password, preferences), and what you "
+"enter: challenges, results, planner, journal and reports. Nothing is "
+"collected for advertising, and no tracker or third-party analytics is used."
+msgstr ""
+"حسابك (اسم المستخدم، البريد، كلمة المرور المشفّرة، التفضيلات) وما تدخله: "
+"التحديات والنتائج والمخطط واليوميات والتقارير. لا يُجمع شيء لأغراض إعلانية، "
+"ولا يُستخدم أي متتبّع أو أداة تحليل خارجية."
+
+#: templates\accounts\privacy.html
+msgid "Your rights"
+msgstr "حقوقك"
+
 #~ msgid ""
 #~ "This field can't be measured (choose a number, duration or done/not done "
 #~ "field)."

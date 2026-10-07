@@ -1,0 +1,26 @@
+{% extends "layouts/auth.html" %}
+{% load i18n %}
+{% block title %}{% trans "Privacy" %}{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-semibold tracking-tight">{% trans "Privacy" %}</h1>
+<p class="mt-2 text-sm text-muted">{% trans "LifeFlow is a personal tool. Your data is yours." %}</p>
+<div class="mt-6 space-y-5 text-sm leading-6">
+  <section>
+    <h2 class="font-semibold">{% trans "What is stored" %}</h2>
+    <p class="mt-1 text-muted">{% trans "Your account (username, e-mail, hashed password, preferences), and what you enter: challenges, results, planner, journal and reports. Nothing is collected for advertising, and no tracker or third-party analytics is used." %}</p>
+  </section>
+  <section>
+    <h2 class="font-semibold">{% trans "Who can see it" %}</h2>
+    <p class="mt-1 text-muted">{% trans "Only you. Friends in a group challenge see only your completion rate and streak for that challenge, and you can hide them. Administrators manage accounts but the application does not show them your entries, journal or planner." %}</p>
+  </section>
+  <section>
+    <h2 class="font-semibold">{% trans "Optional services" %}</h2>
+    <p class="mt-1 text-muted">{% trans "If the operator enabled them: e-mails are sent through an e-mail provider, push notifications go through your browser's push service, and the challenge assistant sends the sentence you type (and nothing else) to an AI provider." %}</p>
+  </section>
+  <section>
+    <h2 class="font-semibold">{% trans "Your rights" %}</h2>
+    <p class="mt-1 text-muted">{% trans "Export all your data at any time (Reports → Export, CSV or Excel) and delete your account from Settings → Security: everything is erased permanently." %}</p>
+  </section>
+</div>
+<a href="{% if user.is_authenticated %}{% url 'dashboard:home' %}{% else %}{% url 'accounts:login' %}{% endif %}" class="btn btn-secondary mt-8 w-full">{% trans "Back" %}</a>
+{% endblock %}

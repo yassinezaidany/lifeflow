@@ -26,7 +26,13 @@ case "$1" in
   web)
     wait_for_db
     python manage.py migrate --noinput
-    exec gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers "${GUNICORN_WORKERS:-3}" \
+    # Optional first administrator from the environment (DJANGO_SUPERUSER_USERNAME/EMAIL/PASSWORD),
+    # for hosts without a shell. Ignored when the account already exists.
+    if [ -n "${DJANGO_SUPERUSER_USERNAME:-}" ] && [ -n "${DJANGO_SUPERUSER_PASSWORD:-}" ]; then
+      python manage.py createsuperuser --noinput >/dev/null 2>&1 || true
+    fi
+    # PORT is set by PaaS hosts (Render, Koyeb…); 8000 otherwise (docker-compose).
+    exec gunicorn config.wsgi:application --bind "0.0.0.0:${PORT:-8000}" --workers "${GUNICORN_WORKERS:-2}" \
       --timeout 60 --access-logfile - --error-logfile -
     ;;
   scheduler)

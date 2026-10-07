@@ -160,6 +160,11 @@ def categories_view(request):
     return render(request, "accounts/categories.html", {"tab": "categories", "icons": picker_icons()})
 
 
+def privacy(request):
+    """Public page: what LifeFlow stores, who can see it, how to export or delete it."""
+    return render(request, "accounts/privacy.html")
+
+
 @login_required
 def onboarding(request):
     if request.method == "POST":

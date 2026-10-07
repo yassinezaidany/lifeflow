@@ -27,7 +27,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.results: list[tuple[str, str, str]] = []
         for check in (self.check_database, self.check_migrations, self.check_secret, self.check_mode, self.check_static,
-                      self.check_fonts, self.check_translations, self.check_email, self.check_push, self.check_assistant,
+                      self.check_fonts, self.check_translations, self.check_media, self.check_email, self.check_push, self.check_assistant,
                       self.check_scheduler, self.check_data):
             try:
                 check()
@@ -113,8 +113,19 @@ class Command(BaseCommand):
         backend = settings.EMAIL_BACKEND.split(".")[-2]
         if "console" in settings.EMAIL_BACKEND or "locmem" in settings.EMAIL_BACKEND:
             self.add(INFO if settings.DEBUG else WARN, "e-mail", f"{backend}: e-mails are not really sent (password reset links appear in the console)")
+        elif settings.EMAIL_BACKEND.endswith("BrevoEmailBackend"):
+            if settings.BREVO_API_KEY:
+                self.add(OK, "e-mail", f"Brevo HTTPS API, sender {settings.DEFAULT_FROM_EMAIL}")
+            else:
+                self.add(WARN, "e-mail", "Brevo backend selected but BREVO_API_KEY is empty — e-mails are not sent")
         else:
             self.add(OK, "e-mail", f"{backend} via {settings.EMAIL_HOST}:{settings.EMAIL_PORT}")
+
+    def check_media(self):
+        if settings.MEDIA_IN_DATABASE:
+            self.add(OK, "uploads", "stored in the database (MEDIA_STORAGE=db)")
+        else:
+            self.add(OK, "uploads", f"stored on disk in {settings.MEDIA_ROOT}")
 
     def check_push(self):
         if settings.VAPID_PUBLIC_KEY and settings.VAPID_PRIVATE_KEY:
@@ -132,8 +143,9 @@ class Command(BaseCommand):
         from apps.notifications.reminders import HEARTBEAT
 
         path = settings.LOG_DIR / HEARTBEAT
+        via = " or call /internal/cron/reminders/ from an external cron" if settings.CRON_TOKEN else ""
         if not path.exists():
-            self.add(WARN, "reminders", "scheduler never ran — start `python manage.py run_scheduler` (or schedule send_reminders)")
+            self.add(WARN, "reminders", f"scheduler never ran — start `python manage.py run_scheduler`{via}")
             return
         last = datetime.fromisoformat(path.read_text(encoding="utf-8").strip())
         age = timezone.now() - last

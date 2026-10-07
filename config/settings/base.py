@@ -23,6 +23,12 @@ DEBUG = env("DEBUG")
 ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
 
+# Render (and similar PaaS) expose the public hostname: trust it automatically.
+PUBLIC_HOSTNAME = env("RENDER_EXTERNAL_HOSTNAME", default="")
+if PUBLIC_HOSTNAME:
+    ALLOWED_HOSTS = [*ALLOWED_HOSTS, PUBLIC_HOSTNAME]
+    CSRF_TRUSTED_ORIGINS = [*CSRF_TRUSTED_ORIGINS, f"https://{PUBLIC_HOSTNAME}"]
+
 # ---------------------------------------------------------------------------
 # Applications
 # ---------------------------------------------------------------------------
@@ -109,6 +115,11 @@ DATABASES = {
         "TEST": {"CHARSET": "utf8mb4", "COLLATION": "utf8mb4_unicode_ci"},
     }
 }
+# Managed MySQL (e.g. Aiven) requires TLS: DB_SSL_MODE=REQUIRED, optionally DB_SSL_CA=/path/ca.pem.
+if env("DB_SSL_MODE", default=""):
+    DATABASES["default"]["OPTIONS"]["ssl_mode"] = env("DB_SSL_MODE")
+if env("DB_SSL_CA", default=""):
+    DATABASES["default"]["OPTIONS"]["ssl"] = {"ca": env("DB_SSL_CA")}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # ---------------------------------------------------------------------------
@@ -148,6 +159,17 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATIC_ROOT.mkdir(exist_ok=True)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+# MEDIA_STORAGE=db keeps uploads (avatars) in the database, for hosts without a persistent disk.
+MEDIA_IN_DATABASE = env("MEDIA_STORAGE", default="filesystem") == "db"
+DEFAULT_FILE_STORAGE_BACKEND = (
+    "apps.core.storage.DatabaseStorage" if MEDIA_IN_DATABASE else "django.core.files.storage.FileSystemStorage"
+)
+# Django serves uploads itself (single-server deployments); set False when a proxy serves /media/.
+SERVE_MEDIA = env.bool("SERVE_MEDIA", default=True)
+STORAGES = {
+    "default": {"BACKEND": DEFAULT_FILE_STORAGE_BACKEND},
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+}
 FILE_UPLOAD_MAX_MEMORY_SIZE = 2 * 1024 * 1024
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024
 
@@ -160,7 +182,10 @@ EMAIL_PORT = env.int("EMAIL_PORT", default=25)
 EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
 EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=False)
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="LifeFlow <no-reply@lifeflow.local>")
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="") or "LifeFlow <no-reply@lifeflow.local>"
+# Hosts that block SMTP ports (free PaaS plans) can send through Brevo's HTTPS API instead:
+# EMAIL_BACKEND=apps.core.mail.BrevoEmailBackend + BREVO_API_KEY.
+BREVO_API_KEY = env("BREVO_API_KEY", default="")
 
 # ---------------------------------------------------------------------------
 # Django REST Framework
@@ -243,8 +268,12 @@ APP_NAME = "LifeFlow"
 # ---------------------------------------------------------------------------
 VAPID_PUBLIC_KEY = env("VAPID_PUBLIC_KEY", default="")
 VAPID_PRIVATE_KEY = env("VAPID_PRIVATE_KEY", default="")
-VAPID_SUBJECT = env("VAPID_SUBJECT", default="mailto:admin@lifeflow.local")
-SITE_URL = env("SITE_URL", default="http://127.0.0.1:8000")
+VAPID_SUBJECT = env("VAPID_SUBJECT", default="") or "mailto:admin@lifeflow.local"
+SITE_URL = env("SITE_URL", default=f"https://{PUBLIC_HOSTNAME}" if PUBLIC_HOSTNAME else "http://127.0.0.1:8000")
+
+# Reminders triggered over HTTP by an external scheduler (hosts without background workers):
+# GET/POST /internal/cron/reminders/ with header X-Cron-Token. Empty = endpoint disabled.
+CRON_TOKEN = env("CRON_TOKEN", default="")
 
 # Optional AI challenge assistant (falls back to a built-in rule-based parser).
 ANTHROPIC_API_KEY = env("ANTHROPIC_API_KEY", default="")

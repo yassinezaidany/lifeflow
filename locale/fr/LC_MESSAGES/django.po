@@ -4669,6 +4669,73 @@ msgstr "Écriture"
 msgid "Menu"
 msgstr "Menu"
 
+#: templates\accounts\privacy.html
+msgid ""
+"Export all your data at any time (Reports → Export, CSV or Excel) and delete"
+" your account from Settings → Security: everything is erased permanently."
+msgstr ""
+"Exportez toutes vos données à tout moment (Rapports → Exporter, CSV ou "
+"Excel) et supprimez votre compte depuis Paramètres → Sécurité : tout est "
+"effacé définitivement."
+
+#: templates\accounts\privacy.html
+msgid ""
+"If the operator enabled them: e-mails are sent through an e-mail provider, "
+"push notifications go through your browser's push service, and the challenge"
+" assistant sends the sentence you type (and nothing else) to an AI provider."
+msgstr ""
+"Si l'exploitant les a activés : les e-mails passent par un fournisseur "
+"d'e-mails, les notifications push par le service push de votre navigateur, "
+"et l'assistant de défis envoie la phrase que vous tapez (et rien d'autre) à "
+"un fournisseur d'IA."
+
+#: templates\accounts\privacy.html
+msgid "LifeFlow is a personal tool. Your data is yours."
+msgstr "LifeFlow est un outil personnel. Vos données vous appartiennent."
+
+#: templates\accounts\privacy.html
+msgid ""
+"Only you. Friends in a group challenge see only your completion rate and "
+"streak for that challenge, and you can hide them. Administrators manage "
+"accounts but the application does not show them your entries, journal or "
+"planner."
+msgstr ""
+"Vous seul. Dans un défi de groupe, vos amis ne voient que votre taux de "
+"réussite et votre série pour ce défi, et vous pouvez les masquer. Les "
+"administrateurs gèrent les comptes, mais l'application ne leur montre ni vos"
+" saisies, ni votre journal, ni votre planner."
+
+#: templates\accounts\privacy.html
+msgid "Optional services"
+msgstr "Services optionnels"
+
+#: templates\accounts\privacy.html
+msgid "Privacy"
+msgstr "Confidentialité"
+
+#: templates\accounts\privacy.html
+msgid "What is stored"
+msgstr "Ce qui est enregistré"
+
+#: templates\accounts\privacy.html
+msgid "Who can see it"
+msgstr "Qui peut le voir"
+
+#: templates\accounts\privacy.html
+msgid ""
+"Your account (username, e-mail, hashed password, preferences), and what you "
+"enter: challenges, results, planner, journal and reports. Nothing is "
+"collected for advertising, and no tracker or third-party analytics is used."
+msgstr ""
+"Votre compte (nom d'utilisateur, e-mail, mot de passe chiffré, préférences) "
+"et ce que vous saisissez : défis, résultats, planner, journal et rapports. "
+"Rien n'est collecté à des fins publicitaires, et aucun traceur ni outil "
+"d'analyse tiers n'est utilisé."
+
+#: templates\accounts\privacy.html
+msgid "Your rights"
+msgstr "Vos droits"
+
 #~ msgid ""
 #~ "This field can't be measured (choose a number, duration or done/not done "
 #~ "field)."

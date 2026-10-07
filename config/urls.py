@@ -2,9 +2,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
-from django.views.static import serve
 
 from apps.core import pwa
+from apps.core import views as core_views
 from apps.dashboard.views import landing
 
 admin.site.site_header = "LifeFlow administration"
@@ -30,8 +30,11 @@ urlpatterns = [
     path("admin/", admin.site.urls),
 ]
 
-if settings.DEBUG:
+urlpatterns += [path("internal/cron/reminders/", core_views.cron_reminders, name="cron-reminders")]
+
+if settings.DEBUG and not settings.MEDIA_IN_DATABASE:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-elif getattr(settings, "SERVE_MEDIA", False):
-    # Simple single-server deployment: Django serves the (small) uploaded avatars itself.
-    urlpatterns += [re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT})]
+elif settings.DEBUG or getattr(settings, "SERVE_MEDIA", False):
+    # Simple single-server deployment: Django serves the (small) uploaded avatars itself,
+    # from disk or from the database (MEDIA_STORAGE=db).
+    urlpatterns += [re_path(r"^media/(?P<path>.+)$", core_views.media_file, name="media")]

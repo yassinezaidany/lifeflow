@@ -73,6 +73,9 @@ Options : `setup.ps1 -Dev` (dépendances de test), `-NoDocker` (MySQL existant, 
 `start.ps1 -Port 8090 -Listen 0.0.0.0 -NoScheduler`. Vérifier une installation à tout moment :
 `python manage.py doctor` (base, migrations, statiques, polices PDF, traductions, e-mail, push, IA, planificateur).
 
+**Publier gratuitement sur Internet** (Render + MySQL Aiven, HTTPS, sans carte bancaire) : `render.yaml` est fourni,
+suivre le guide pas à pas [docs/20-PUBLISH-FREE.md](docs/20-PUBLISH-FREE.md).
+
 ## Installation manuelle
 
 Prérequis : Python 3.11+, Docker (pour MySQL) **ou** un MySQL 8 local, Node.js 18+ (uniquement pour recompiler le CSS).
@@ -143,6 +146,11 @@ npm run watch:css    # recompilation à la volée pendant le développement
 | `USE_HTTPS` | (prod) redirection HTTPS, cookies `Secure`, HSTS — `False` pour un usage local en HTTP | `True` |
 | `SERVE_MEDIA` | (prod) Django sert `/media/` (avatars) quand aucun proxy ne le fait | `True` |
 | `APP_PORT` | port publié par `docker compose --profile app` | `8080` |
+| `MEDIA_STORAGE` | `db` = avatars stockés dans MySQL (hébergeurs sans disque permanent) | `filesystem` |
+| `DB_SSL_MODE`, `DB_SSL_CA` | TLS vers un MySQL managé (ex. `REQUIRED` pour Aiven) | — |
+| `CRON_TOKEN` | active `/internal/cron/reminders/` (rappels déclenchés par un cron externe) | — |
+| `BREVO_API_KEY` | e-mails via l'API Brevo (`EMAIL_BACKEND=apps.core.mail.BrevoEmailBackend`) | — |
+| `DJANGO_SUPERUSER_USERNAME` / `_EMAIL` / `_PASSWORD` | crée l'administrateur au démarrage du conteneur s'il n'existe pas | — |
 
 ## Commandes utiles
 
@@ -161,7 +169,7 @@ npm run watch:css    # recompilation à la volée pendant le développement
 
 ```bash
 pip install -r requirements-dev.txt
-pytest                      # 270 tests : moteur de progression, limites, API, planner, sécurité/isolation, social, import, rapports, pages
+pytest                      # 280 tests : moteur de progression, limites, API, planner, sécurité/isolation, social, import, rapports, pages
 pytest tests/test_progress_engine.py -q
 ```
 
@@ -195,7 +203,7 @@ frontend/            sources Tailwind + script de build des assets
 locale/fr/, ar/      traductions française et arabe
 docker/, Dockerfile  image de production (Gunicorn) + point d'entrée web / scheduler
 setup.*, start.*     installation et lancement en une commande (Windows / Linux)
-docs/                documentation (19 chapitres)
+docs/                documentation (20 chapitres)
 tests/               suite de tests
 scripts/             QA navigateur (Playwright)
 ```
@@ -208,4 +216,5 @@ scripts/             QA navigateur (Playwright)
 10. [Sécurité](docs/10-SECURITY.md) · 11. [Tests](docs/11-TESTING.md) · 12. [Rapports](docs/12-REPORTS.md) ·
 13. [Déploiement](docs/13-DEPLOYMENT.md) · 14. [Feuille de route](docs/14-ROADMAP.md) ·
 15. [PWA & notifications](docs/15-PWA-AND-NOTIFICATIONS.md) · 16. [Langues & RTL](docs/16-I18N-RTL.md) · 17. [Assistant IA](docs/17-AI-ASSISTANT.md) ·
-18. [Communauté](docs/18-SOCIAL.md) · 19. [Constats, succès, import & objectifs-limites](docs/19-INSIGHTS-ACHIEVEMENTS-IMPORT.md)
+18. [Communauté](docs/18-SOCIAL.md) · 19. [Constats, succès, import & objectifs-limites](docs/19-INSIGHTS-ACHIEVEMENTS-IMPORT.md) ·
+20. [Publier gratuitement](docs/20-PUBLISH-FREE.md)
