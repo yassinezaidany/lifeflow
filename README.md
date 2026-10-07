@@ -73,8 +73,8 @@ Options : `setup.ps1 -Dev` (dépendances de test), `-NoDocker` (MySQL existant, 
 `start.ps1 -Port 8090 -Listen 0.0.0.0 -NoScheduler`. Vérifier une installation à tout moment :
 `python manage.py doctor` (base, migrations, statiques, polices PDF, traductions, e-mail, push, IA, planificateur).
 
-**Publier gratuitement sur Internet** (Render + MySQL Aiven, HTTPS, sans carte bancaire) : `render.yaml` est fourni,
-suivre le guide pas à pas [docs/20-PUBLISH-FREE.md](docs/20-PUBLISH-FREE.md).
+**Publier gratuitement sur Internet** : PythonAnywhere sans carte bancaire (`deploy/pythonanywhere.sh`, base SQLite)
+ou Render + MySQL Aiven (`render.yaml`) — guide pas à pas : [docs/20-PUBLISH-FREE.md](docs/20-PUBLISH-FREE.md).
 
 ## Installation manuelle
 
@@ -146,6 +146,7 @@ npm run watch:css    # recompilation à la volée pendant le développement
 | `USE_HTTPS` | (prod) redirection HTTPS, cookies `Secure`, HSTS — `False` pour un usage local en HTTP | `True` |
 | `SERVE_MEDIA` | (prod) Django sert `/media/` (avatars) quand aucun proxy ne le fait | `True` |
 | `APP_PORT` | port publié par `docker compose --profile app` | `8080` |
+| `DB_ENGINE`, `SQLITE_PATH` | `sqlite` = base SQLite dans un fichier (petits hébergeurs sans MySQL) | `mysql` |
 | `MEDIA_STORAGE` | `db` = avatars stockés dans MySQL (hébergeurs sans disque permanent) | `filesystem` |
 | `DB_SSL_MODE`, `DB_SSL_CA` | TLS vers un MySQL managé (ex. `REQUIRED` pour Aiven) | — |
 | `CRON_TOKEN` | active `/internal/cron/reminders/` (rappels déclenchés par un cron externe) | — |

@@ -41,12 +41,16 @@ if [ "${1:-}" = "update" ]; then
 fi
 
 say "1/6 Python virtual environment"
+# Must be the same version as the web app (Web tab). Override with PA_PYTHON=python3.12 if needed.
 PY=""
-for candidate in python3.13 python3.12 python3.11; do
-  if command -v "$candidate" >/dev/null 2>&1; then PY="$candidate"; break; fi
+for candidate in ${PA_PYTHON:-} python3.13 python3.12 python3.11; do
+  if command -v "$candidate" >/dev/null 2>&1 && "$candidate" -c "import ensurepip, venv" 2>/dev/null; then
+    PY="$candidate"; break
+  fi
 done
-[ -n "$PY" ] || { echo "Python 3.11+ not found"; exit 1; }
-[ -d "$VENV" ] || "$PY" -m venv "$VENV"
+[ -n "$PY" ] || { echo "No Python 3.11+ with venv found"; exit 1; }
+echo "Using $("$PY" --version) — choose the same version for the web app."
+[ -x "$VENV/bin/python" ] || { rm -rf "$VENV"; "$PY" -m venv "$VENV"; }
 install_requirements
 
 say "2/6 Configuration (.env)"
