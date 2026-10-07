@@ -51,7 +51,7 @@ class Command(BaseCommand):
     # ------------------------------------------------------------------ checks
     def check_database(self):
         with connection.cursor() as cursor:
-            cursor.execute("SELECT VERSION()")
+            cursor.execute("SELECT sqlite_version()" if connection.vendor == "sqlite" else "SELECT VERSION()")
             version = cursor.fetchone()[0]
         self.add(OK, "database", f"{connection.vendor} {version} — {settings.DATABASES['default']['NAME']}")
 

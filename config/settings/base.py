@@ -115,11 +115,24 @@ DATABASES = {
         "TEST": {"CHARSET": "utf8mb4", "COLLATION": "utf8mb4_unicode_ci"},
     }
 }
-# Managed MySQL (e.g. Aiven) requires TLS: DB_SSL_MODE=REQUIRED, optionally DB_SSL_CA=/path/ca.pem.
-if env("DB_SSL_MODE", default=""):
-    DATABASES["default"]["OPTIONS"]["ssl_mode"] = env("DB_SSL_MODE")
-if env("DB_SSL_CA", default=""):
-    DATABASES["default"]["OPTIONS"]["ssl"] = {"ca": env("DB_SSL_CA")}
+# DB_ENGINE=sqlite: single-file database for small hosts without MySQL (e.g. PythonAnywhere free).
+DB_ENGINE = env("DB_ENGINE", default="mysql")
+if DB_ENGINE == "sqlite":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": env("SQLITE_PATH", default=str(BASE_DIR / "db.sqlite3")),
+            "ATOMIC_REQUESTS": True,
+            # Default rollback journal (WAL is unsafe on network storage); wait instead of failing when locked.
+            "OPTIONS": {"timeout": 20},
+        }
+    }
+else:
+    # Managed MySQL (e.g. Aiven) requires TLS: DB_SSL_MODE=REQUIRED, optionally DB_SSL_CA=/path/ca.pem.
+    if env("DB_SSL_MODE", default=""):
+        DATABASES["default"]["OPTIONS"]["ssl_mode"] = env("DB_SSL_MODE")
+    if env("DB_SSL_CA", default=""):
+        DATABASES["default"]["OPTIONS"]["ssl"] = {"ca": env("DB_SSL_CA")}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # ---------------------------------------------------------------------------
